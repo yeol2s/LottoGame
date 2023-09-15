@@ -14,6 +14,8 @@
 		96FFB9132AB4BFF600FAD765 /* LottoGame.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 96FFB9112AB4BFF600FAD765 /* LottoGame.xcdatamodeld */; };
 		96FFB9152AB4BFF700FAD765 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96FFB9142AB4BFF700FAD765 /* Assets.xcassets */; };
 		96FFB9182AB4BFF700FAD765 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96FFB9162AB4BFF700FAD765 /* LaunchScreen.storyboard */; };
+		96FFB9202AB4C47E00FAD765 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FFB91F2AB4C47E00FAD765 /* SecondViewController.swift */; };
+		96FFB9222AB4C4B800FAD765 /* NumbersGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FFB9212AB4C4B800FAD765 /* NumbersGen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		96FFB9142AB4BFF700FAD765 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		96FFB9172AB4BFF700FAD765 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		96FFB9192AB4BFF700FAD765 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		96FFB91F2AB4C47E00FAD765 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		96FFB9212AB4C4B800FAD765 /* NumbersGen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersGen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,8 @@
 			children = (
 				96FFB9082AB4BFF600FAD765 /* AppDelegate.swift */,
 				96FFB90A2AB4BFF600FAD765 /* SceneDelegate.swift */,
+				96FFB9212AB4C4B800FAD765 /* NumbersGen.swift */,
+				96FFB91F2AB4C47E00FAD765 /* SecondViewController.swift */,
 				96FFB90C2AB4BFF600FAD765 /* ViewController.swift */,
 				96FFB90E2AB4BFF600FAD765 /* Main.storyboard */,
 				96FFB9142AB4BFF700FAD765 /* Assets.xcassets */,
@@ -144,6 +150,8 @@
 				96FFB90D2AB4BFF600FAD765 /* ViewController.swift in Sources */,
 				96FFB9092AB4BFF600FAD765 /* AppDelegate.swift in Sources */,
 				96FFB9132AB4BFF600FAD765 /* LottoGame.xcdatamodeld in Sources */,
+				96FFB9222AB4C4B800FAD765 /* NumbersGen.swift in Sources */,
+				96FFB9202AB4C47E00FAD765 /* SecondViewController.swift in Sources */,
 				96FFB90B2AB4BFF600FAD765 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

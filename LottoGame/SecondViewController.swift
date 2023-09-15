@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  SecondViewController.swift
 //  LottoGame
 //
 //  Created by 유성열 on 2023/09/16.
@@ -7,20 +7,19 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class SecondViewController: UIViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = #colorLiteral(red: 0.968886435, green: 0.9258887172, blue: 0.8419043422, alpha: 1)
         
-        // ⭐️ 왜 네비게이션바랑 탭바 만드니까 뷰컨들이 기본 배경이 검은색이 됐지?(그래서 흰색으로 바꿔줌)
-        view.backgroundColor = .white
-    
-        setupNaviBar() // 네비게이션바 메서드 호출
+        setupNaviBar()
     }
+    
     
     // 네비게이션바 설정 메서드
     func setupNaviBar() {
-        title = "Lotto Pick"
+        title = "번호 생성"
         
         let appearance = UINavigationBarAppearance() // 네비게이션바 겉모습을 담당
         appearance.configureWithOpaqueBackground() // 불투명으로
@@ -32,5 +31,5 @@ class ViewController: UIViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance // 스크롤이 맨위로 도달했을 때 네비게이션 바의 모양 정의
         
     }
-
+    
 }
