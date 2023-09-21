@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		96D3CC832AB659E3007FE78B /* NumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D3CC822AB659E3007FE78B /* NumTableViewCell.swift */; };
 		96FFB9092AB4BFF600FAD765 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FFB9082AB4BFF600FAD765 /* AppDelegate.swift */; };
 		96FFB90B2AB4BFF600FAD765 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FFB90A2AB4BFF600FAD765 /* SceneDelegate.swift */; };
 		96FFB90D2AB4BFF600FAD765 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FFB90C2AB4BFF600FAD765 /* ViewController.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		96D3CC822AB659E3007FE78B /* NumTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumTableViewCell.swift; sourceTree = "<group>"; };
 		96FFB9052AB4BFF600FAD765 /* LottoGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LottoGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96FFB9082AB4BFF600FAD765 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96FFB90A2AB4BFF600FAD765 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 				96FFB9082AB4BFF600FAD765 /* AppDelegate.swift */,
 				96FFB90A2AB4BFF600FAD765 /* SceneDelegate.swift */,
 				96FFB9212AB4C4B800FAD765 /* NumbersGen.swift */,
+				96D3CC822AB659E3007FE78B /* NumTableViewCell.swift */,
 				96FFB91F2AB4C47E00FAD765 /* SecondViewController.swift */,
 				96FFB90C2AB4BFF600FAD765 /* ViewController.swift */,
 				96FFB90E2AB4BFF600FAD765 /* Main.storyboard */,
@@ -147,6 +150,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96D3CC832AB659E3007FE78B /* NumTableViewCell.swift in Sources */,
 				96FFB90D2AB4BFF600FAD765 /* ViewController.swift in Sources */,
 				96FFB9092AB4BFF600FAD765 /* AppDelegate.swift in Sources */,
 				96FFB9132AB4BFF600FAD765 /* LottoGame.xcdatamodeld in Sources */,

@@ -35,7 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarVC.tabBar.backgroundColor = .white
         
         naviVC.tabBarItem = UITabBarItem(title: "메인 화면", image: UIImage(systemName: "house.fill"), selectedImage: nil)
-        secondVC.tabBarItem = UITabBarItem(title: "번호 생성", image: UIImage(systemName: "shuffle.circle"), selectedImage: nil)
+        secondVC.tabBarItem = UITabBarItem(title: "내 번호", image: UIImage(systemName: "heart.fill"), selectedImage: nil)
         
         // 기본 루트뷰를 탭바 컨트롤러로 설정
         window?.rootViewController = tabBarVC
