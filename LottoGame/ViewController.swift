@@ -14,16 +14,20 @@ class ViewController: UIViewController {
     private let numTableView = UITableView()
     
     private lazy var generateButton: UIButton = {
-        var button = UIButton()
+        var button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0, green: 0.8178957105, blue: 1, alpha: 1)
         button.layer.borderWidth = 1 // 버튼 선의 넓이
         button.layer.borderColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1) // 버튼 선의 색상
         button.layer.cornerRadius = 5 // 모서리 둥글게
         button.setTitle("번호 생성", for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16) // 폰트 설정
         button.addTarget(self, action: #selector(genButtonTapped), for: .touchUpInside)
         return button
     }()
+    
+    // 번호 생성 인스턴스 생성
+    var numberGenManager: NumberGenManager = NumberGenManager()
     
     //private let stackView
     
@@ -94,11 +98,10 @@ class ViewController: UIViewController {
         ])
     }
     
-    // ⭐️ 버튼 눌렸을때 눌린 것 같은 동작을 구현해야함.(왜 안되지)
     // 번호 생성버튼 셀렉터
     @objc func genButtonTapped() {
         print("번호가 생성되었습니다.")
-
+        numberGenManager.generateLottoNumbers()
     }
     
 }
