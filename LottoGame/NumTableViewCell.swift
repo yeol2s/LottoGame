@@ -12,13 +12,18 @@ class NumTableViewCell: UITableViewCell {
     // 숫자 출력할 레이블
     var numberLabel: UILabel = {
         let label = UILabel()
-        label.text = "1234"
+        label.text = "1, 2, 3, 4, 5, 6"
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false // 자동잡아주는 기능 끔
         
+        // 레이블 둥글게
+        label.layer.cornerRadius = 5
+        label.clipsToBounds = true // 경계를 벗어나는 내용을 잘라내는 것인데(masksToBounds속성으로도 대체 가능)
+        
         // 오토레이아웃을 위한 테두리 테스트
+        // ⭐️ 컬러 설정하는게 UIColor(CGColor 변환)로 사용하는거나 #colorLiteral로 사용하는거나 어느게 좋은건지?
         label.layer.borderWidth = 2.0 // 테두리 두깨
-        label.layer.borderColor = UIColor.black.cgColor // 테두리 색상
+        label.layer.borderColor = UIColor.lightGray.cgColor // 테두리 색상(UIColor로 색상을 생성해서 CGcolor로 변환하는 코드)
         
         return label
     }()
@@ -44,7 +49,8 @@ class NumTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             numberLabel.heightAnchor.constraint(equalToConstant: 40),
             numberLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
-            numberLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16)
+            numberLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
+            numberLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor)
         ])
     }
 }

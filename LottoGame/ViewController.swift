@@ -60,10 +60,12 @@ class ViewController: UIViewController {
     }
     
     
-    // 테이블뷰 대리자 지정 설정
+    // 테이블뷰 대리자 지정 및 관련 설정
     func setupTableView() {
         numTableView.delegate = self
         numTableView.dataSource = self
+        
+        numTableView.rowHeight = 50
         
         // 셀 등록(셀 메타타입 등록)
         numTableView.register(NumTableViewCell.self, forCellReuseIdentifier: "NumCell")
@@ -75,7 +77,7 @@ class ViewController: UIViewController {
         numTableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            numTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            numTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             numTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             numTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             numTableView.bottomAnchor.constraint(equalTo: view.centerYAnchor) // 화면에 반만 사용하도록
@@ -102,6 +104,7 @@ class ViewController: UIViewController {
     @objc func genButtonTapped() {
         print("번호가 생성되었습니다.")
         numberGenManager.generateLottoNumbers()
+        numTableView.reloadData()
     }
     
 }
@@ -116,8 +119,9 @@ extension ViewController: UITableViewDelegate {
 extension ViewController: UITableViewDataSource {
     
     // 테이블뷰 몇개의 데이터 표시할건지
+    // 테이블뷰 reloadData()가 호출될때마다 호출됨
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5 // 5개의 데이터
+        return numberGenManager.getNumbersList().count // 매니저한테 생성된 번호 배열 리스트를 받아서 카운트해서 테이블뷰셀 생성
     }
     
     // 셀의 구성
