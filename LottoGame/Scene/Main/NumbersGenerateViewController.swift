@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class NumbersGenerateViewController: UIViewController {
     
     // 테이블뷰 생성(번호 5줄 나열)
     // ⭐️ 굳이 번호 표시로 테이블뷰를 할 필요는 없는 것 같은데..(보류)
@@ -46,7 +46,7 @@ class ViewController: UIViewController {
     }
     
     // 네비게이션바 설정 메서드
-    func setupNaviBar() {
+    private func setupNaviBar() {
         title = "Lotto Pick"
         
         let appearance = UINavigationBarAppearance() // 네비게이션바 겉모습을 담당
@@ -61,7 +61,7 @@ class ViewController: UIViewController {
     
     
     // 테이블뷰 대리자 지정 및 관련 설정
-    func setupTableView() {
+    private func setupTableView() {
         numTableView.delegate = self
         numTableView.dataSource = self
         
@@ -72,7 +72,7 @@ class ViewController: UIViewController {
     }
     
     // 테이블 뷰 오토레이아웃
-    func setupTableViewConstraints() {
+    private func setupTableViewConstraints() {
         view.addSubview(numTableView)
         numTableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -86,7 +86,7 @@ class ViewController: UIViewController {
     
     // ⭐️나중에 테이블뷰와 같이 스택뷰로 묶자
     // 버튼 오토레이아웃
-    func setupGenButton() {
+    private func setupGenButton() {
         view.addSubview(generateButton)
         generateButton.translatesAutoresizingMaskIntoConstraints = false
 
@@ -101,22 +101,22 @@ class ViewController: UIViewController {
     }
     
     // 번호 생성버튼 셀렉터
-    @objc func genButtonTapped() {
-        print("번호가 생성되었습니다.")
-        numberGenManager.generateLottoNumbers()
-        numTableView.reloadData()
+    @objc private func genButtonTapped() {
+        if numberGenManager.generateLottoNumbers() {
+            print("번호가 생성되었습니다.")
+            numTableView.reloadData()
+        }
     }
-    
 }
 
 // 테이블뷰 델리게이트 확장(뷰델리게이트)
-extension ViewController: UITableViewDelegate {
+extension NumbersGenerateViewController: UITableViewDelegate {
     
     
 }
 
 // 테이블뷰 델리게이트 확장(Datasource)
-extension ViewController: UITableViewDataSource {
+extension NumbersGenerateViewController: UITableViewDataSource {
     
     // 테이블뷰 몇개의 데이터 표시할건지
     // 테이블뷰 reloadData()가 호출될때마다 호출됨
@@ -130,13 +130,15 @@ extension ViewController: UITableViewDataSource {
     // 이게 reloadData() 될때 어떤 동작원리로.. 얘가 값을 저장했다가 한칸씩 만들어내는 것이 어떻게
     // 1 -> 1, 2 -> 1, 2, 3 이런식으로 불러오나??
     // 셀의 구성
+    // 스크롤할때 얘는 재구성이 됨
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = numTableView.dequeueReusableCell(withIdentifier: "NumCell", for: indexPath) as! NumTableViewCell
         
-        let numChangeString = numberGenManager[indexPath.row]
-        print("테이블뷰 셀 in :\(numChangeString)")
+        let numStringChanged = numberGenManager [indexPath.row]
+        print("테이블뷰 셀 in :\(numStringChanged)")
         
-        //cell.numberLabel.text =
+        
+        cell.numberLabel.text = numberGenManager.getNumberStringChange(row: indexPath.row)
         cell.selectionStyle = .none // 셀 선택시 회색으로 안변하게 하는 설정
         
         return cell

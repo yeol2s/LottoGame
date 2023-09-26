@@ -23,8 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // 네비게이션 컨트롤러 생성
         // ⭐️ 네비게이션 컨트롤러 두개다 사용할꺼니까 이렇게 두개 만드는게 맞나?
-        let naviVC = UINavigationController(rootViewController: ViewController()) // 뷰컨에다가 생성
-        let secondVC = UINavigationController(rootViewController: SecondViewController()) // 세컨뷰도 네비게이션컨트롤러 생성
+        let naviVC = UINavigationController(rootViewController: NumbersGenerateViewController()) // 뷰컨에다가 생성
+        let secondVC = UINavigationController(rootViewController: MyNumbersViewController()) // 세컨뷰도 네비게이션컨트롤러 생성
         
 //        // 탭바 타이틀 설정
 //        naviVC.title = "메인 화면"

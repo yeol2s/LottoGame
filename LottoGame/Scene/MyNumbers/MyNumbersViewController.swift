@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SecondViewController: UIViewController {
+final class MyNumbersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()

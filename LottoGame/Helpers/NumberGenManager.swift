@@ -17,7 +17,13 @@ final class NumberGenManager {
     private var lottoNumbers: [Int] = []
     
     // 번호 생성하는 함수
-    func generateLottoNumbers() {
+    func generateLottoNumbers() -> Bool {
+        
+        // 번호가 10개이상 생성되지 않게
+        guard numbers.count <= 10 else {
+            print("10개를 넘었습니다.")
+            return false
+        }
         
         lottoNumbers = []
         
@@ -31,11 +37,13 @@ final class NumberGenManager {
                 lottoNumbers.append(randomNumber)
             }
         }
+
         numbers.append(NumbersGen(numbersList: lottoNumbers.sorted()))
-        print(numbers[NumbersGen.checkIndex].numbersList)
-        print("Index 번호 : \(NumbersGen.checkIndex)") // 0부터 시작
+        // print(numbers[NumbersGen.checkIndex].numbersList)
+        // print("Index 번호 : \(NumbersGen.checkIndex)") // 0부터 시작
         print("numbers 모델(구조체) 내용 확인 : \(numbers)")
-        NumbersGen.checkIndex += 1 // 번호 생성마다 (타입저장속성) Index를 1씩더함
+        //NumbersGen.checkIndex += 1 // 번호 생성마다 (타입저장속성) Index를 1씩더함
+        return true
     }
     
     // 전체 번호 배열 리스트 얻기
@@ -45,13 +53,19 @@ final class NumberGenManager {
     
     // ⭐️ 이건 일단 보류(레이블에 번호 표시 보내주기 위한)
     // 전체 번호(정수) 배열을 문자열로 변환해서 얻기
-    func getNumberStringChange() -> String {
-        let numStringChange = lottoNumbers.map { String($0) } // 하나씩 문자열로 변경해서 배열로 리턴(map)
-        let numStringChanged = numStringChange.joined(separator: ", ")
-        return numStringChanged
+    func getNumberStringChange(row: Int) -> String {
+//        let numStringChange = lottoNumbers.map { String($0) } // 하나씩 문자열로 변경해서 배열로 리턴(map)
+//        let numStringChanged = numStringChange.joined(separator: ", ")
+//        return numStringChanged
+        
+        let numStringChange = numbers[row]
+        
+        let numStrig = numStringChange.numbersList.map { String ($0) }
+        
+        return numStrig.joined(separator: ", ") // ,로 나눠서 각각 문자열로 반환
     }
     
-    // ⭐️ 서브스크립트로 만들어봄(레이블에 번호 표시 보내주기 위한)
+    // ⭐️ 서브스크립트로 만들어봄(레이블에 번호 인덱스를 통해 보내주기 위해)
     // NumberGen 구조체에 저장되어있는 데이터에 접근하기 위해서
     subscript(index: Int) -> NumbersGen {
         get {

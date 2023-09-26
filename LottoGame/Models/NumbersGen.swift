@@ -10,10 +10,10 @@ import Foundation
 // 로또 번호 모델
 struct NumbersGen {
     
-    // (타입저장속성) 번호 생성시 Index 확인
-    static var checkIndex: Int = 0
+    // 번호 생성시 Index 확인
+    //let checkIndex: Int  // 생성할때 값이 들어간다.
     
     // 멤버와이즈 이니셜라이저 사용(기본값 및 생성자 미구현)
-    var numbersList: [Int]
+    let numbersList: [Int]
 
 }
