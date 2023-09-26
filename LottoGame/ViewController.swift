@@ -124,10 +124,19 @@ extension ViewController: UITableViewDataSource {
         return numberGenManager.getNumbersList().count // 매니저한테 생성된 번호 배열 리스트를 받아서 카운트해서 테이블뷰셀 생성
     }
     
+    // ⭐️indexPath가 특정 행의 위치를 지정하는데 사용된다고 하는데 정확한 동작 원리가 어떻게 되는지
+    // 그냥 단순 배열 인덱스처럼 사용되는건지? (section은 그룹이고? row는 행이고?)
+    // 이게 그냥 단순한 인덱스가 아니고 뭔가 셀과 정보를 깊게 주고받는 그런 느낌? 내가 알 수 없는
+    // 이게 reloadData() 될때 어떤 동작원리로.. 얘가 값을 저장했다가 한칸씩 만들어내는 것이 어떻게
+    // 1 -> 1, 2 -> 1, 2, 3 이런식으로 불러오나??
     // 셀의 구성
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = numTableView.dequeueReusableCell(withIdentifier: "NumCell", for: indexPath) as! NumTableViewCell
         
+        let numChangeString = numberGenManager[indexPath.row]
+        print("테이블뷰 셀 in :\(numChangeString)")
+        
+        //cell.numberLabel.text =
         cell.selectionStyle = .none // 셀 선택시 회색으로 안변하게 하는 설정
         
         return cell

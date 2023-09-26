@@ -43,10 +43,22 @@ final class NumberGenManager {
         return numbers
     }
     
+    // ⭐️ 이건 일단 보류(레이블에 번호 표시 보내주기 위한)
     // 전체 번호(정수) 배열을 문자열로 변환해서 얻기
-    func getNumberStringChange() -> [Int] {
-        
-        return [1, 2, 3] // 임시
+    func getNumberStringChange() -> String {
+        let numStringChange = lottoNumbers.map { String($0) } // 하나씩 문자열로 변경해서 배열로 리턴(map)
+        let numStringChanged = numStringChange.joined(separator: ", ")
+        return numStringChanged
     }
     
+    // ⭐️ 서브스크립트로 만들어봄(레이블에 번호 표시 보내주기 위한)
+    // NumberGen 구조체에 저장되어있는 데이터에 접근하기 위해서
+    subscript(index: Int) -> NumbersGen {
+        get {
+            return numbers[index]
+        }
+        set {
+            numbers[index] = newValue
+        }
+    }
 }
