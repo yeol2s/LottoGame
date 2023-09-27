@@ -7,6 +7,7 @@
 
 import UIKit
 
+// 세컨 뷰컨(내 번호)
 final class MyNumbersViewController: UIViewController {
     
     override func viewDidLoad() {
@@ -19,7 +20,7 @@ final class MyNumbersViewController: UIViewController {
     
     // 네비게이션바 설정 메서드
     func setupNaviBar() {
-        title = "번호 생성"
+        title = "저장된 번호"
         
         let appearance = UINavigationBarAppearance() // 네비게이션바 겉모습을 담당
         appearance.configureWithOpaqueBackground() // 불투명으로

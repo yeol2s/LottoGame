@@ -7,12 +7,14 @@
 
 import UIKit
 
+// 테이블뷰 셀
 class NumTableViewCell: UITableViewCell {
     
     // 숫자 출력할 레이블
     var numberLabel: UILabel = {
         let label = UILabel()
-        label.text = "1, 2, 3, 4, 5, 6"
+        label.text = " "
+        label.font = UIFont.systemFont(ofSize: 18)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false // 자동잡아주는 기능 끔
         
