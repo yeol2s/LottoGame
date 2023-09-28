@@ -63,7 +63,7 @@ final class NumberGenManager {
         // 가져온 numbers 구조체 배열을 map함수를 통해 문자열 변환
         // 문자열로 받아올 것이고 파라미터 생략이니까 String 타입 명시
         let numStrig = numStringChange.numbersList.map { String ($0) }
-        // ,로 분리해서 각각 문자열로 반환
+        // 공백으로 분리해서 각각 문자열로 반환
         return numStrig.joined(separator: "   ")
     }
     

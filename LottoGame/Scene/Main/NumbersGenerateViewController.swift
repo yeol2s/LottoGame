@@ -14,6 +14,7 @@ final class NumbersGenerateViewController: UIViewController {
     // 테이블뷰 생성(번호 10줄 나열)
     private let numTableView = UITableView()
     
+    // ⭐️ 아래 UI속성들을 lazy var로 선언하는 이유가 지연 저장 속성으로 뷰가 먼저 올라간다음 나오게 하려고 하는건가?(어쨌든 뷰와 연관되어있으니까? -> 셀에서는 속성들에 lazy var를 사용하지 않아도 됐는데)
     // 번호 생성 버튼
     private lazy var generateButton: UIButton = {
         let button = UIButton(type: .system)
