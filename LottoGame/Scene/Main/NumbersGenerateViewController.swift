@@ -64,6 +64,7 @@ final class NumbersGenerateViewController: UIViewController {
     }
     
     // 네비게이션바 설정 메서드
+    // ⭐️나중에 스크롤 내릴때 네비게이션바 나오게끔 하자?
     private func setupNaviBar() {
         title = "Lotto Pick"
         
@@ -83,7 +84,7 @@ final class NumbersGenerateViewController: UIViewController {
         numTableView.delegate = self
         numTableView.dataSource = self
         
-        numTableView.rowHeight = 60
+        numTableView.rowHeight = 60 // 테이블뷰 셀 높이
         
         // 셀 등록(셀 메타타입 등록)
         numTableView.register(NumTableViewCell.self, forCellReuseIdentifier: "NumCell")
@@ -91,7 +92,7 @@ final class NumbersGenerateViewController: UIViewController {
     
     // 테이블 뷰 오토레이아웃
     private func setupTableViewConstraints() {
-        view.addSubview(numTableView)
+        view.addSubview(numTableView) // 테이블뷰를 뷰에 올림
         numTableView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([

@@ -8,6 +8,7 @@
 import UIKit
 
 // 테이블뷰 셀
+// ⭐️ 얘의 폴더 SubViews는 왜 뭔가 아이콘이 살짝 다른 이유?
 class NumTableViewCell: UITableViewCell {
     
     // 숫자 출력할 레이블
@@ -40,8 +41,8 @@ class NumTableViewCell: UITableViewCell {
         button.layer.cornerRadius = 5
         button.clipsToBounds = true
         button.backgroundColor = .clear
-        button.layer.borderWidth = 1.0
-        button.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        //button.layer.borderWidth = 1.0
+        //button.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         
         return button
     }()
@@ -87,7 +88,7 @@ class NumTableViewCell: UITableViewCell {
 //    }
     
     // 스택뷰
-    func setupStackView() {
+    private func setupStackView() {
         self.contentView.addSubview(stackView) // 스택뷰를 셀에 올림
         
         // 셀에서는 self.addSubview보다 self.contentView.addSubview로 잡는게 더 정확함 ⭐️
@@ -97,7 +98,7 @@ class NumTableViewCell: UITableViewCell {
     }
     
     // 스택뷰 오토레이아웃
-    func stackViewConstraints() {
+    private func stackViewConstraints() {
         NSLayoutConstraint.activate([
             stackView.heightAnchor.constraint(equalToConstant: 40),
             stackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
