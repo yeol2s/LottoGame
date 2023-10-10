@@ -11,8 +11,11 @@ import UIKit
 // 메인 뷰컨
 final class NumbersGenerateViewController: UIViewController {
     
+    // AppDelegate에 유저디폴츠 생성(로컬 데이터 저장)
+    
     // 테이블뷰 생성(번호 10줄 나열)
     private let numTableView = UITableView()
+    
     
     // ⭐️ 아래 UI속성들을 lazy var로 선언하는 이유가 지연 저장 속성으로 뷰가 먼저 올라간다음 나오게 하려고 하는건가?(어쨌든 뷰와 연관되어있으니까? -> 셀에서는 속성들에 lazy var를 사용하지 않아도 됐는데)
     // 번호 생성 버튼
@@ -59,6 +62,7 @@ final class NumbersGenerateViewController: UIViewController {
         setupTableViewConstraints() // 테이블뷰 오토레이아웃
         setupGenButtonConstraints() // 생성 버튼 오토레이아웃
         resetButtonConstraints() // 리셋 버튼 오토레이아웃
+
         
         print("시작")
     }
@@ -119,7 +123,7 @@ final class NumbersGenerateViewController: UIViewController {
         ])
     }
     
-    // ⭐️ 아래와 같이 리셋버튼은 테이블뷰와 생성버튼 중간에 있는데 y기준 제약조건을 탑앵커만 테이블뷰 기준으로 잡았고 바텀앵커는 잡지 않았는데 문제 없는지(스토리보드는 이런 경우 막 빨간색으로 제약조건 에러가 떴던거 같아서)
+    // ⭐️ 나중에 번호가 있을때만 리셋버튼이 눌리게 설정하자.
     // 리셋 버튼 오토레이아웃
     private func resetButtonConstraints() {
         view.addSubview(resetButton)
@@ -169,6 +173,8 @@ final class NumbersGenerateViewController: UIViewController {
         present(alert, animated: true) // completion은 생략
         
     }
+    
+    
 }
 
 
@@ -200,11 +206,31 @@ extension NumbersGenerateViewController: UITableViewDataSource {
         // 정수들을 문자열로 변환해서 리턴받음
         cell.numberLabel.text = numberGenManager.getNumberStringChange(row: indexPath.row)
         cell.selectionStyle = .none // 셀 선택시 회색으로 안변하게 하는 설정
+        print(indexPath.row)
         
+        // ⭐️ 번호 저장 이렇게 구현하는게 괜찮은 것인가?
+        // ✅ 번호 저장 버튼 구현을 정리하자면
+        // 셀에서 일단 뷰컨과 연결되는 클로저를 정의하고 셀 자신을 전달하고 뷰컨에서 senderCell로
+        // 접근해서 셀에 있는 번호 저장 버튼의 설정을 해주고 있다.(setButtonStatus)
+        // 그리고 번호 생성 매니저에 접근해서 인덱스 값을 가지고 numbers의 isSaved를 토글 함으로써
+        // 셀을 다시 그리는 경우에 numbers의 isSaved를 인덱스 값으로 접근해서 정확한 자리에 다시
+        // 위치하게끔 구현함.
+        // ⭐️셀에 연결된 클로저(이게 셀에 있는 클로저 변수에 전달되서 담긴다고 봐야하나?)
+        cell.saveButtonPressed = { [weak self] senderCell in
+            // ⭐️ 뷰컨 객체가 self에 담겼다면 가드문 아래로 실행하겠다? 맞아?(일단 옵셔널바인딩)
+            guard let self = self else { return }
+            print("뷰컨 클로저 실행")
+            // 인덱스를 인자(인수값이라고 하는게 맞나?)로 전달해서 토글 시켜서 save 체크
+            // ⭐️(함수 호출시 전달값이 인수이고 함수에서 받는값이 인자로 알고 있는데 보통 인자라고하는듯?)
+            self.numberGenManager.setNumbersSaved(row: indexPath.row)
+            // 하트 fill 설정을 위해 isSaved Bool 값 꺼내서 전달
+            senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))
+        }
+        // ✅ 셀 재사용시마다 인덱스값으로 numbers 배열에 isSaved의 값(Bool)을 전달하면서 해당 인덱스에서 하트를 fill로 할지 normal로 할지 설정함
+        cell.setButtonStatus(isSaved: numberGenManager.getNumbersSaved(row: indexPath.row))
+        
+
         return cell
     }
-    
-    
-    
 }
 

@@ -16,6 +16,11 @@ final class NumberGenManager {
     // 번호 생성 버튼 클릭시 번호 저장되는 배열
     private var lottoNumbers: [Int] = []
     
+    // ✅필요 없음
+    // 번호 저장 여부 배열 저장(셀 재사용시 섞이지 않기 위한 인덱스로 보관하기 위함)
+    //var saveStates = [Bool]()
+    
+    
     // 번호 생성하는 함수
     func generateLottoNumbers() -> Bool {
         
@@ -67,15 +72,31 @@ final class NumberGenManager {
         return numStrig.joined(separator: "   ")
     }
     
+    // ⭐️ 이 set get을 서브스크립트로 구현 가능한가? 이렇게 구현하는게 올바른가
+    // ✅ 테이블뷰에서 번호 저장 클릭시 인덱스를 가지고 numberGen의 isSaved를 토글 시킴
+    func setNumbersSaved(row: Int) {
+        //saveStates.append(true) // 세이브 여부(Bool) 배열 저장 위함(필요 없음)
+        numbers[row].isSaved.toggle() // 배열 인덱스로 접근해서 토글로 true로 변경
+        print("토글: \(row)")
+        print("토글 상태: \(numbers[row].isSaved)")
+    }
+    
+    // ✅ numbers 배열에 인덱스값으로 접근해서 isSaved의 상태가 true인지 false인지 확인
+    func getNumbersSaved(row: Int) -> Bool {
+        let isSaved = numbers[row].isSaved
+        return isSaved
+    }
+    
+    
     // 서브스크립트로 만듬(레이블에 번호 인덱스를 통해 보내주기 위해)
     // NumberGen 구조체에 저장되어있는 데이터에 접근하기 위해서
-    subscript(index: Int) -> NumbersGen {
-        get {
-            return numbers[index]
-        }
-        // set은 굳이 필요없어서 주석처리
-//        set {
-//            numbers[index] = newValue
+//    subscript(index: Int) -> NumbersGen {
+//        get {
+//            return numbers[index]
 //        }
-    }
+//        // set은 굳이 필요없어서 주석처리
+////        set {
+////            numbers[index] = newValue
+////        }
+//    }
 }

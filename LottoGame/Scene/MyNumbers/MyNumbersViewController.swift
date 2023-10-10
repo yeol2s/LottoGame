@@ -13,6 +13,7 @@ final class MyNumbersViewController: UIViewController {
     // 내 번호 테이블뷰 생성
     // ⭐️ 그냥 백그라운드컬러 하나 하려고 이렇게 클로저 실행문으로 해도 괜찮은가?
     // ⭐️ 셀은 그냥 NumTableViewCell을 쓰는게 바람직한가?
+    // ⭐️ 레이블 10개만 표시하면되는데 테이블뷰보다 나은 대안이 있나? 그냥 이대로 써도 무방할까?
     private let numChoiceTableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .clear // 테이블뷰 백그라운드 투명

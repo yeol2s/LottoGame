@@ -11,6 +11,7 @@ import UIKit
 // ⭐️ 얘의 폴더 SubViews는 왜 뭔가 아이콘이 살짝 다른 이유?
 class NumTableViewCell: UITableViewCell {
     
+    
     // 숫자 출력할 레이블
     let numberLabel: UILabel = {
         let label = UILabel()
@@ -41,6 +42,9 @@ class NumTableViewCell: UITableViewCell {
         button.layer.cornerRadius = 5
         button.clipsToBounds = true
         button.backgroundColor = .clear
+        // ⭐️addTarget에서 NumTableViewCell을 메타타입으로 하라고 하는 이유?(그럼 에러남)
+        // 그리고 번호저장버튼을 위해 addTarget을 여기에 구현하는게 올바른지? 뷰컨 테이블뷰 메서드에 넣어야 하는거 아니고?
+        button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         //button.layer.borderWidth = 1.0
         //button.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         
@@ -59,6 +63,11 @@ class NumTableViewCell: UITableViewCell {
         return view
     }()
     
+    // ✅ 번호저장 버튼을 위한 클로저 저장
+    // 뷰컨에 있는 클로저르 저장할 예정(셀(자신)을 전달)
+    // 이 클로저는 뷰컨에서 동작
+    // ⭐️ 함수타입 선언을 이렇게 괄호 안에 넣는게 정석이야?
+    var saveButtonPressed: ((NumTableViewCell) -> ()) = { sender in }
     
     // 오토레이아웃을 생성자로 설정(스토리보드인 경우 awakeFromNib 함수에서 해주면 되는데 여기선 코드로 구현하는 것이기 때문에 생성자를 사용)
     // init(style) 생성자(애플이 UITableViewCell을 만들때 기본적으로 세팅해주는 생성자를 구현해놓음)
@@ -106,4 +115,22 @@ class NumTableViewCell: UITableViewCell {
             stackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor)
         ])
     }
+    
+    // ✅
+    // 번호저장 버튼 눌렸을때 셀렉터
+    @objc private func saveButtonTapped() {
+        print("번호저장 버튼이 셀에서 눌렸습니다.")
+        saveButtonPressed(self)
+    }
+    
+    // ✅
+    // 번호저장 버튼 설정
+    func setButtonStatus(isSaved: Bool) {
+        if isSaved {
+            saveButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        } else {
+            saveButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        }
+    }
+    
 }

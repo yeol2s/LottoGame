@@ -9,7 +9,7 @@ import UIKit
 
 // 번호 저장 셀
 // ⭐️ 다른 뷰, 다른 테이블뷰를 만들었으니까 셀도 이렇게 만드는게 맞지?
-// 굳이 크게 다른거 없으면 NumTableViewCell을 재사용하는 것이 낫나?
+// ⭐️ 굳이 크게 다른거 없으면 NumTableViewCell을 재사용하는 것이 낫나?
 class NumChoiceListTableViewCell: UITableViewCell {
     
     // 숫자 출력 레이블

@@ -14,7 +14,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // 유저디폴츠 생성(로컬 데이터 저장)
+        let defaults = UserDefaults.standard // 싱글톤 인스턴스(메모리상 유일하게 1개만 존재하는 객체 - 프로그램 전역 공유)(한번 생성이후 앱이 종료될때까지 유일한 객체로 메모리 상주)
+        
+        
         return true
     }
 
