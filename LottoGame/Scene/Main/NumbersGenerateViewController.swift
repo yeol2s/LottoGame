@@ -225,6 +225,8 @@ extension NumbersGenerateViewController: UITableViewDataSource {
             self.numberGenManager.setNumbersSaved(row: indexPath.row)
             // 하트 fill 설정을 위해 isSaved Bool 값 꺼내서 전달
             senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))
+            
+            
         }
         // ✅ 셀 재사용시마다 인덱스값으로 numbers 배열에 isSaved의 값(Bool)을 전달하면서 해당 인덱스에서 하트를 fill로 할지 normal로 할지 설정함
         cell.setButtonStatus(isSaved: numberGenManager.getNumbersSaved(row: indexPath.row))

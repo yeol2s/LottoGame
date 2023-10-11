@@ -10,13 +10,18 @@ import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+// AppDelegate는 앱의 생명주기를 관리(앱이 시작되거나 종료될 때 발생하는 이벤트를 다룸)
 
-
-
+    // 앱이 처음 실행될 때 호출되는 메서드(초기 설정 및 초기화 작업을 할 수 있음)
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         // 유저디폴츠 생성(로컬 데이터 저장)
+        // ⭐️ 앱 전역에서 접근해야 하기 때문에 AppDelegate에 선언하는 것이 올바른가?
+        // 다른 객체에서 또 선언하는데?
         let defaults = UserDefaults.standard // 싱글톤 인스턴스(메모리상 유일하게 1개만 존재하는 객체 - 프로그램 전역 공유)(한번 생성이후 앱이 종료될때까지 유일한 객체로 메모리 상주)
+
+        //defaults.set("저장된 번호가 없습니다.", forKey: "0")
+        
         
         
         return true

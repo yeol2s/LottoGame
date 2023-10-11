@@ -8,7 +8,10 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+// SceneDelegate는 (다중창 환경 도입 후)다른 씬으로 넘어가거나, 그런 시점들을 파악하기 위한 대리자
+// 씬(iOS13 이후)의 개념이 도입되면서 앱 델리게이트의 역할에서 몇가지 개념을 씬델리게이트로 분할함(결국 하나의 포커스된 화면 관리라고 보면 되는듯?)
+    
+    
     var window: UIWindow?
 
 
