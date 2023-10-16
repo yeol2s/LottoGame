@@ -16,6 +16,9 @@ final class NumbersGenerateViewController: UIViewController {
     // 테이블뷰 생성(번호 10줄 나열)
     private let numTableView = UITableView()
     
+    // 번호 생성 인스턴스 생성
+    var numberGenManager: NumberGenManager = NumberGenManager()
+    
     
     // ⭐️ 아래 UI속성들을 lazy var로 선언하는 이유가 지연 저장 속성으로 뷰가 먼저 올라간다음 나오게 하려고 하는건가?(어쨌든 뷰와 연관되어있으니까? -> 셀에서는 속성들에 lazy var를 사용하지 않아도 됐는데)
     // 번호 생성 버튼
@@ -38,7 +41,7 @@ final class NumbersGenerateViewController: UIViewController {
         let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0, green: 0.9895486236, blue: 0.7555574179, alpha: 1)
         button.layer.borderWidth = 3
-        button.layer.borderColor = #colorLiteral(red: 0, green: 0.6058896184, blue: 0.3960165381, alpha: 1)
+        button.layer.borderColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
         button.layer.cornerRadius = 5
         button.setTitle("RESET", for: .normal)
         button.setTitleColor(.gray, for: .normal)
@@ -47,10 +50,7 @@ final class NumbersGenerateViewController: UIViewController {
         return button
     }()
     
-    // 번호 생성 인스턴스 생성
-    var numberGenManager: NumberGenManager = NumberGenManager()
-    
-    //private let stackView
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -146,7 +146,7 @@ final class NumbersGenerateViewController: UIViewController {
         }
     }
     
-    // ⭐️ 리셋 이렇게 구현하는거 괜찮음?
+    // ⭐️ 리셋 이렇게 구현하는거 괜찮음?(매니저로 옮겨야 하나?)
     // 번호 리셋버튼 셀렉터
     @objc private func resetButtonTapped() {
         
@@ -196,6 +196,8 @@ extension NumbersGenerateViewController: UITableViewDataSource {
     // indexPath가 결국에는 numberOfRowsInSection을 통해 "아 셀을 몇개를 그려야 하는 구나" 하고
     // 내용을 전달을 주고받고(???) indexPath를 통해 셀을 그려내는 것?
     // 스크롤할때 얘는 재구성이 됨
+    // ⭐️리로드 될때마다 indexPath의 개수에따라 이 메서드가 반복해서 실행하는 듯?
+    // row는 행 section은 섹션(그룹같은 개념)
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = numTableView.dequeueReusableCell(withIdentifier: "NumCell", for: indexPath) as! NumTableViewCell
         
@@ -206,7 +208,7 @@ extension NumbersGenerateViewController: UITableViewDataSource {
         // 정수들을 문자열로 변환해서 리턴받음
         cell.numberLabel.text = numberGenManager.getNumberStringChange(row: indexPath.row)
         cell.selectionStyle = .none // 셀 선택시 회색으로 안변하게 하는 설정
-        print(indexPath.row)
+        print("셀 재구성:\(indexPath.row)")
         
         // ⭐️ 번호 저장 이렇게 구현하는게 괜찮은 것인가?
         // ✅ 번호 저장 버튼 구현을 정리하자면

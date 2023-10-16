@@ -7,6 +7,7 @@
 
 import Foundation
 
+// 번호 생성 매니저
 // 관리자 역할 및 데이터를 추가, 삭제 위함(매니저)
 final class NumberGenManager {
     
@@ -35,7 +36,7 @@ final class NumberGenManager {
         
         lottoNumbers = []
         
-        // numbers 요소 개수가 6이 될때까지 반복(0부터)
+        // lottoNumbers 요소 개수가 6이 될때까지 반복(0부터)
         while lottoNumbers.count < 6 {
             let randomNumber = Int.random(in: 1...45)
             
@@ -46,6 +47,7 @@ final class NumberGenManager {
             }
         }
 
+        // ⭐️ 구조체 배열은 append를 할때 이렇게 인스턴스 생성해서 넣어야 하는 것?
         numbers.append(NumbersGen(numbersList: lottoNumbers.sorted()))
         // print(numbers[NumbersGen.checkIndex].numbersList)
         // print("Index 번호 : \(NumbersGen.checkIndex)") // 0부터 시작
@@ -66,6 +68,7 @@ final class NumberGenManager {
     
     // 전체 번호(정수) 배열을 문자열로 변환해서 얻기
     func getNumberStringChange(row: Int) -> String {
+        print("번호가 생성되었습니다.")
         // numbers 구조체 배열의 row로 인덱스 접근해서 가져옴
         let numStringChange = numbers[row]
         // 가져온 numbers 구조체 배열을 map함수를 통해 문자열 변환
@@ -75,11 +78,15 @@ final class NumberGenManager {
         return numStrig.joined(separator: "   ")
     }
     
-    // ⭐️ 이 set get을 서브스크립트로 구현 가능한가? 이렇게 구현하는게 올바른가
+    // ⭐️ 이렇게 구현하는게 올바른가
     // ✅ 테이블뷰에서 번호 저장 클릭시 인덱스를 가지고 numberGen의 isSaved를 토글 시킴
     // ⭐️ rowValue같이 상수로 선언해도 누를때마다 값이 변경이 가능한 것은 함수는 스택에서 실행되고 사라지고 버튼을 다시 눌렀을때 다시 생겨나기 때문이지?
     func setNumbersSaved(row: Int) {
-        //saveStates.append(true) // 세이브 여부(Bool) 배열 저장 위함(필요 없음)
+        
+        // 저장된 번호가 10개 이상이되면 번호가 저장되지 않게
+        // ⭐️디폴츠에 접근하는게 맞겠지? (앱 실행하자마자 번호 저장이 될 수 있으니까)
+        // 근데 문제는 디폴츠는 이상한 잡다한 것들이 같이 쌓인다는거..
+        
         numbers[row].isSaved.toggle() // 배열 인덱스로 접근해서 토글로 true로 변경
         print("토글 index: \(row), isSaved 상태: \(numbers[row].isSaved)")
         

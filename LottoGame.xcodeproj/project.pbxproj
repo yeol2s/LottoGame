@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		963B6DBA2ABD652500F6B926 /* NumberGenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963B6DB92ABD652500F6B926 /* NumberGenManager.swift */; };
+		964AC65F2AD90BB800813C4F /* NumberSaveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964AC65E2AD90BB800813C4F /* NumberSaveManager.swift */; };
+		964AC6612AD90C6100813C4F /* NumbersSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964AC6602AD90C6100813C4F /* NumbersSave.swift */; };
 		96D3CC832AB659E3007FE78B /* NumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D3CC822AB659E3007FE78B /* NumTableViewCell.swift */; };
 		96D973F92ACD286C00577B22 /* NumChoiceListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D973F82ACD286C00577B22 /* NumChoiceListTableViewCell.swift */; };
 		96FFB9092AB4BFF600FAD765 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FFB9082AB4BFF600FAD765 /* AppDelegate.swift */; };
@@ -23,6 +25,8 @@
 
 /* Begin PBXFileReference section */
 		963B6DB92ABD652500F6B926 /* NumberGenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberGenManager.swift; sourceTree = "<group>"; };
+		964AC65E2AD90BB800813C4F /* NumberSaveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberSaveManager.swift; sourceTree = "<group>"; };
+		964AC6602AD90C6100813C4F /* NumbersSave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersSave.swift; sourceTree = "<group>"; };
 		96D3CC822AB659E3007FE78B /* NumTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumTableViewCell.swift; sourceTree = "<group>"; };
 		96D973F82ACD286C00577B22 /* NumChoiceListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumChoiceListTableViewCell.swift; sourceTree = "<group>"; };
 		96FFB9052AB4BFF600FAD765 /* LottoGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LottoGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				963B6DB92ABD652500F6B926 /* NumberGenManager.swift */,
+				964AC65E2AD90BB800813C4F /* NumberSaveManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -78,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				96FFB9212AB4C4B800FAD765 /* NumbersGen.swift */,
+				964AC6602AD90C6100813C4F /* NumbersSave.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -213,6 +219,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				96D3CC832AB659E3007FE78B /* NumTableViewCell.swift in Sources */,
+				964AC65F2AD90BB800813C4F /* NumberSaveManager.swift in Sources */,
+				964AC6612AD90C6100813C4F /* NumbersSave.swift in Sources */,
 				96FFB90D2AB4BFF600FAD765 /* NumbersGenerateViewController.swift in Sources */,
 				96FFB9092AB4BFF600FAD765 /* AppDelegate.swift in Sources */,
 				96FFB9132AB4BFF600FAD765 /* LottoGame.xcdatamodeld in Sources */,

@@ -64,7 +64,7 @@ class NumTableViewCell: UITableViewCell {
     }()
     
     // ✅ 번호저장 버튼을 위한 클로저 저장
-    // 뷰컨에 있는 클로저르 저장할 예정(셀(자신)을 전달)
+    // 뷰컨에 있는 클로저를 저장할 예정(셀(자신)을 전달)
     // 이 클로저는 뷰컨에서 동작
     // ⭐️ 함수타입 선언을 이렇게 괄호 안에 넣는게 정석이야?
     var saveButtonPressed: ((NumTableViewCell) -> ()) = { sender in }
