@@ -12,13 +12,19 @@ import Foundation
 final class NumberGenManager {
     
     // 유저디폴츠 사용을 위한 변수 선언
-    let defaults = UserDefaults.standard
+    let userDefaults = UserDefaults.standard
+    // 유저디폴츠 번호저장 키
+    let saveKey: String = "MyNumbers"
+
+    // 유저디폴츠 데이터 임시공간 배열(저장 추가시 사용됨)
+    private var defaultsTemp: [[Int]] = []
     
     // 번호 배열로 생성되면 저장(배열을 -> 또 배열로 저장)
     private var numbers: [NumbersGen] = []
     
     // 번호 생성 버튼 클릭시 번호 저장되는 배열
     private var lottoNumbers: [Int] = []
+
     
     // ✅필요 없음
     // 번호 저장 여부 배열 저장(셀 재사용시 섞이지 않기 위한 인덱스로 보관하기 위함)
@@ -90,8 +96,8 @@ final class NumberGenManager {
         numbers[row].isSaved.toggle() // 배열 인덱스로 접근해서 토글로 true로 변경
         print("토글 index: \(row), isSaved 상태: \(numbers[row].isSaved)")
         
-        // row값을 문자열로 변경(userDefaults 키값 사용 위해)해서 담아놓음
-        let rowValueKeyChanged: String = String(row)
+        //❌ row값을 문자열로 변경(userDefaults 키값 사용 위해)해서 담아놓음
+        //let rowValueKeyChanged: String = String(row)
 //        print("userDefaults 할당 row값: \(rowValue)")
 //        print("저장되는 번호 확인: \(numbers[row].numbersList)")
 
@@ -99,20 +105,19 @@ final class NumberGenManager {
         //⭐️ 이렇게 저장/삭제를 함수로 하나씩 나누는 것 괜찮은가?
         // isSaved의 상태가 true일때 userDefaults에 저장
         if numbers[row].isSaved {
-            userSaveDataAdd(row: row, key: rowValueKeyChanged) // 인덱스값, 키값 전달
+            //❌userSaveDataAdd(row: row, key: rowValueKeyChanged) // 인덱스값 전달
+            userSaveSelectDataAdd(row: row) // 저장함수에 인덱스값 전달
         } else {
-            userSavedDataRemove(key: rowValueKeyChanged)
+            //❌userSavedDataRemove(key: rowValueKeyChanged)
+            userSavedSelectRemove(row: row)
         }
-        
-        // 데이터 상태 확인
+        // ❌데이터 상태 확인
         // [Any]? 타입으로 리턴하므로 옵셔널 바인딩
-        if let checkSaved = defaults.array(forKey: rowValueKeyChanged) {
-            print("현재 \(row)번 인덱스에 저장된 데이터는: \(checkSaved)")
-        } else {
-            print("현재 \(row)번 인덱스에 데이터가 없습니다.")
-        }
-        
-        
+//        if let checkSaved = defaults.array(forKey: rowValueKeyChanged) {
+//            print("현재 \(row)번 인덱스에 저장된 데이터는: \(checkSaved)")
+//        } else {
+//            print("현재 \(row)번 인덱스에 데이터가 없습니다.")
+//        }
     }
     
     // ✅ numbers 배열에 인덱스값으로 접근해서 isSaved의 상태가 true인지 false인지 확인
@@ -122,14 +127,57 @@ final class NumberGenManager {
     }
     
     // 📌 여기서 유저디폴츠 번호 저장 / 삭제 함수를 구현해서 setNumberSaved와 연결하자.
-    // (번호 저장)저장 함수
-    private func userSaveDataAdd(row: Int, key: String) {
-        defaults.set(numbers[row].numbersList, forKey: key) // 데이터 추가
+    // ⭐️⭐️⭐️ 값 중복으로 저장되는 것도 막아야 한다. ⭐️⭐️⭐️
+    // (번호 저장)저장 함수(하트 선택)
+    private func userSaveSelectDataAdd(row: Int) {
+        
+        // 키를 통해 디폴츠 값을 한번 불러와서 임시배열에 넣고(저장된 번호가 없을 수 있으니 if 바인딩)
+        // obejct를 써도 되지만 얘는 Any? 타입이고 array로 가져오면 Array<Any>? 타입으로써 바로 배열로 가져온다.
+        if let savedData = userDefaults.array(forKey: saveKey) as? [[Int]] {
+            defaultsTemp = savedData
+            print("현재 유저디폴츠의 배열들: \(savedData)")
+        } else {
+            print("현재 유저디폴츠에는 저장된 번호가 없습니다.")
+        }
+        
+        // 저장이 선택된 번호의 배열도 임시 배열에 추가로 넣고(배열 형태로 추가하는 것)[[Int]]
+        defaultsTemp.append(numbers[row].numbersList)
+        print("defaultsTemp: \(defaultsTemp)")
+        
+        // 더해진 값들을 디폴츠에 다시 넣는다.[[Int]]
+        userDefaults.set(defaultsTemp, forKey: saveKey)
+        
+        // print용
+        if let savedData = userDefaults.array(forKey: saveKey) as? [[Int]] {
+            print("(체크)변경된 유저디폴츠의 값:\(savedData)")
+        }
+        
+        //❌defaults.set(numbers[row].numbersList, forKey: key) // 데이터 추가
     }
     
-    // (번호 저장)삭제 함수
-    private func userSavedDataRemove(key: String) {
-        defaults.removeObject(forKey: key) // 데이터 삭제(key값 기준으로 삭제)
+    // (번호 저장)삭제 함수(하트 선택 해제)
+    private func userSavedSelectRemove(row: Int) {
+        
+        // 일단 유저디폴츠 데이터를 다 담고
+        if let allData = userDefaults.array(forKey: saveKey) as? [[Int]] {
+            // 반복문을 돌려서 밸류값을 현재 저장 해제한 번호와 비교
+            for i in allData {
+                if numbers[row].numbersList == i {
+                    print("중복되는값:\(i)")
+                    // 중복되는 값인 i를 firstIndex로 몇번 인덱스인지 찾음
+                    if let tempIndex = allData.firstIndex(of: i) {
+                        defaultsTemp.remove(at: tempIndex) // 인덱스로 데이터 배열 삭제
+                    }
+                }
+            }
+            userDefaults.set(defaultsTemp, forKey: saveKey) // 삭제된 상태의 임시배열을 다시 유저디폴츠에 넣어줌
+            
+            // print용
+            if let saveData = userDefaults.array(forKey: saveKey) as? [[Int]] {
+                print("(체크해제)변경된 유저디폴츠의 값:\(saveData)")
+            }
+        }
+        //❌defaults.removeObject(forKey: key) // 데이터 삭제(key값 기준으로 삭제)
     }
     
     
