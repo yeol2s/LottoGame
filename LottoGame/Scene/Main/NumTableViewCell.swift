@@ -42,8 +42,8 @@ class NumTableViewCell: UITableViewCell {
         button.layer.cornerRadius = 5
         button.clipsToBounds = true
         button.backgroundColor = .clear
-        // ⭐️addTarget에서 NumTableViewCell을 메타타입으로 하라고 하는 이유?(그럼 에러남)
-        // 그리고 번호저장버튼을 위해 addTarget을 여기에 구현하는게 올바른지? 뷰컨 테이블뷰 메서드에 넣어야 하는거 아니고?
+        // ⭐️(경고)addTarget에서 NumTableViewCell을 메타타입으로 하라고 하는 이유?(그럼 에러남)
+        // 예상치 못한 NumTableViewCell.self 메서드를 참조한다고?
         button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         //button.layer.borderWidth = 1.0
         //button.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
@@ -66,7 +66,7 @@ class NumTableViewCell: UITableViewCell {
     // ✅ 번호저장 버튼을 위한 클로저 저장
     // 뷰컨에 있는 클로저를 저장할 예정(셀(자신)을 전달)
     // 이 클로저는 뷰컨에서 동작
-    // ⭐️ 함수타입 선언을 이렇게 괄호 안에 넣는게 정석이야?
+    // ⭐️ 클로저니까 함수 타입을 튜플로 감쌈(감싸는게 좋은 이유??)
     var saveButtonPressed: ((NumTableViewCell) -> ()) = { sender in }
     
     // 오토레이아웃을 생성자로 설정(스토리보드인 경우 awakeFromNib 함수에서 해주면 되는데 여기선 코드로 구현하는 것이기 때문에 생성자를 사용)

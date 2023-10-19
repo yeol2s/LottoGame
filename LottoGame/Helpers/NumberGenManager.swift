@@ -87,7 +87,7 @@ final class NumberGenManager {
     // ⭐️ 이렇게 구현하는게 올바른가
     // ✅ 테이블뷰에서 번호 저장 클릭시 인덱스를 가지고 numberGen의 isSaved를 토글 시킴
     // ⭐️ rowValue같이 상수로 선언해도 누를때마다 값이 변경이 가능한 것은 함수는 스택에서 실행되고 사라지고 버튼을 다시 눌렀을때 다시 생겨나기 때문이지?
-    func setNumbersSaved(row: Int) {
+    func setNumbersSave(row: Int) {
         
         // 저장된 번호가 10개 이상이되면 번호가 저장되지 않게
         // ⭐️디폴츠에 접근하는게 맞겠지? (앱 실행하자마자 번호 저장이 될 수 있으니까)
@@ -96,28 +96,15 @@ final class NumberGenManager {
         numbers[row].isSaved.toggle() // 배열 인덱스로 접근해서 토글로 true로 변경
         print("토글 index: \(row), isSaved 상태: \(numbers[row].isSaved)")
         
-        //❌ row값을 문자열로 변경(userDefaults 키값 사용 위해)해서 담아놓음
-        //let rowValueKeyChanged: String = String(row)
-//        print("userDefaults 할당 row값: \(rowValue)")
-//        print("저장되는 번호 확인: \(numbers[row].numbersList)")
 
         //📌 여기서 유저디폴츠를 사용해서 번호 저장시키는게 맞을듯(함수를 하나 구현해서 호출하고 Bool 타입을 인자값으로 전달시켜서 저장 / 삭제를 할 수 있게끔
         //⭐️ 이렇게 저장/삭제를 함수로 하나씩 나누는 것 괜찮은가?
         // isSaved의 상태가 true일때 userDefaults에 저장
         if numbers[row].isSaved {
-            //❌userSaveDataAdd(row: row, key: rowValueKeyChanged) // 인덱스값 전달
             userSaveSelectDataAdd(row: row) // 저장함수에 인덱스값 전달
         } else {
-            //❌userSavedDataRemove(key: rowValueKeyChanged)
             userSavedSelectRemove(row: row)
         }
-        // ❌데이터 상태 확인
-        // [Any]? 타입으로 리턴하므로 옵셔널 바인딩
-//        if let checkSaved = defaults.array(forKey: rowValueKeyChanged) {
-//            print("현재 \(row)번 인덱스에 저장된 데이터는: \(checkSaved)")
-//        } else {
-//            print("현재 \(row)번 인덱스에 데이터가 없습니다.")
-//        }
     }
     
     // ✅ numbers 배열에 인덱스값으로 접근해서 isSaved의 상태가 true인지 false인지 확인
@@ -151,14 +138,12 @@ final class NumberGenManager {
         if let savedData = userDefaults.array(forKey: saveKey) as? [[Int]] {
             print("(체크)변경된 유저디폴츠의 값:\(savedData)")
         }
-        
-        //❌defaults.set(numbers[row].numbersList, forKey: key) // 데이터 추가
     }
     
     // (번호 저장)삭제 함수(하트 선택 해제)
     private func userSavedSelectRemove(row: Int) {
         
-        // 일단 유저디폴츠 데이터를 다 담고
+        // 일단 유저디폴츠 데이터를 배열로 다 가져와서 담고
         if let allData = userDefaults.array(forKey: saveKey) as? [[Int]] {
             // 반복문을 돌려서 밸류값을 현재 저장 해제한 번호와 비교
             for i in allData {
@@ -177,20 +162,5 @@ final class NumberGenManager {
                 print("(체크해제)변경된 유저디폴츠의 값:\(saveData)")
             }
         }
-        //❌defaults.removeObject(forKey: key) // 데이터 삭제(key값 기준으로 삭제)
     }
-    
-    
-    
-    // 서브스크립트로 만듬(레이블에 번호 인덱스를 통해 보내주기 위해)
-    // NumberGen 구조체에 저장되어있는 데이터에 접근하기 위해서
-//    subscript(index: Int) -> NumbersGen {
-//        get {
-//            return numbers[index]
-//        }
-//        // set은 굳이 필요없어서 주석처리
-////        set {
-////            numbers[index] = newValue
-////        }
-//    }
 }

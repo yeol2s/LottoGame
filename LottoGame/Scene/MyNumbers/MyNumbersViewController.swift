@@ -45,15 +45,14 @@ final class MyNumbersViewController: UIViewController {
         setupTableView() // 테이블뷰 설정
         setupTableViewConstraints() // 테이블뷰 오토레이아웃
         setButtonConstraints() // 버튼 오토레이아웃
-        //saveManager.setSavedData() // ⭐️번호저장 매니저 통해 저장된 번호 확인(여기에 두면 문제가 리로드시 저장된 번호가 로드가 안됨, 근데 willAppear에 넣으면 중복 로드됨)(속성감시자로 전달해야하나?)
     }
     
     // 화면이 다시 나타날때마다 계속 호출(뷰컨트롤러 생명주기)
     // 뷰가 나타나기 전
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //saveManager.setSavedData()
-        numChoiceTableView.reloadData() // 테이블뷰 리로드
+        saveManager.setSaveData() // UserDefaults 데이터 갱신(set)
+        numChoiceTableView.reloadData() // 테이블뷰 리로드(⭐️이렇게 리로드 계속 되는것이 비효율적인가?)
         print("저장 번호 화면이 다시 나타났습니다.")
     }
     
@@ -122,14 +121,25 @@ extension MyNumbersViewController: UITableViewDelegate {
 extension MyNumbersViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return saveManager.numbersSave.count // 저장된 번호에 따라 카운트해서 셀 표시 개수
+        return saveManager.defaultsTemp.count // 저장매니저 임시 저장 배열개수로 셀 표시
 
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 일단 만들어놓은 테이블뷰셀 리턴
         let cell = numChoiceTableView.dequeueReusableCell(withIdentifier: "NumChoiceCell", for: indexPath) as! NumChoiceListTableViewCell
-        cell.numberLabel.text = saveManager.getNumbersStringArray(row: indexPath.row)
+        cell.numberLabel.text = saveManager.getSaveData(row: indexPath.row)
+        
+        // 셀과 연결된 클로저 호출(어떤 번호를 선택해제 할껀지)
+        cell.saveUnCheckButton = { [weak self] senderCell in
+            guard let self = self else { return }
+            print("선택된 인덱스:\(indexPath.row)")
+            // 여기서 인덱스를 보내서 삭제하자(저장 매니저에게)
+            saveManager.setRemoveData(row: indexPath.row)
+            numChoiceTableView.reloadData() // 하트 해제할때마다 즉시즉시 리로드해서 번호를 화면에서 제거
+        }
+        
+        
         cell.backgroundColor = .clear // 테이블뷰 셀 투명
         cell.selectionStyle = .none
         return cell

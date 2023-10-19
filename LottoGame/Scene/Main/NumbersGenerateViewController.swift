@@ -219,12 +219,12 @@ extension NumbersGenerateViewController: UITableViewDataSource {
         // 위치하게끔 구현함.
         // ⭐️셀에 연결된 클로저(이게 셀에 있는 클로저 변수에 전달되서 담긴다고 봐야하나?)
         cell.saveButtonPressed = { [weak self] senderCell in
-            // ⭐️ 뷰컨 객체가 self에 담겼다면 가드문 아래로 실행하겠다? 맞아?(일단 옵셔널바인딩)
+            // ⭐️ self를 약한 참조로 캡쳐(캡처리스트)하고 guard let 바인딩을 통해 self(뷰컨객체)가 존재하는지 확인하고 존재하지 않는다면 클로저를 빠져나감. 고로 self를 언래핑해서 아래 구문에서 옵셔널 바인딩없이 안전하게 사용할 수 있는 것([weak self]의 기본값은 옵셔널)
             guard let self = self else { return }
             print("뷰컨 클로저 실행")
             // 인덱스를 인자(인수값이라고 하는게 맞나?)로 전달해서 토글 시켜서 save 체크
             // ⭐️(함수 호출시 전달값이 인수이고 함수에서 받는값이 인자로 알고 있는데 보통 인자라고하는듯?)
-            self.numberGenManager.setNumbersSaved(row: indexPath.row)
+            self.numberGenManager.setNumbersSave(row: indexPath.row)
             // 하트 fill 설정을 위해 isSaved Bool 값 꺼내서 전달
             senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))
             

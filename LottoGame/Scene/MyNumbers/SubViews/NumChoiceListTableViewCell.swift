@@ -26,7 +26,7 @@ class NumChoiceListTableViewCell: UITableViewCell {
         return label
     }()
     
-    // 번호 저장 버튼
+    // 번호 저장 체크 버튼
     let saveButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "heart"), for: .normal)
@@ -34,6 +34,8 @@ class NumChoiceListTableViewCell: UITableViewCell {
         button.layer.cornerRadius = 5
         button.clipsToBounds = true
         button.backgroundColor = .clear
+        button.setImage(UIImage(systemName: "heart.fill"), for: .normal) // 기본상태 fill
+        button.addTarget(self, action: #selector(unChecknumber), for: .touchUpInside)
         return button
     }()
 
@@ -47,6 +49,9 @@ class NumChoiceListTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    // 📌 뷰컨과 연결할 클로저 선언
+    var saveUnCheckButton: ((NumChoiceListTableViewCell) -> ()) = { sender in }
     
     // 오토레이아웃 생성자
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -79,4 +84,15 @@ class NumChoiceListTableViewCell: UITableViewCell {
             stackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor)
         ])
     }
+    
+    // (셀렉터)체크해제(저장된 번호에서 체크해제 했을때 유저디폴츠에서 삭제)
+    @objc func unChecknumber() {
+        
+        // 일단 이건 보류 원래 하트 클릭시 하트해제 되는 그림을 연출하려고 했는데 또 번거로워진다.
+        //saveButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        
+        // 클로저를 통해 뷰컨에 셀 자신 전달
+        saveUnCheckButton(self)
+    }
+    
 }
