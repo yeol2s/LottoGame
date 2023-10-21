@@ -11,7 +11,11 @@ import UIKit
 // 메인 뷰컨
 final class NumbersGenerateViewController: UIViewController {
     
-    // AppDelegate에 유저디폴츠 생성(로컬 데이터 저장)
+    // 📌유저디폴츠 객체 생성(여기서 쓸지 안쓸지는 아직)
+    let userDefaults = UserDefaults.standard
+    let saveKey: String = "MyNumbers"
+    
+    //⭐️⭐️ 번호 해제 가져오는거 -> 속성감시자?? 노티피케이션?? 클로저?? 커스텀델리게이트패턴??
     
     // 테이블뷰 생성(번호 10줄 나열)
     private let numTableView = UITableView()
@@ -65,6 +69,12 @@ final class NumbersGenerateViewController: UIViewController {
 
         
         print("시작")
+    }
+  
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //numberGenManager.resetNumbers()
+        numTableView.reloadData()
     }
     
     // 네비게이션바 설정 메서드
@@ -206,7 +216,10 @@ extension NumbersGenerateViewController: UITableViewDataSource {
         
         // 매니저의 문자열변환 함수를 호출해서 indexPath를 전달해서 numbers 구조체 배열의
         // 정수들을 문자열로 변환해서 리턴받음
-        cell.numberLabel.text = numberGenManager.getNumberStringChange(row: indexPath.row)
+        let number = numberGenManager.getNumberStringChange(row: indexPath.row)
+
+        
+        cell.numberLabel.text = number
         cell.selectionStyle = .none // 셀 선택시 회색으로 안변하게 하는 설정
         print("셀 재구성:\(indexPath.row)")
         
@@ -227,12 +240,18 @@ extension NumbersGenerateViewController: UITableViewDataSource {
             self.numberGenManager.setNumbersSave(row: indexPath.row)
             // 하트 fill 설정을 위해 isSaved Bool 값 꺼내서 전달
             senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))
-            
-            
         }
-        // ✅ 셀 재사용시마다 인덱스값으로 numbers 배열에 isSaved의 값(Bool)을 전달하면서 해당 인덱스에서 하트를 fill로 할지 normal로 할지 설정함
-        cell.setButtonStatus(isSaved: numberGenManager.getNumbersSaved(row: indexPath.row))
         
+        
+        
+        // ✅ 셀 재사용시마다 인덱스값으로 numbers 배열에 isSaved의 값(Bool)을 전달하면서 해당 인덱스에서 하트를 fill로 할지 normal로 할지 설정함
+        //cell.setButtonStatus(isSaved: numberGenManager.getNumbersSaved(row: indexPath.row))
+        
+        // ✅문자열 넘버를 받아와서 유저디폴츠(즐겨찾기)랑 비교하는 메서드 넣고
+        // 있고 없고 bool
+        //numberGenManager.isBookmarkNumbers(numbers: number)
+        cell.setButtonStatus(isSaved: numberGenManager.isBookmarkNumbers(numbers: number))
+
 
         return cell
     }

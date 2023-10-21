@@ -8,8 +8,6 @@
 import UIKit
 
 // 번호 저장 셀
-// ⭐️ 다른 뷰, 다른 테이블뷰를 만들었으니까 셀도 이렇게 만드는게 맞지?
-// ⭐️ 굳이 크게 다른거 없으면 NumTableViewCell을 재사용하는 것이 낫나?
 class NumChoiceListTableViewCell: UITableViewCell {
     
     // 숫자 출력 레이블
@@ -39,6 +37,9 @@ class NumChoiceListTableViewCell: UITableViewCell {
         return button
     }()
 
+    
+
+
     // 스택뷰 생성
     let stackView: UIStackView = {
         let view = UIStackView()
@@ -60,6 +61,7 @@ class NumChoiceListTableViewCell: UITableViewCell {
         setupStackView() // 스택뷰 올리기
         stackViewConstraints() // 스택뷰 오토레이아웃
         
+        //saveButton.addTarget(self, action: #selector(unChecknumber), for: .touchUpInside)
     }
     
     // 필수생성자 구현

@@ -15,7 +15,7 @@ final class NumberGenManager {
     let userDefaults = UserDefaults.standard
     // 유저디폴츠 번호저장 키
     let saveKey: String = "MyNumbers"
-
+    
     // 유저디폴츠 데이터 임시공간 배열(저장 추가시 사용됨)
     private var defaultsTemp: [[Int]] = []
     
@@ -24,11 +24,7 @@ final class NumberGenManager {
     
     // 번호 생성 버튼 클릭시 번호 저장되는 배열
     private var lottoNumbers: [Int] = []
-
     
-    // ✅필요 없음
-    // 번호 저장 여부 배열 저장(셀 재사용시 섞이지 않기 위한 인덱스로 보관하기 위함)
-    //var saveStates = [Bool]()
     
     
     // 번호 생성하는 함수
@@ -52,8 +48,8 @@ final class NumberGenManager {
                 lottoNumbers.append(randomNumber)
             }
         }
-
-        // ⭐️ 구조체 배열은 append를 할때 이렇게 인스턴스 생성해서 넣어야 하는 것?
+        
+        // 구조체 배열은 append를 할때 이렇게 인스턴스 생성해서 넣어야 하는 것
         numbers.append(NumbersGen(numbersList: lottoNumbers.sorted()))
         // print(numbers[NumbersGen.checkIndex].numbersList)
         // print("Index 번호 : \(NumbersGen.checkIndex)") // 0부터 시작
@@ -70,6 +66,7 @@ final class NumberGenManager {
     // 번호 리셋을 위한 함수
     func resetNumbers() {
         numbers = [] // 초기화
+        defaultsTemp = [] // 임시배열 초기화
     }
     
     // 전체 번호(정수) 배열을 문자열로 변환해서 얻기
@@ -96,7 +93,7 @@ final class NumberGenManager {
         numbers[row].isSaved.toggle() // 배열 인덱스로 접근해서 토글로 true로 변경
         print("토글 index: \(row), isSaved 상태: \(numbers[row].isSaved)")
         
-
+        
         //📌 여기서 유저디폴츠를 사용해서 번호 저장시키는게 맞을듯(함수를 하나 구현해서 호출하고 Bool 타입을 인자값으로 전달시켜서 저장 / 삭제를 할 수 있게끔
         //⭐️ 이렇게 저장/삭제를 함수로 하나씩 나누는 것 괜찮은가?
         // isSaved의 상태가 true일때 userDefaults에 저장
@@ -133,6 +130,7 @@ final class NumberGenManager {
         
         // 더해진 값들을 디폴츠에 다시 넣는다.[[Int]]
         userDefaults.set(defaultsTemp, forKey: saveKey)
+        //defaultsTemp = [] // 임시배열 초기화
         
         // print용
         if let savedData = userDefaults.array(forKey: saveKey) as? [[Int]] {
@@ -162,5 +160,22 @@ final class NumberGenManager {
                 print("(체크해제)변경된 유저디폴츠의 값:\(saveData)")
             }
         }
+    }
+    
+    // ✅문자열 넘버를 받아와서 유저디폴츠(즐겨찾기)랑 비교하는 메서드 넣고
+    // 있고 없고 bool
+    //numberGenManager.isBookmarkNumbers(numbers: number)
+    func isBookmarkNumbers(numbers: String) -> Bool {
+                
+        if let allData = userDefaults.array(forKey: saveKey) as? [[Int]] {
+            for value in allData {
+                let changeData = value.map{ String($0) }
+                // joined는 문자열로 반환
+                if numbers == changeData.joined(separator: "   ") {
+                    return true
+                }
+            }
+        }
+        return false
     }
 }

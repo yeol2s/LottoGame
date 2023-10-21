@@ -10,6 +10,10 @@ import Foundation
 // 번호 저장 매니저
 final class NumberSaveManager {
     
+    // 최신정보 반영하는 private 변수
+    //
+    //private var updateNumbers
+    
     // 유저디폴츠 객체 변수에 담음
     let userDefaults = UserDefaults.standard
     // ⭐️⭐️⭐️키값으로 데이터를 모으자(이런 키 관련 코드는 나중에 어디 파일 하나에 모아놔야겠지?)
@@ -17,9 +21,6 @@ final class NumberSaveManager {
     
     // 유저디폴츠 데이터 임시공간 배열(Int -> String 변경 위함)
     var defaultsTemp: [[String]] = []
-
-    // 문자열 배열로 저장할 번호 저장 구조체
-    var numbersSave: [NumbersSave] = []
     
     // 유저디폴츠에 저장된 번호를 가져와서 타입 변환([[Int]] -> [[String]]) 및 데이터 갱신
     func setSaveData() {
@@ -74,6 +75,9 @@ final class NumberSaveManager {
         userDefaults.removeObject(forKey: saveKey) // 유저디폴츠 초기화(키 기준)
         
         print("저장 번호가 초기화되었습니다.")
+        if let allData = userDefaults.array(forKey: saveKey) as? [[Int]] {
+            print(allData)
+        }
     }
     
     
