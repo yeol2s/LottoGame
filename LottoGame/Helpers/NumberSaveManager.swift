@@ -71,8 +71,9 @@ final class NumberSaveManager {
     // (유저디폴츠 초기화)번호 저장 초기화
     func resetSavedData() {
         
-        defaultsTemp = [] // 임시 저장 배열 초기화
+        defaultsTemp.removeAll() // 임시 저장 배열 초기화
         userDefaults.removeObject(forKey: saveKey) // 유저디폴츠 초기화(키 기준)
+       
         
         print("저장 번호가 초기화되었습니다.")
         if let allData = userDefaults.array(forKey: saveKey) as? [[Int]] {

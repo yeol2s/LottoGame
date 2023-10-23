@@ -33,7 +33,6 @@ class NumChoiceListTableViewCell: UITableViewCell {
         button.clipsToBounds = true
         button.backgroundColor = .clear
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal) // 기본상태 fill
-        button.addTarget(self, action: #selector(unChecknumber), for: .touchUpInside)
         return button
     }()
 
@@ -41,7 +40,7 @@ class NumChoiceListTableViewCell: UITableViewCell {
 
 
     // 스택뷰 생성
-    let stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let view = UIStackView()
         view.spacing = 2
         view.axis = .horizontal
@@ -61,7 +60,8 @@ class NumChoiceListTableViewCell: UITableViewCell {
         setupStackView() // 스택뷰 올리기
         stackViewConstraints() // 스택뷰 오토레이아웃
         
-        //saveButton.addTarget(self, action: #selector(unChecknumber), for: .touchUpInside)
+        // 버튼 addTarget 설정(여기서 한 이유는 버튼 자체에 설정시 노란색 경고표시)
+        saveButton.addTarget(self, action: #selector(unChecknumber), for: .touchUpInside)
     }
     
     // 필수생성자 구현

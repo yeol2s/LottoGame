@@ -42,12 +42,6 @@ class NumTableViewCell: UITableViewCell {
         button.layer.cornerRadius = 5
         button.clipsToBounds = true
         button.backgroundColor = .clear
-        // ⭐️(경고)addTarget에서 NumTableViewCell을 메타타입으로 하라고 하는 이유?(그럼 에러남)
-        // 예상치 못한 NumTableViewCell.self 메서드를 참조한다고?
-        button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
-        //button.layer.borderWidth = 1.0
-        //button.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        
         return button
     }()
     
@@ -74,27 +68,17 @@ class NumTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
-        //self.contentView.addSubview(numberLabel) // 레이블을 셀에 추가
-        //setLabelConstraints() // 레이블 오토레이아웃(스택뷰 완성되면 삭제할 것)
-        
         setupStackView() // 스택뷰 올리기
         stackViewConstraints() // 스택뷰 오토레이아웃
+        
+        // 버튼 addTarget 설정(여기서 한 이유는 버튼 자체에 설정시 노란색 경고표시)
+        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    // 레이블 오토레이아웃(버튼과 레이블로 묶었으니 일단 보류 - 스택뷰 완성되면 삭제 예정)
-//    func setLabelConstraints() {
-//        NSLayoutConstraint.activate([
-//            numberLabel.heightAnchor.constraint(equalToConstant: 40),
-//            numberLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
-//            numberLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
-//            numberLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor)
-//        ])
-//    }
     
     // 스택뷰
     private func setupStackView() {

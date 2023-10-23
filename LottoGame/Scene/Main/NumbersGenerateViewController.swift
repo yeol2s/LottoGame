@@ -153,6 +153,12 @@ final class NumbersGenerateViewController: UIViewController {
         if numberGenManager.generateLottoNumbers() {
             print("번호가 생성되었습니다.")
             numTableView.reloadData()
+        } else {
+            // 생성번호 10개이상 발생시 Alert 발생
+            let alert = UIAlertController(title: "생성된 번호 10개", message: "생성 가능한 번호는 최대 10개입니다.", preferredStyle: .alert)
+            let check = UIAlertAction(title: "확인", style: .default)
+            alert.addAction(check)
+            present(alert, animated: true)
         }
     }
     
@@ -217,13 +223,10 @@ extension NumbersGenerateViewController: UITableViewDataSource {
         // 매니저의 문자열변환 함수를 호출해서 indexPath를 전달해서 numbers 구조체 배열의
         // 정수들을 문자열로 변환해서 리턴받음
         let number = numberGenManager.getNumberStringChange(row: indexPath.row)
-
-        
         cell.numberLabel.text = number
         cell.selectionStyle = .none // 셀 선택시 회색으로 안변하게 하는 설정
-        print("셀 재구성:\(indexPath.row)")
+        //print("셀 재구성:\(indexPath.row)")
         
-        // ⭐️ 번호 저장 이렇게 구현하는게 괜찮은 것인가?
         // ✅ 번호 저장 버튼 구현을 정리하자면
         // 셀에서 일단 뷰컨과 연결되는 클로저를 정의하고 셀 자신을 전달하고 뷰컨에서 senderCell로
         // 접근해서 셀에 있는 번호 저장 버튼의 설정을 해주고 있다.(setButtonStatus)
@@ -237,21 +240,34 @@ extension NumbersGenerateViewController: UITableViewDataSource {
             print("뷰컨 클로저 실행")
             // 인덱스를 인자(인수값이라고 하는게 맞나?)로 전달해서 토글 시켜서 save 체크
             // ⭐️(함수 호출시 전달값이 인수이고 함수에서 받는값이 인자로 알고 있는데 보통 인자라고하는듯?)
-            self.numberGenManager.setNumbersSave(row: indexPath.row)
-            // 하트 fill 설정을 위해 isSaved Bool 값 꺼내서 전달
-            senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))
+            if self.numberGenManager.setNumbersSave(row: indexPath.row) {
+                // 선택시 하트 fill 설정을 위해 isSaved Bool 값 꺼내서 전달
+                senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))
+                print("(클로저)번호가 정상적으로 저장되었습니다.")
+            } else {
+                // 📌 여기 Alert 써야함
+                print("(클로저)번호가 저장되지 않았습니다.")
+            }
+
         }
         
         
         
-        // ✅ 셀 재사용시마다 인덱스값으로 numbers 배열에 isSaved의 값(Bool)을 전달하면서 해당 인덱스에서 하트를 fill로 할지 normal로 할지 설정함
+        // *(그냥 단순 테이블뷰 스크롤시 번호 저장 상태 유지하기 위한 구현이었고)
+        // (old)셀 재사용시마다 인덱스값으로 numbers 배열에 isSaved의 값(Bool)을 전달하면서 해당 인덱스에서 하트를 fill로 할지 normal로 할지 설정함(이건 이제 말고 아래 방식으로 -> 저장 유무 가지고 하트를 표시할지 안할지 해야하기 때문에)
         //cell.setButtonStatus(isSaved: numberGenManager.getNumbersSaved(row: indexPath.row))
         
-        // ✅문자열 넘버를 받아와서 유저디폴츠(즐겨찾기)랑 비교하는 메서드 넣고
-        // 있고 없고 bool
-        //numberGenManager.isBookmarkNumbers(numbers: number)
+        // *(업그레이드된, 번호 저장화면에서 하트 해제하면 메인 화면에서도 하트가 같이 해제되게 구현)
+        // (new)number(번호 문자열)를 매니저의 isBookmarkNumbers에 파라미터로 넣어주고 반환값으로 Bool 타입을 받아온 후 Bool 반환값을 셀의 setButtonStatus에 보내준다.(setButtonStatus는 Bool값을 가지고 하트를 표시할건지, 안할건지를 결정)
+        // number에는 현재 해당 인덱스를 기준으로 번호가 들어가있다.
         cell.setButtonStatus(isSaved: numberGenManager.isBookmarkNumbers(numbers: number))
-
+        
+        // (내 번호)저장된 번호에서 하트 해제시 토글 상태(isSaved)도 false로 바꿔주기 위함.
+        // 📌📌📌 이 부분은 위에 하트 해제와 같이 조금 묶어서 간결하게 구현할 수 있을 것 같은데 생각해보자.
+        if !numberGenManager.isBookmarkNumbers(numbers: number) {
+            numberGenManager.isBookmarkUnsavedToggle(row: indexPath.row)
+        }
+    
 
         return cell
     }

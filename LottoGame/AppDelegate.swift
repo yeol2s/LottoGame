@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 다른 객체에서 또 선언하는데?
         let defaults = UserDefaults.standard // 싱글톤 인스턴스(메모리상 유일하게 1개만 존재하는 객체 - 프로그램 전역 공유)(한번 생성이후 앱이 종료될때까지 유일한 객체로 메모리 상주)
 
-        //defaults.set("저장된 번호가 없습니다.", forKey: "0")
+        defaults.set("저장된 번호가 없습니다.", forKey: "default")
         
         
         
