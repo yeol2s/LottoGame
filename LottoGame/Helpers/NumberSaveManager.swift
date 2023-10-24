@@ -15,9 +15,9 @@ final class NumberSaveManager {
     //private var updateNumbers
     
     // 유저디폴츠 객체 변수에 담음
-    let userDefaults = UserDefaults.standard
+    private let userDefaults = UserDefaults.standard
     // ⭐️⭐️⭐️키값으로 데이터를 모으자(이런 키 관련 코드는 나중에 어디 파일 하나에 모아놔야겠지?)
-    let saveKey: String = "MyNumbers"
+    private let saveKey: String = "MyNumbers"
     
     // 유저디폴츠 데이터 임시공간 배열(Int -> String 변경 위함)
     var defaultsTemp: [[String]] = []

@@ -245,10 +245,13 @@ extension NumbersGenerateViewController: UITableViewDataSource {
                 senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))
                 print("(클로저)번호가 정상적으로 저장되었습니다.")
             } else {
-                // 📌 여기 Alert 써야함
                 print("(클로저)번호가 저장되지 않았습니다.")
+                
+                let alert = UIAlertController(title: "알림", message: "저장 가능한 번호는 최대 10개입니다.", preferredStyle: .alert)
+                let check = UIAlertAction(title: "확인", style: .default)
+                alert.addAction(check)
+                present(alert, animated: true)
             }
-
         }
         
         
@@ -263,11 +266,10 @@ extension NumbersGenerateViewController: UITableViewDataSource {
         cell.setButtonStatus(isSaved: numberGenManager.isBookmarkNumbers(numbers: number))
         
         // (내 번호)저장된 번호에서 하트 해제시 토글 상태(isSaved)도 false로 바꿔주기 위함.
-        // 📌📌📌 이 부분은 위에 하트 해제와 같이 조금 묶어서 간결하게 구현할 수 있을 것 같은데 생각해보자.
+        // ⭐️이 부분은 위에 하트 해제와 같이 조금 묶어서 간결하게 구현할 수 있을 것 같은데 생각해보자.
         if !numberGenManager.isBookmarkNumbers(numbers: number) {
             numberGenManager.isBookmarkUnsavedToggle(row: indexPath.row)
         }
-    
 
         return cell
     }
