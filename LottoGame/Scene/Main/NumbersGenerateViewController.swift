@@ -10,12 +10,7 @@ import UIKit
 
 // 메인 뷰컨
 final class NumbersGenerateViewController: UIViewController {
-    
-    // 📌유저디폴츠 객체 생성(여기서 쓸지 안쓸지는 아직)
-    let userDefaults = UserDefaults.standard
-    let saveKey: String = "MyNumbers"
-    
-    //⭐️⭐️ 번호 해제 가져오는거 -> 속성감시자?? 노티피케이션?? 클로저?? 커스텀델리게이트패턴??
+
     
     // 테이블뷰 생성(번호 10줄 나열)
     private let numTableView = UITableView()

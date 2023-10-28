@@ -10,10 +10,6 @@ import Foundation
 // 번호 저장 매니저
 final class NumberSaveManager {
     
-    // 최신정보 반영하는 private 변수
-    //
-    //private var updateNumbers
-    
     // 유저디폴츠 객체 변수에 담음
     private let userDefaults = UserDefaults.standard
     // ⭐️⭐️⭐️키값으로 데이터를 모으자(이런 키 관련 코드는 나중에 어디 파일 하나에 모아놔야겠지?)

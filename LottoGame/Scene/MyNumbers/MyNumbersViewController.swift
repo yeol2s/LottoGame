@@ -107,8 +107,22 @@ final class MyNumbersViewController: UIViewController {
     
     // 저장된 번호 리셋
     @objc func resetSavedData() {
-        saveManager.resetSavedData() // 매니저 통해 리셋
-        numChoiceTableView.reloadData() // 테이블뷰 리로드
+        
+        let alert = UIAlertController(title: "번호 초기화", message: "현재 저장된 번호가 초기화됩니다. 계속하시겠습니까?", preferredStyle: .alert)
+        
+        let success = UIAlertAction(title: "확인", style: .default) { action in
+            self.saveManager.resetSavedData() // 매니저 통해 리셋
+            self.numChoiceTableView.reloadData() // 테이블뷰 리로드
+            print("저장번호가 초기화 되었습니다.")
+        }
+        let cancel = UIAlertAction(title: "취소", style: .default) { action in
+            print("저장번호 초기화 취소")
+        }
+        
+        alert.addAction(success)
+        alert.addAction(cancel)
+        
+        present(alert, animated: true)
     }
 }
 
