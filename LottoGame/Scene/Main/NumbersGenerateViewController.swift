@@ -233,25 +233,27 @@ extension NumbersGenerateViewController: UITableViewDataSource {
             // ⭐️ self를 약한 참조로 캡쳐(캡처리스트)하고 guard let 바인딩을 통해 self(뷰컨객체)가 존재하는지 확인하고 존재하지 않는다면 클로저를 빠져나감. 고로 self를 언래핑해서 아래 구문에서 옵셔널 바인딩없이 안전하게 사용할 수 있는 것([weak self]의 기본값은 옵셔널)
             guard let self = self else { return }
             print("뷰컨 클로저 실행")
-            // 인덱스를 인자(인수값이라고 하는게 맞나?)로 전달해서 토글 시켜서 save 체크
-            // ⭐️(함수 호출시 전달값이 인수이고 함수에서 받는값이 인자로 알고 있는데 보통 인자라고하는듯?)
+
             
             // ⭐️ 이렇게 구현하는거 괜찮은 코드인가?(열거형 선언은 매니저에서 Error로 하는게 맞고?)
             // 1️⃣ - Result로 처리하는 코드(new)
-            let saveResult = numberGenManager.setNumbersSave(row: indexPath.row)
+            let saveResult = self.numberGenManager.setNumbersSave(row: indexPath.row)
             
             switch saveResult {
-            case .success(let data):
-                senderCell.setButtonStatus(isSaved: data)
+            case .success: // 연관값 미사용?
+                senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))
             case .failure(let error):
                 switch error {
                 case .duplicationError :
                     print("중복된 번호입니다.")
+                    senderCell.setButtonStatus(isSaved: false)
                 case .overError :
                     print("저장된 번호가 10개 이상입니다.")
                 }
             }
             //2️⃣ -  그냥 if문으로 처리했던 코드(old)
+            // 인덱스를 인자(인수값이라고 하는게 맞나?)로 전달해서 토글 시켜서 save 체크
+            // ⭐️(함수 호출시 전달값이 인수이고 함수에서 받는값이 인자로 알고 있는데 보통 인자라고하는듯?)
 //            if self.numberGenManager.setNumbersSave(row: indexPath.row) {
 //                // 선택시 하트 fill 설정을 위해 isSaved Bool 값 꺼내서 전달
 //                senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))

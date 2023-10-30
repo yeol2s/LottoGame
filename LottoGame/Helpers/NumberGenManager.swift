@@ -137,10 +137,10 @@ final class NumberGenManager {
             }
             print("저장된 번호가 \(dataCount.count + 1)개 입니다.")
         }
-
         
         numbers[row].isSaved.toggle() // 배열 인덱스로 접근해서 토글로 true로 변경
         print("토글 index: \(row), isSaved 상태: \(numbers[row].isSaved)")
+
         
         // isSaved의 상태가 true일때 userDefaults에 저장
         if numbers[row].isSaved {
