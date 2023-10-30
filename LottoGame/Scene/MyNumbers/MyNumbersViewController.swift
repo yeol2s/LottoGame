@@ -115,7 +115,7 @@ final class MyNumbersViewController: UIViewController {
             self.numChoiceTableView.reloadData() // 테이블뷰 리로드
             print("저장번호가 초기화 되었습니다.")
         }
-        let cancel = UIAlertAction(title: "취소", style: .default) { action in
+        let cancel = UIAlertAction(title: "취소", style: .cancel) { action in
             print("저장번호 초기화 취소")
         }
         

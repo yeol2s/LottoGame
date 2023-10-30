@@ -22,13 +22,14 @@ final class NumberGenManager {
     // 번호 배열로 생성되면 저장(배열을 -> 또 배열로 저장)
     private var numbers: [NumbersGen] = []
     
-    // 번호 생성 버튼 클릭시 번호 저장되는 배열
-    private var lottoNumbers: [Int] = []
-    
-    
+    // 번호 생성 카운트(중복값 처리)
+    //private var count: Int = 0
+
     
     // 번호 생성하는 함수
     func generateLottoNumbers() -> Bool {
+        // 번호 생성 버튼 클릭시 번호 저장되는 배열
+        var lottoNumbers: [Int] = []
         
         // 번호가 10개이상 생성되지 않게
         // 처음 실행할때는 카운트가 무조건 0개로 시작하니까 9를 기준으로 했다.
@@ -38,21 +39,48 @@ final class NumberGenManager {
         }
         print("생성 카운트:\(numbers.count)")
         
-        lottoNumbers = []
-        
         // lottoNumbers 요소 개수가 6이 될때까지 반복(0부터)
         while lottoNumbers.count < 6 {
+            
             let randomNumber = Int.random(in: 1...45)
             
             // 현재 배열에 랜덤 숫자가 포함되어있는지 여부(포함되어 있다면 추가하지 않음)
             if !lottoNumbers.contains(randomNumber) {
-                
                 lottoNumbers.append(randomNumber)
+            }
+        }
+        
+        // ⭐️ 이렇게 하는거 괜찮은 코드?
+        // 혹시나 중복된 값이 나오면 처리
+        // 테스트 코드
+        print(numbers.isEmpty)
+        if !numbers.isEmpty {
+            for num in numbers {
+                print("numbers:\(num)")
+                if num.numbersList == lottoNumbers.sorted() {
+                    print("중복입니다.")
+                    lottoNumbers = []
+                    repeat {
+                        while lottoNumbers.count < 6 {
+                            
+                            let randomNumber = Int.random(in: 1...45)
+                            
+                            // 현재 배열에 랜덤 숫자가 포함되어있는지 여부(포함되어 있다면 추가하지 않음)
+                            if !lottoNumbers.contains(randomNumber) {
+                                lottoNumbers.append(randomNumber)
+                            }
+                        }
+                    } while num.numbersList == lottoNumbers.sorted()
+                }
             }
         }
         
         // 구조체 배열은 append를 할때 이렇게 인스턴스 생성해서 넣어야 하는 것
         numbers.append(NumbersGen(numbersList: lottoNumbers.sorted()))
+        //numbers.append(.init(numbersList: lottoNumbers.sorted()))
+        
+        
+        
         // print(numbers[NumbersGen.checkIndex].numbersList)
         // print("Index 번호 : \(NumbersGen.checkIndex)") // 0부터 시작
         //print("numbers 모델(구조체) 내용 확인 : \(numbers)")
@@ -94,9 +122,14 @@ final class NumberGenManager {
                 print("저장된 번호가 10개 이상입니다.")
                 return false // false 반환하고 함수 종료시킴
             }
-            print("저장된 번호가 10개 미만입니다.")
+            // 📌📌 중복 저장 안되게(열거형으로 구현해보자)
+            if dataCount.contains(numbers[row].numbersList) {
+                print("중복입니다.")
+                return false
+            }
             print("저장된 번호가 \(dataCount.count + 1)개 입니다.")
         }
+
         
         numbers[row].isSaved.toggle() // 배열 인덱스로 접근해서 토글로 true로 변경
         print("토글 index: \(row), isSaved 상태: \(numbers[row].isSaved)")

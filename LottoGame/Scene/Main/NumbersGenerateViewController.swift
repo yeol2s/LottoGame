@@ -240,6 +240,7 @@ extension NumbersGenerateViewController: UITableViewDataSource {
                 senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))
                 print("(클로저)번호가 정상적으로 저장되었습니다.")
             } else {
+                //📌📌 여기서 열거형으로 처리해볼까? 저장번호 10개이상인 경우와 중복인 경우로 말이야..!
                 print("(클로저)번호가 저장되지 않았습니다.")
                 
                 let alert = UIAlertController(title: "알림", message: "저장 가능한 번호는 최대 10개입니다.", preferredStyle: .alert)
