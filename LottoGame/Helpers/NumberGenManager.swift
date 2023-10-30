@@ -7,6 +7,13 @@
 
 import Foundation
 
+
+enum SaveError: Error {
+    case overError
+    case duplicationError
+    
+}
+
 // 번호 생성 매니저
 // 관리자 역할 및 데이터를 추가, 삭제 위함(매니저)
 final class NumberGenManager {
@@ -111,21 +118,22 @@ final class NumberGenManager {
         return numStrig.joined(separator: "   ")
     }
     
+    // ❗️(수정중 코드)
     // ✅ 테이블뷰에서 번호 저장 클릭시 인덱스를 가지고 numberGen의 isSaved를 토글 시킴
     // ⭐️ rowValue같이 상수로 선언해도 누를때마다 값이 변경이 가능한 것은 함수는 스택에서 실행되고 사라지고 버튼을 다시 눌렀을때 다시 생겨나기 때문이지?
-    func setNumbersSave(row: Int) -> Bool {
+    func setNumbersSave(row: Int) -> Result<Bool, SaveError> {
         
         // 10개 이상 저장안되게(10개 이상일시 false 리턴)
         // if let 바인딩이니까 유저디폴츠 데이터가 없으면 이 바인딩은 nil이 되고 토글부터 실행됨(고로 저장된 번호없이 첫 실행시는 토글(저장)이 먼저 진행되는 것)
         if let dataCount = userDefaults.array(forKey: saveKey) as? [[Int]] {
             if dataCount.count >= 10 {
                 print("저장된 번호가 10개 이상입니다.")
-                return false // false 반환하고 함수 종료시킴
+                return Result.failure(SaveError.overError)
             }
             // 📌📌 중복 저장 안되게(열거형으로 구현해보자)
             if dataCount.contains(numbers[row].numbersList) {
                 print("중복입니다.")
-                return false
+                return Result.failure(SaveError.duplicationError)
             }
             print("저장된 번호가 \(dataCount.count + 1)개 입니다.")
         }
@@ -142,7 +150,7 @@ final class NumberGenManager {
             userSavedSelectRemove(row: row)
         }
         
-        return true
+        return Result.success(true)
     }
     
     // ✅ numbers 배열에 인덱스값으로 접근해서 isSaved의 상태가 true인지 false인지 확인

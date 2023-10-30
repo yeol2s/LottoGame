@@ -235,19 +235,36 @@ extension NumbersGenerateViewController: UITableViewDataSource {
             print("뷰컨 클로저 실행")
             // 인덱스를 인자(인수값이라고 하는게 맞나?)로 전달해서 토글 시켜서 save 체크
             // ⭐️(함수 호출시 전달값이 인수이고 함수에서 받는값이 인자로 알고 있는데 보통 인자라고하는듯?)
-            if self.numberGenManager.setNumbersSave(row: indexPath.row) {
-                // 선택시 하트 fill 설정을 위해 isSaved Bool 값 꺼내서 전달
-                senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))
-                print("(클로저)번호가 정상적으로 저장되었습니다.")
-            } else {
-                //📌📌 여기서 열거형으로 처리해볼까? 저장번호 10개이상인 경우와 중복인 경우로 말이야..!
-                print("(클로저)번호가 저장되지 않았습니다.")
-                
-                let alert = UIAlertController(title: "알림", message: "저장 가능한 번호는 최대 10개입니다.", preferredStyle: .alert)
-                let check = UIAlertAction(title: "확인", style: .default)
-                alert.addAction(check)
-                present(alert, animated: true)
+            
+            // ⭐️ 이렇게 구현하는거 괜찮은 코드인가?(열거형 선언은 매니저에서 Error로 하는게 맞고?)
+            // 1️⃣ - Result로 처리하는 코드(new)
+            let saveResult = numberGenManager.setNumbersSave(row: indexPath.row)
+            
+            switch saveResult {
+            case .success(let data):
+                senderCell.setButtonStatus(isSaved: data)
+            case .failure(let error):
+                switch error {
+                case .duplicationError :
+                    print("중복된 번호입니다.")
+                case .overError :
+                    print("저장된 번호가 10개 이상입니다.")
+                }
             }
+            //2️⃣ -  그냥 if문으로 처리했던 코드(old)
+//            if self.numberGenManager.setNumbersSave(row: indexPath.row) {
+//                // 선택시 하트 fill 설정을 위해 isSaved Bool 값 꺼내서 전달
+//                senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))
+//                print("(클로저)번호가 정상적으로 저장되었습니다.")
+//            } else {
+//                //📌📌 여기서 열거형으로 처리해볼까? 저장번호 10개이상인 경우와 중복인 경우로 말이야..!
+//                print("(클로저)번호가 저장되지 않았습니다.")
+//                
+//                let alert = UIAlertController(title: "알림", message: "저장 가능한 번호는 최대 10개입니다.", preferredStyle: .alert)
+//                let check = UIAlertAction(title: "확인", style: .default)
+//                alert.addAction(check)
+//                present(alert, animated: true)
+//            }
         }
         
         
