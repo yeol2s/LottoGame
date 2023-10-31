@@ -37,6 +37,13 @@ final class MyNumbersViewController: UIViewController {
         return button
     }()
     
+    // 네비게이션컨트롤러 + 버튼 추가(번호 직접입력)
+    private lazy var plusButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(inputNumber))
+        return button
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.968886435, green: 0.9258887172, blue: 0.8419043422, alpha: 1)
@@ -69,6 +76,9 @@ final class MyNumbersViewController: UIViewController {
         navigationController?.navigationBar.standardAppearance = appearance // standard 모양 설정?
         navigationController?.navigationBar.compactAppearance = appearance // compact 모양 설정(가로 방향 화면 사용시 모양 정의?)
         navigationController?.navigationBar.scrollEdgeAppearance = appearance // 스크롤이 맨위로 도달했을 때 네비게이션 바의 모양 정의
+        
+        // + 번호 추가 기능
+        self.navigationItem.rightBarButtonItem = self.plusButton
     }
     
     // 내 번호 테이블뷰 대리자 지정 및 관련 설정
@@ -123,6 +133,11 @@ final class MyNumbersViewController: UIViewController {
         alert.addAction(cancel)
         
         present(alert, animated: true)
+    }
+    
+    // 네비게이션 (+)버튼 번호 추가 기능(직접입력 구현)
+    @objc func inputNumber() {
+        
     }
 }
 

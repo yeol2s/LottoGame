@@ -185,6 +185,16 @@ final class NumbersGenerateViewController: UIViewController {
         
     }
     
+    // 중복 및 10개이상 Alert 함수
+    func showAlert(message: String) {
+        let alert = UIAlertController(title: "알림", message: message, preferredStyle: .alert)
+        
+        let check = UIAlertAction(title: "확인", style: .default)
+        
+        alert.addAction(check)
+        present(alert, animated: true)
+    }
+    
     
 }
 
@@ -236,19 +246,21 @@ extension NumbersGenerateViewController: UITableViewDataSource {
 
             
             // ⭐️ 이렇게 구현하는거 괜찮은 코드인가?(열거형 선언은 매니저에서 Error로 하는게 맞고?)
+            // 이건 성준이한테 물어봐야지 -> "setNumbersSave가   번호저장을 시도하는거지?   시도한 결과로 Bool을 받을 필요는 없고 Void면 될거같고"
             // 1️⃣ - Result로 처리하는 코드(new)
             let saveResult = self.numberGenManager.setNumbersSave(row: indexPath.row)
             
             switch saveResult {
-            case .success: // 연관값 미사용?
+            case .success: // 연관값 미사용
                 senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))
             case .failure(let error):
                 switch error {
                 case .duplicationError :
                     print("중복된 번호입니다.")
-                    senderCell.setButtonStatus(isSaved: false)
+                    showAlert(message: "현재 저장되어있는 번호입니다.")
                 case .overError :
                     print("저장된 번호가 10개 이상입니다.")
+                    showAlert(message: "저장된 번호가 10개 이상입니다.")
                 }
             }
             //2️⃣ -  그냥 if문으로 처리했던 코드(old)

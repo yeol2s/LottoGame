@@ -118,22 +118,29 @@ final class NumberGenManager {
         return numStrig.joined(separator: "   ")
     }
     
-    // ❗️(수정중 코드)
+    // ⭐️ Result 타입으로 구현한거 괜찮은 로직인지?
     // ✅ 테이블뷰에서 번호 저장 클릭시 인덱스를 가지고 numberGen의 isSaved를 토글 시킴
     // ⭐️ rowValue같이 상수로 선언해도 누를때마다 값이 변경이 가능한 것은 함수는 스택에서 실행되고 사라지고 버튼을 다시 눌렀을때 다시 생겨나기 때문이지?
-    func setNumbersSave(row: Int) -> Result<Bool, SaveError> {
+    // 연관값 미사용으로 성공인 경우 true가 굳이 필요없어서 Success는 Void 타입을 사용
+    func setNumbersSave(row: Int) -> Result<Void, SaveError> {
         
         // 10개 이상 저장안되게(10개 이상일시 false 리턴)
         // if let 바인딩이니까 유저디폴츠 데이터가 없으면 이 바인딩은 nil이 되고 토글부터 실행됨(고로 저장된 번호없이 첫 실행시는 토글(저장)이 먼저 진행되는 것)
         if let dataCount = userDefaults.array(forKey: saveKey) as? [[Int]] {
             if dataCount.count >= 10 {
-                print("저장된 번호가 10개 이상입니다.")
+                print("저장 번호가 10개 이상")
                 return Result.failure(SaveError.overError)
             }
-            // 📌📌 중복 저장 안되게(열거형으로 구현해보자)
             if dataCount.contains(numbers[row].numbersList) {
-                print("중복입니다.")
-                return Result.failure(SaveError.duplicationError)
+                if numbers[row].isSaved { // 체크했다가 체크해제시
+                    print("기존 저장된 번호 삭제")
+                    numbers[row].isSaved.toggle() // 일단 토글시켜서 isSaved false로 만들고
+                    userSavedSelectRemove(row: row) // 유저디폴츠에서도 삭제 시키고
+                    return Result.success(()) // void를 전달하는 것
+                } else { // 중복된 번호가 체크될 시
+                    print("중복된 번호.")
+                    return Result.failure(SaveError.duplicationError)
+                }
             }
             print("저장된 번호가 \(dataCount.count + 1)개 입니다.")
         }
@@ -150,7 +157,7 @@ final class NumberGenManager {
             userSavedSelectRemove(row: row)
         }
         
-        return Result.success(true)
+        return Result.success(()) // void를 전달하는 것
     }
     
     // ✅ numbers 배열에 인덱스값으로 접근해서 isSaved의 상태가 true인지 false인지 확인
