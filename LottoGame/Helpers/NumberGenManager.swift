@@ -7,7 +7,7 @@
 
 import Foundation
 
-
+// 중복저장 및 초과저장 에러처리
 enum SaveError: Error {
     case overError
     case duplicationError
@@ -29,8 +29,6 @@ final class NumberGenManager {
     // 번호 배열로 생성되면 저장(배열을 -> 또 배열로 저장)
     private var numbers: [NumbersGen] = []
     
-    // 번호 생성 카운트(중복값 처리)
-    //private var count: Int = 0
 
     
     // 번호 생성하는 함수

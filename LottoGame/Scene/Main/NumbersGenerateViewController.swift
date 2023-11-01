@@ -18,7 +18,6 @@ final class NumbersGenerateViewController: UIViewController {
     // 번호 생성 인스턴스 생성
     var numberGenManager: NumberGenManager = NumberGenManager()
     
-    
     // ⭐️ 아래 UI속성들을 lazy var로 선언하는 이유가 지연 저장 속성으로 뷰가 먼저 올라간다음 나오게 하려고 하는건가?(어쨌든 뷰와 연관되어있으니까? -> 셀에서는 속성들에 lazy var를 사용하지 않아도 됐는데)
     // 번호 생성 버튼
     private lazy var generateButton: UIButton = {
@@ -49,10 +48,18 @@ final class NumbersGenerateViewController: UIViewController {
         return button
     }()
     
+    // 햄버거 메뉴
+    private lazy var menuButton: UIBarButtonItem = {
+        var button = UIBarButtonItem(image: UIImage(named: "bugericon"), style: .plain, target: self, action: #selector(menuButtonTapped))
+//        let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(menuButtonTapped))
+        return button
+    }()
+    
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //menuButton = UIBarButtonItem(customView: UIImageView(image: imageIcon))
         
         view.backgroundColor = .white
     
@@ -85,6 +92,8 @@ final class NumbersGenerateViewController: UIViewController {
         navigationController?.navigationBar.standardAppearance = appearance // standard 모양 설정?
         navigationController?.navigationBar.compactAppearance = appearance // compact 모양 설정(가로 방향 화면 사용시 모양 정의?)
         navigationController?.navigationBar.scrollEdgeAppearance = appearance // 스크롤이 맨위로 도달했을 때 네비게이션 바의 모양 정의
+        
+        self.navigationItem.leftBarButtonItem = self.menuButton
     }
     
     
@@ -182,6 +191,10 @@ final class NumbersGenerateViewController: UIViewController {
         // Alert창 자체도 다음 화면으로 넘어가는 것과 같으므로 present 메서드를 사용해서 띄운다.
         // present는 뷰컨에서만 가능했던 것으로 안다.
         present(alert, animated: true) // completion은 생략
+        
+    }
+    
+    @objc private func menuButtonTapped() {
         
     }
     
