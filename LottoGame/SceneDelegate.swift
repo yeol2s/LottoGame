@@ -14,11 +14,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
 
-
+    // (앱의 생명주기) 특정 Scene 객체가 처음 생성되고 연결될 때 호출(Scene 객체가 생성되고 화면에 연결되기 전에
+    // 호출되므로 초기화 및 설정 작업을 수행하기 적합한 시점)
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+
         guard let _ = (scene as? UIWindowScene) else { return }
         
         // 탭바 컨트롤러 생성

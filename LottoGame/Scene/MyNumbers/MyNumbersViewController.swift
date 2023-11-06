@@ -156,11 +156,13 @@ extension MyNumbersViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 일단 만들어놓은 테이블뷰셀 리턴
+        // dequeueReusableCell 테이블뷰 셀을을 재사용하기 위해 사용되는 메서드
         let cell = numChoiceTableView.dequeueReusableCell(withIdentifier: "NumChoiceCell", for: indexPath) as! NumChoiceListTableViewCell
         cell.numberLabel.text = saveManager.getSaveData(row: indexPath.row)
         
         // 셀과 연결된 클로저 호출(어떤 번호를 선택해제 할껀지)
-        cell.saveUnCheckButton = { [weak self] senderCell in
+        // ⭐️와일드카드를 쓰고 sender를 뺐는데 이렇게 하는게 맞을까?(굳이 콜백함수가 필요없는 경우?)
+        cell.saveUnCheckButton = { [weak self] _ in
             guard let self = self else { return }
             print("선택된 인덱스:\(indexPath.row)")
             // 여기서 인덱스를 보내서 삭제하자(저장 매니저에게)

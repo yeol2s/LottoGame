@@ -28,6 +28,22 @@ class LottoAPICell: UITableViewCell {
         label.clipsToBounds = true
         return label
     }()
-
-
+    
+    let firstTicketCountTitle: UILabel = {
+        let label = UILabel()
+        label.text = "1등 당첨 복권수"
+        label.textAlignment = .center
+        return label
+    }()
+    
+    // 1등 당첨 복권수
+    let firstTicketCount: UILabel = {
+        let label = UILabel()
+        label.text = "20장"
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.textAlignment = .center
+        label.layer.cornerRadius = 5
+        label.clipsToBounds = true
+        return label
+    }()
 }
