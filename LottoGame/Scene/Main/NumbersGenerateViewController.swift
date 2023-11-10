@@ -84,12 +84,13 @@ final class NumbersGenerateViewController: UIViewController {
     private func setupNaviBar() {
         title = "Lotto Pick"
         
+        //appearance는 네비게이션바의 외관을 구성할 수 있는 컨테이너 역할의 변수가됨
         let appearance = UINavigationBarAppearance() // 네비게이션바 겉모습을 담당
         appearance.configureWithOpaqueBackground() // 불투명으로
-        appearance.backgroundColor = .white
-        // 네비게이션 모양 설정
+        appearance.backgroundColor = .white // 흰색으로
+        // 네비게이션 다양한 모습 설정(appearance 객체에 정의된 네비게이션바 모양과 스타일을 공유하게되는 것)
         navigationController?.navigationBar.tintColor = .systemBlue // 네비바 틴트 색상
-        navigationController?.navigationBar.standardAppearance = appearance // standard 모양 설정?
+        navigationController?.navigationBar.standardAppearance = appearance // 네비바의 표준모드(일반상태)에서 사용할 외관
         navigationController?.navigationBar.compactAppearance = appearance // compact 모양 설정(가로 방향 화면 사용시 모양 정의?)
         navigationController?.navigationBar.scrollEdgeAppearance = appearance // 스크롤이 맨위로 도달했을 때 네비게이션 바의 모양 정의
         
