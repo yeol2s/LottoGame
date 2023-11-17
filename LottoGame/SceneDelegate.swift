@@ -25,22 +25,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // 네비게이션 컨트롤러 생성
         // ⭐️ 네비게이션 컨트롤러 두개다 사용할꺼니까 이렇게 두개 만드는게 맞나?
-        let naviVC = UINavigationController(rootViewController: NumbersGenerateViewController()) // 뷰컨에다가 생성
+        //let naviVC = UINavigationController(rootViewController: NumbersGenerateViewController()) // 뷰컨에다가 생성 🔶메인 뷰컨을 네비게이션 컨트롤러 없애고 컨테이너뷰컨에 만들었다.
+        //let containerVC = UINavigationController(rootViewController: ContainerViewController()) // 컨테이너뷰컨에 네비게이션컨트롤러 생성 🔶이것도 탭바때문에 없애고
+        let containerVC = ContainerViewController() // 🔶 컨테이너뷰컨을 인스턴스 생성해서 탭바에 넣음(메인 뷰컨은 네비컨트롤러를 컨테이너뷰컨에서 생성)
         let secondVC = UINavigationController(rootViewController: MyNumbersViewController()) // 세컨뷰도 네비게이션컨트롤러 생성
         
-//        // 탭바 타이틀 설정
-//        naviVC.title = "메인 화면"
-//        secondVC.title = "번호 생성"
         
-        tabBarVC.setViewControllers([naviVC, secondVC], animated: false)
+        tabBarVC.setViewControllers([containerVC, secondVC], animated: false) // 🔶탭바를 컨테이너뷰컨과, 세컨트뷰컨으로 설정(메인뷰컨은 설정안함)
         tabBarVC.modalPresentationStyle = .fullScreen
         tabBarVC.tabBar.backgroundColor = .white
         
-        naviVC.tabBarItem = UITabBarItem(title: "메인 화면", image: UIImage(systemName: "house.fill"), selectedImage: nil)
+        containerVC.tabBarItem = UITabBarItem(title: "메인 화면", image: UIImage(systemName: "house.fill"), selectedImage: nil)
         secondVC.tabBarItem = UITabBarItem(title: "내 번호", image: UIImage(systemName: "heart.fill"), selectedImage: nil)
         
+        // 임시 테스트용
+        //let tempVC = LottoAPIViewController()
+        
         // 기본 루트뷰를 탭바 컨트롤러로 설정
-        window?.rootViewController = tabBarVC
+        window?.rootViewController = tabBarVC // 🔶 루트뷰 탭바뷰컨으로해서 컨테이너뷰컨부터 불러옴
+        //window?.rootViewController = tempVC // 임시(뷰 확인 위해)
         window?.makeKeyAndVisible() // 터치 이벤트를 받을 수 있게 사용자 입력 활성화?
     }
 

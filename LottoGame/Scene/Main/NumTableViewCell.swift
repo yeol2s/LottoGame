@@ -92,6 +92,7 @@ class NumTableViewCell: UITableViewCell {
     
     // 스택뷰 오토레이아웃
     private func stackViewConstraints() {
+        // contentView는 테이블뷰 셀의 내용을 포함하는 뷰(UITableViewCell의 속성)
         NSLayoutConstraint.activate([
             stackView.heightAnchor.constraint(equalToConstant: 40),
             stackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),

@@ -7,10 +7,19 @@
 
 import UIKit
 
+// 🔶컨테이너뷰와 통신을 위해 델리게이트 패턴 사용
+// 탭을 눌렀을때 전달을 위한 프로토콜 - 델리게이트
+protocol NumbersGenViewControllerDelegate: AnyObject {
+    func didTapMenuButton() // 아래 구현(메뉴 버튼 누를시)
+}
 
 // 메인 뷰컨
 final class NumbersGenerateViewController: UIViewController {
-
+    
+    // 🔶 성준이 물어볼 것
+    // 강한 참조가 발생하는 경우가 내가 생각하는 그게 맞나?(순환참조가 발생하나?)
+    // 컨테이너뷰컨에서 delegate = self를 함으로써 이 메인뷰컨의 인스턴스의 델리게이트 속성이 컨테이너뷰컨을 가리키고, 컨테이너뷰컨에서 메인뷰컨 인스턴스 생성을 했으니 가리키고 있고 서로 가리키게 되는것?(순환참조?)
+    weak var delegate: NumbersGenViewControllerDelegate?
     
     // 테이블뷰 생성(번호 10줄 나열)
     private let numTableView = UITableView()
@@ -50,7 +59,7 @@ final class NumbersGenerateViewController: UIViewController {
     
     // 햄버거 메뉴
     private lazy var menuButton: UIBarButtonItem = {
-        var button = UIBarButtonItem(image: UIImage(named: "bugericon"), style: .plain, target: self, action: #selector(menuButtonTapped))
+        var button = UIBarButtonItem(image: UIImage(named: "bugericon"), style: .plain, target: self, action: #selector(didTapMenuButton))
 //        let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(menuButtonTapped))
         return button
     }()
@@ -63,7 +72,7 @@ final class NumbersGenerateViewController: UIViewController {
         
         view.backgroundColor = .white
     
-        setupNaviBar() // 네비게이션바 메서드 호출
+        setupNaviBar() // 네비게이션바 메서드 호출 🔶 컨테이너뷰컨에 네비게이션 설정하므로 호출하지 않음
         setupTableView() // 테이블뷰 대리자 지정 설정 및 셀등록 함수 호출
         setupTableViewConstraints() // 테이블뷰 오토레이아웃
         setupGenButtonConstraints() // 생성 버튼 오토레이아웃
@@ -72,6 +81,7 @@ final class NumbersGenerateViewController: UIViewController {
         
         print("시작")
     }
+    
   
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -113,6 +123,7 @@ final class NumbersGenerateViewController: UIViewController {
     private func setupTableViewConstraints() {
         view.addSubview(numTableView) // 테이블뷰를 뷰에 올림
         numTableView.translatesAutoresizingMaskIntoConstraints = false
+    
         
         NSLayoutConstraint.activate([
             numTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
@@ -195,18 +206,19 @@ final class NumbersGenerateViewController: UIViewController {
         
     }
     
-    @objc private func menuButtonTapped() {
-        
-    }
-    
     // 중복 및 10개이상 Alert 함수
-    func showAlert(message: String) {
+    private func showAlert(message: String) {
         let alert = UIAlertController(title: "알림", message: message, preferredStyle: .alert)
         
         let check = UIAlertAction(title: "확인", style: .default)
         
         alert.addAction(check)
         present(alert, animated: true)
+    }
+    
+    // 🔶메뉴 버튼 눌렀을때 함수
+    @objc private func didTapMenuButton() {
+        delegate?.didTapMenuButton() // 이 델리게이트 프로토콜을 준수하는 객체의 메서드(해당 델리게이트 프로토콜을 채택하지 않으면 nil이 반환된다.)
     }
     
     
