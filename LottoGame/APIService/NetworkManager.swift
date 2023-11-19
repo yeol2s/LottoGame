@@ -30,6 +30,7 @@ struct LottoInfo {
     let bnusNum: Int // 보너스 번호
     
     // 생성자로 넣어줌? (당첨날짜, 1등당첨금액, 1등당첨복권수)
+    // 원래 굳이 생성자 안해도 멤버와이즈 이니셜라이저로 생성자가 자동 구현되는데 일단 생성
     init(drawData: String, firstMoney: Int, firstTicketsCount: Int, numbers: [Int], bnusNum: Int) {
         self.drawDate = drawData
         self.firstMoney = firstMoney
@@ -46,12 +47,10 @@ struct NetworkManager {
     // 로또 회차별 URL(key) 따로없음
     let lottoURL = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo="
     
-    // 회차 지정
-    let dateCount = "100"
-    
     // URL 통신 함수 호출(데이터형태를 전달한다?)
-    private func fetchLotto(date: String, completion: @escaping (LottoInfo?) -> Void) {
-        let urlString = "\(lottoURL)\(dateCount)"
+    // round는 회차
+    func fetchLotto(round: Int, completion: @escaping (LottoInfo?) -> Void) {
+        let urlString = "\(lottoURL)\(String(round))"
         print("통신하는 주소 : \(urlString)")
         performRequest(with: urlString) { lottoInfo in
             completion(lottoInfo) // 컴플리션핸들러로 performRequest로 부터 결과를 전달받아서 또 전달
@@ -83,8 +82,7 @@ struct NetworkManager {
             }
             
             // 데이터 분석하기
-            if let lottoInfo = self.parseJSON(safeData) {
-                completion(lottoInfo) // 파싱에 성공하면 컴플리션핸들러로 로또 구조체를 던져줌
+            if let lottoInfo = self.parseJSON(safeData) {                completion(lottoInfo) // 파싱에 성공하면 컴플리션핸들러로 로또 구조체를 던져줌
             } else {
                 completion(nil)
             }
@@ -120,4 +118,12 @@ struct NetworkManager {
             return nil
         }
     }
+}
+
+extension NetworkManager {
+    // 🔶 테이블뷰 셀 개수를 어떻게 리턴시킬까?
+    func getCount() -> Int {
+        return 5
+    }
+    
 }
