@@ -185,6 +185,11 @@ class LottoAPIViewController: UIViewController {
         setupStackView() // 스택뷰 설정 및 오토레이아웃 메서드 호출
     }
     
+    // 스크린에서 뷰가 사라진 후 호출(뷰컨 생명주기)
+    override func viewDidDisappear(_ animated: Bool) {
+        navigationController?.popViewController(animated: true) // 이전 메인화면으로 되돌림
+    }
+    
     // 스택뷰 설정
     private func setupStackView() {
         numbersStackView.addArrangedSubview(numbersLabelTitle)
