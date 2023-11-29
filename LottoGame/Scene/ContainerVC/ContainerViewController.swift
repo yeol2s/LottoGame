@@ -23,6 +23,7 @@ final class ContainerViewController: UIViewController {
     var navVC: UINavigationController? // 네비게이션컨트롤러 인스턴스 생성 🔶 메인뷰컨은 컨테이너뷰컨에서 네비게이션컨트롤러로 root 시킴(이래야 사이드메뉴시 프레임이 같이 밀리는 듯 - 탭바 제외)
     
     lazy var apiVC = LottoAPIViewController()
+    lazy var qrVC = QRcodeReaderViewController()
     
     override func viewDidLoad() {
         view.backgroundColor = .systemGray
@@ -108,6 +109,8 @@ extension ContainerViewController: MenuViewControllerDelegate {
             navVC?.pushViewController(apiVC, animated: true) // 네비컨트롤러 push로 화면이동
             break
         case .qrCode:
+            qrVC.modalPresentationStyle = .fullScreen
+            present(qrVC, animated: true)
             break
         case .map:
             break

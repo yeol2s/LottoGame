@@ -24,17 +24,40 @@ class QRcodeReaderViewController: UIViewController {
         button.addTarget(self, action: #selector(qrCancelButtonTapped), for: .touchUpInside)
         return button
     }()
+    
+//    override func loadView() {
+//
+//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupReaderView()
+
+    }
+    
+    // 뷰가 스크린에 나타나기 전(뷰가 화면에 나타날때마다 계속 호출)
+    // 다른 화면에 갔다올때마다 리더뷰를 다시 시작하기 위해(큐알 재실행)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("viewWillAppear 호출")
         self.tabBarController?.tabBar.isHidden = true // 탭바 숨기기
+        
+        // ⭐️이 부분에서 리더뷰를 못불러오는 경우가 발생할 수 있을까?
+        // 발생한다면 대비를 어떻게 처리해야하는지
+        setupReaderView() // 리더뷰 셋업 및 시작
+        
     }
     
     // 뷰가 사라지기 전
+    // addSubView 메서드로 하위뷰를 추가할때는 상위뷰컨트롤러의 뷰컨트롤러 생명주기 메서드가 호출되지 않는다.(해당 뷰컨트롤러의 상태가 변경되는 것이 아니기 때문에)
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.tabBarController?.tabBar.isHidden = false // 탭바 보여주기
+        
+        if readerView.isRunning { // 뷰가 사라질때 캡처세션이 실행중이라면
+            print("viewWillDisappear:캡처세션 종료")
+            readerView.stop() // 캡처세션 종료
+        }
+        
     }
     
     private func setupReaderView() {
@@ -42,7 +65,6 @@ class QRcodeReaderViewController: UIViewController {
         readerView.delegate = self
         view.addSubview(readerView)
         buttonConstraints()
-        
         readerView.start()
     }
     
@@ -63,6 +85,11 @@ class QRcodeReaderViewController: UIViewController {
     @objc private func qrCancelButtonTapped() {
         //self.view.removeFromSuperview()
         //self.tabBarController?.tabBar.isHidden = false
+        dismiss(animated: true)
+    }
+    
+    deinit {
+        print("QRReader 메모리 해제")
     }
     
 }
@@ -72,11 +99,61 @@ extension QRcodeReaderViewController: ReaderViewDelegate {
     func rederComplete(status: ReaderStatus) {
         switch status {
         case let .sucess(code):
-            print("성공\(code ?? "")")
+            if let code = code {
+                showAlert(message: "인식 완료", code)
+            } else {
+                fallthrough // code 못불러올시 다음블럭 실행시킴
+            }
         case .fail:
-            print("실패")
-        case let .stop(isButtonTap):
-            print("중지\(isButtonTap)")
+            showAlert(message: "인식 실패")
+        case .stop:
+            showAlert(message: "인식 중지")
         }
     }
+    
+    private func showAlert(message: String...) {
+        
+        let alert = UIAlertController(title: "알림", message: message[0], preferredStyle: .alert)
+        
+        switch message[0] {
+        case "인식 완료":
+            print("\(message[0]): \(message[1])")
+            let success = UIAlertAction(title: "확인", style: .default) { action in
+                // 웹페이지 연결
+            }
+            let cancel = UIAlertAction(title: "취소", style: .cancel) { [weak self] cancel in
+                self?.captureSessionRetry() // 캡처세션 재시작
+            }
+            alert.addAction(success)
+            alert.addAction(cancel)
+            break
+        case "인식 실패":
+            let check = UIAlertAction(title: "확인", style: .default) { [weak self] check in
+                self?.captureSessionRetry() // 캡처세션 재시작
+            }
+            alert.addAction(check)
+            break
+        case "인식 중지":
+            let check = UIAlertAction(title: "확인", style: .default) { [weak self] check in
+                self?.captureSessionRetry() // 캡처세션 재시작
+            }
+            alert.addAction(check)
+            break
+        default:
+            break
+        }
+        present(alert, animated: true)
+    }
+    
+    // 캡처세션 재시작
+    // 캡처가 완료되면 캡처세션이 멈추므로 버튼 동작에 따라 재시작하는 메서드
+    // 캡처세션이 실행중일 가능성은 매우적은듯
+    private func captureSessionRetry() {
+        if readerView.isRunning { // 캡처세션 실행중이라면
+            readerView.stop() // 중지
+        } else { // 캡처세션 중지상태라면
+            readerView.start() // 캡처세션 시작
+        }
+    }
+    
 }

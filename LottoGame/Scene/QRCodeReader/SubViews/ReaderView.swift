@@ -13,7 +13,8 @@ import AVFoundation // AVFoundation 필수
 enum ReaderStatus { // 연관값으로 열거형 선언
     case sucess(_ code: String?)
     case fail
-    case stop(_ isButtonTap: Bool)
+    //case stop(_ isButtonTap: Bool)
+    case stop
 }
 // 리더뷰 델리게이트
 protocol ReaderViewDelegate: AnyObject {
@@ -241,9 +242,9 @@ extension ReaderView {
     
     // QR 읽고나서 사용되는 메서드들?
     // 델리게이트에게 중지, 성공, 실패 상태를 알려줌
-    func stop(isButtonTap: Bool) {
+    func stop() {
         self.captureSession?.stopRunning() // 캡처세션 중지
-        self.delegate?.rederComplete(status: .stop(isButtonTap)) // 델리게이트 메서드에 스탑(열거형)-Bool 전달)
+        self.delegate?.rederComplete(status: .stop) // 델리게이트 메서드에 스탑(열거형)-Bool 전달)
     }
     
     func fail() {
@@ -278,7 +279,7 @@ extension ReaderView: AVCaptureMetadataOutputObjectsDelegate {
             //AudioServicesPlayAlertSound(SystemSoundID(1407)) // 이건 사운드인가?
             found(code: stringValue) // QR코드를 성공적으로 읽었을때 호출되는 found
             print("Found metadata Value: \n \(stringValue)")
-            stop(isButtonTap: true) // 위 동작들 완료되면 캡처세션 중지
+            stop() // 위 동작들 완료되면 캡처세션 중지
         }
     }
 }
