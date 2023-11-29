@@ -21,12 +21,12 @@ final class ContainerViewController: UIViewController {
     let menuVC = MenuViewController() // 메뉴 뷰컨트롤러
     let mainVC = NumbersGenerateViewController() // 메인 뷰컨트롤러(번호 생성)
     var navVC: UINavigationController? // 네비게이션컨트롤러 인스턴스 생성 🔶 메인뷰컨은 컨테이너뷰컨에서 네비게이션컨트롤러로 root 시킴(이래야 사이드메뉴시 프레임이 같이 밀리는 듯 - 탭바 제외)
+    
     lazy var apiVC = LottoAPIViewController()
-
+    
     override func viewDidLoad() {
         view.backgroundColor = .systemGray
         addChildVCs()
-
     }
     
     
@@ -47,6 +47,7 @@ final class ContainerViewController: UIViewController {
         view.addSubview(navVC.view) // 자식뷰로 navVC 뷰를 추가(두번째 단계로 - 화면에 나타남)
         navVC.didMove(toParent: self) // 자식뷰컨이 부모뷰컨에 성공적으로 추가될때 호출(세번째 단계 - 생명주기, 초기화-해제, 동적인 화면 전환 및 재사용 가능해짐)(부모-자식 상호작용 및 화면전환 가능)
         self.navVC = navVC
+        
     }
 }
 
@@ -113,8 +114,8 @@ extension ContainerViewController: MenuViewControllerDelegate {
         }
     }
     
-//    func resetToHome() {
-//        
-//    }
+    //    func resetToHome() {
+    //
+    //    }
     
 }

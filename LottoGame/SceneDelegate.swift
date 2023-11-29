@@ -40,6 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // 임시 테스트용
         //let tempVC = LottoAPIViewController()
+
         
         // 기본 루트뷰를 탭바 컨트롤러로 설정
         window?.rootViewController = tabBarVC // 🔶 루트뷰 탭바뷰컨으로해서 컨테이너뷰컨부터 불러옴

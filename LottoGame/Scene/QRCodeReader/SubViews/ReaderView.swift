@@ -23,7 +23,7 @@ protocol ReaderViewDelegate: AnyObject {
 
 // QR 인식하는 뷰
 // 카메라 화면을 View에 띄운다 -> QRCode를 인식 부분 이외에 어둡게 처리하고 인식 부분에 테두리 그림 -> 인식되면 데이터 처리
-class ReaderView: UIView {
+final class ReaderView: UIView {
     weak var delegate: ReaderViewDelegate?
     
     // 카메라 화면 보여주는 Layer
@@ -91,7 +91,7 @@ class ReaderView: UIView {
         }
         
         guard let captureSession = self.captureSession else {
-            //self.fail()
+            self.fail()
             return
         }
         
@@ -100,7 +100,7 @@ class ReaderView: UIView {
         if captureSession.canAddInput(videoInput) {
             captureSession.addInput(videoInput)
         } else {
-            //self.fail()
+            self.fail()
             return
         }
         
@@ -119,7 +119,7 @@ class ReaderView: UIView {
             metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
             metadataOutput.metadataObjectTypes = self.metadataObjectTypes // .qr이 담겨있음
         } else {
-            //self.fail()
+            self.fail()
             return
         }
         
@@ -129,8 +129,7 @@ class ReaderView: UIView {
         // QR코드 인식 범위 설정
         // metadataOutput.rectOfInterest는 AVCaptureSession에서 CGRect 크기만큼 인식 구역으로 지정
         // 해당 값은 먼저 AVCaptureSession을 running 상태로 만든 후 지정해줘야 정상 작동한다고 함.
-        
-        //self.start()
+        self.start()
         // rectOfInterest는 QR코드 메타데이터를 찾기 위한 관심 영역을 정의하는 사각형의 영역을 나타냄(영역 설정을 하면 카메라가 해당 영역만을 촬영하고 그 안에서만 QR코드를 감지) -> 결국 그 영역은 CGRect(rectOfInterest 계산 속성)로 사각형의 영역이 정의됨
         // metadataOutputRectConverted는 레이어 좌표 공간에서 메타데이터 출력의 사각형 좌표를 비디오 미리보기 레이어의 좌표 공간으로 변환해주는 역할(바코드를 찾을 관심 영역(rectOfInterest)을 레이어의 좌표 시스템으로 변환 후 metadataOutput.rectOfInterest에 값을 할당하여 메타데이터를 찾을 영역을 설정함)
         metadataOutput.rectOfInterest = previewLayer!.metadataOutputRectConverted(fromLayerRect: rectOfInterest)
@@ -233,15 +232,17 @@ class ReaderView: UIView {
 extension ReaderView {
     
     func start() {
+        // 💡 백그라운드 스레드에서 처리하라고 (보라색-권장)메세지가 나오는데 해당 부분을 백그라운드 스레드에서 처리하면 메타데이터를 가져오는데 문제가 발생하고 메타데이터를 메인스레드에서도 처리해도 원활히 되지 않음.
+        // 해당 문제는 해결 방법을 찾지 못해서 일단 사용하는데, 권장사항인 만큼 그냥 일단 사용.
         print("AVCaptureSession Start Running")
-        self.captureSession?.stopRunning() // 캡처세션 시작
+        self.captureSession?.startRunning() // 캡처세션 시작
+        
     }
     
     // QR 읽고나서 사용되는 메서드들?
     // 델리게이트에게 중지, 성공, 실패 상태를 알려줌
     func stop(isButtonTap: Bool) {
         self.captureSession?.stopRunning() // 캡처세션 중지
-        
         self.delegate?.rederComplete(status: .stop(isButtonTap)) // 델리게이트 메서드에 스탑(열거형)-Bool 전달)
     }
     

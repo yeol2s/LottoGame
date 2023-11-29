@@ -187,6 +187,7 @@ class LottoAPIViewController: UIViewController {
     
     // 스크린에서 뷰가 사라진 후 호출(뷰컨 생명주기)
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         navigationController?.popViewController(animated: true) // 이전 메인화면으로 되돌림
     }
     
