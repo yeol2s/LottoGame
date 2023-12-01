@@ -51,7 +51,8 @@ class NumChoiceListTableViewCell: UITableViewCell {
     }()
     
     // 📌 뷰컨과 연결할 클로저 선언
-    var saveUnCheckButton: ((NumChoiceListTableViewCell) -> ()) = { sender in }
+    // ⭐️와일드카드를 쓰고 sender를 뺐는데 이렇게 하는게 맞을까?(굳이 콜백함수가 필요없는 경우?)
+    var saveUnCheckButton: ((NumChoiceListTableViewCell) -> ()) = { _ in }
     
     // 오토레이아웃 생성자
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

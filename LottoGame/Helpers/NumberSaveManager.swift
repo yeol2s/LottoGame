@@ -32,7 +32,7 @@ final class NumberSaveManager {
             //print("문자열 변경 데이터: \(defaultsTemp)")
             print("[[Int]] -> [[String]] 변경 완료")
         }else {
-            print("saveData 실패")
+            print("saveData가 없습니다.")
         }
     }
     

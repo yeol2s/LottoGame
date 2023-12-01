@@ -37,6 +37,13 @@ final class MyNumbersViewController: UIViewController {
         return button
     }()
     
+    // 네비게이션컨트롤러 + 버튼 추가(번호 직접입력)
+    private lazy var plusButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(inputNumber))
+        return button
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.968886435, green: 0.9258887172, blue: 0.8419043422, alpha: 1)
@@ -69,6 +76,9 @@ final class MyNumbersViewController: UIViewController {
         navigationController?.navigationBar.standardAppearance = appearance // standard 모양 설정?
         navigationController?.navigationBar.compactAppearance = appearance // compact 모양 설정(가로 방향 화면 사용시 모양 정의?)
         navigationController?.navigationBar.scrollEdgeAppearance = appearance // 스크롤이 맨위로 도달했을 때 네비게이션 바의 모양 정의
+        
+        // + 번호 추가 기능
+        self.navigationItem.rightBarButtonItem = self.plusButton
     }
     
     // 내 번호 테이블뷰 대리자 지정 및 관련 설정
@@ -115,7 +125,7 @@ final class MyNumbersViewController: UIViewController {
             self.numChoiceTableView.reloadData() // 테이블뷰 리로드
             print("저장번호가 초기화 되었습니다.")
         }
-        let cancel = UIAlertAction(title: "취소", style: .default) { action in
+        let cancel = UIAlertAction(title: "취소", style: .cancel) { action in
             print("저장번호 초기화 취소")
         }
         
@@ -123,6 +133,11 @@ final class MyNumbersViewController: UIViewController {
         alert.addAction(cancel)
         
         present(alert, animated: true)
+    }
+    
+    // 네비게이션 (+)버튼 번호 추가 기능(직접입력 구현)
+    @objc func inputNumber() {
+        
     }
 }
 
@@ -141,11 +156,13 @@ extension MyNumbersViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 일단 만들어놓은 테이블뷰셀 리턴
+        // dequeueReusableCell 테이블뷰 셀을을 재사용하기 위해 사용되는 메서드
         let cell = numChoiceTableView.dequeueReusableCell(withIdentifier: "NumChoiceCell", for: indexPath) as! NumChoiceListTableViewCell
         cell.numberLabel.text = saveManager.getSaveData(row: indexPath.row)
         
         // 셀과 연결된 클로저 호출(어떤 번호를 선택해제 할껀지)
-        cell.saveUnCheckButton = { [weak self] senderCell in
+        // ⭐️와일드카드를 쓰고 sender를 뺐는데 이렇게 하는게 맞을까?(굳이 콜백함수가 필요없는 경우?)
+        cell.saveUnCheckButton = { [weak self] _ in
             guard let self = self else { return }
             print("선택된 인덱스:\(indexPath.row)")
             // 여기서 인덱스를 보내서 삭제하자(저장 매니저에게)

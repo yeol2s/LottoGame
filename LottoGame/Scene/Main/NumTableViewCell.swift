@@ -23,8 +23,6 @@ class NumTableViewCell: UITableViewCell {
         // 레이블 둥글게
         label.layer.cornerRadius = 5
         label.clipsToBounds = true // 경계를 벗어나는 내용을 잘라내는 것인데(masksToBounds속성으로도 대체 가능)
-        
-        // 오토레이아웃을 위한 테두리 테스트
 
         label.layer.borderWidth = 2.0 // 테두리 두깨
         label.layer.borderColor = #colorLiteral(red: 0.7499064803, green: 0.9831754565, blue: 0.9550266862, alpha: 1)
@@ -65,6 +63,7 @@ class NumTableViewCell: UITableViewCell {
     
     // 오토레이아웃을 생성자로 설정(스토리보드인 경우 awakeFromNib 함수에서 해주면 되는데 여기선 코드로 구현하는 것이기 때문에 생성자를 사용)
     // init(style) 생성자(애플이 UITableViewCell을 만들때 기본적으로 세팅해주는 생성자를 구현해놓음)
+    // 셀을 가져올때 내부적으로 호출된다고 한다.(챗지피티 설명)
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
@@ -92,6 +91,7 @@ class NumTableViewCell: UITableViewCell {
     
     // 스택뷰 오토레이아웃
     private func stackViewConstraints() {
+        // contentView는 테이블뷰 셀의 내용을 포함하는 뷰(UITableViewCell의 속성)
         NSLayoutConstraint.activate([
             stackView.heightAnchor.constraint(equalToConstant: 40),
             stackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),

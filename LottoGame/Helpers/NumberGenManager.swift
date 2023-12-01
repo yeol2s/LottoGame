@@ -7,6 +7,13 @@
 
 import Foundation
 
+// 중복저장 및 초과저장 에러처리
+enum SaveError: Error {
+    case overError
+    case duplicationError
+    
+}
+
 // 번호 생성 매니저
 // 관리자 역할 및 데이터를 추가, 삭제 위함(매니저)
 final class NumberGenManager {
@@ -22,13 +29,12 @@ final class NumberGenManager {
     // 번호 배열로 생성되면 저장(배열을 -> 또 배열로 저장)
     private var numbers: [NumbersGen] = []
     
-    // 번호 생성 버튼 클릭시 번호 저장되는 배열
-    private var lottoNumbers: [Int] = []
-    
-    
+
     
     // 번호 생성하는 함수
     func generateLottoNumbers() -> Bool {
+        // 번호 생성 버튼 클릭시 번호 저장되는 배열
+        var lottoNumbers: [Int] = []
         
         // 번호가 10개이상 생성되지 않게
         // 처음 실행할때는 카운트가 무조건 0개로 시작하니까 9를 기준으로 했다.
@@ -38,21 +44,48 @@ final class NumberGenManager {
         }
         print("생성 카운트:\(numbers.count)")
         
-        lottoNumbers = []
-        
         // lottoNumbers 요소 개수가 6이 될때까지 반복(0부터)
         while lottoNumbers.count < 6 {
+            
             let randomNumber = Int.random(in: 1...45)
             
             // 현재 배열에 랜덤 숫자가 포함되어있는지 여부(포함되어 있다면 추가하지 않음)
             if !lottoNumbers.contains(randomNumber) {
-                
                 lottoNumbers.append(randomNumber)
+            }
+        }
+        
+        // ⭐️ 이렇게 하는거 괜찮은 코드?
+        // 혹시나 중복된 값이 나오면 처리
+        // 테스트 코드
+        print(numbers.isEmpty)
+        if !numbers.isEmpty {
+            for num in numbers {
+                print("numbers:\(num)")
+                if num.numbersList == lottoNumbers.sorted() {
+                    print("중복입니다.")
+                    lottoNumbers = []
+                    repeat {
+                        while lottoNumbers.count < 6 {
+                            
+                            let randomNumber = Int.random(in: 1...45)
+                            
+                            // 현재 배열에 랜덤 숫자가 포함되어있는지 여부(포함되어 있다면 추가하지 않음)
+                            if !lottoNumbers.contains(randomNumber) {
+                                lottoNumbers.append(randomNumber)
+                            }
+                        }
+                    } while num.numbersList == lottoNumbers.sorted()
+                }
             }
         }
         
         // 구조체 배열은 append를 할때 이렇게 인스턴스 생성해서 넣어야 하는 것
         numbers.append(NumbersGen(numbersList: lottoNumbers.sorted()))
+        //numbers.append(.init(numbersList: lottoNumbers.sorted()))
+        
+        
+        
         // print(numbers[NumbersGen.checkIndex].numbersList)
         // print("Index 번호 : \(NumbersGen.checkIndex)") // 0부터 시작
         //print("numbers 모델(구조체) 내용 확인 : \(numbers)")
@@ -83,23 +116,36 @@ final class NumberGenManager {
         return numStrig.joined(separator: "   ")
     }
     
+    // ⭐️ Result 타입으로 구현한거 괜찮은 로직인지?
     // ✅ 테이블뷰에서 번호 저장 클릭시 인덱스를 가지고 numberGen의 isSaved를 토글 시킴
     // ⭐️ rowValue같이 상수로 선언해도 누를때마다 값이 변경이 가능한 것은 함수는 스택에서 실행되고 사라지고 버튼을 다시 눌렀을때 다시 생겨나기 때문이지?
-    func setNumbersSave(row: Int) -> Bool {
+    // 연관값 미사용으로 성공인 경우 true가 굳이 필요없어서 Success는 Void 타입을 사용
+    func setNumbersSave(row: Int) -> Result<Void, SaveError> {
         
         // 10개 이상 저장안되게(10개 이상일시 false 리턴)
         // if let 바인딩이니까 유저디폴츠 데이터가 없으면 이 바인딩은 nil이 되고 토글부터 실행됨(고로 저장된 번호없이 첫 실행시는 토글(저장)이 먼저 진행되는 것)
         if let dataCount = userDefaults.array(forKey: saveKey) as? [[Int]] {
             if dataCount.count >= 10 {
-                print("저장된 번호가 10개 이상입니다.")
-                return false // false 반환하고 함수 종료시킴
+                print("저장 번호가 10개 이상")
+                return Result.failure(SaveError.overError)
             }
-            print("저장된 번호가 10개 미만입니다.")
+            if dataCount.contains(numbers[row].numbersList) {
+                if numbers[row].isSaved { // 체크했다가 체크해제시
+                    print("기존 저장된 번호 삭제")
+                    numbers[row].isSaved.toggle() // 일단 토글시켜서 isSaved false로 만들고
+                    userSavedSelectRemove(row: row) // 유저디폴츠에서도 삭제 시키고
+                    return Result.success(()) // void를 전달하는 것
+                } else { // 중복된 번호가 체크될 시
+                    print("중복된 번호.")
+                    return Result.failure(SaveError.duplicationError)
+                }
+            }
             print("저장된 번호가 \(dataCount.count + 1)개 입니다.")
         }
         
         numbers[row].isSaved.toggle() // 배열 인덱스로 접근해서 토글로 true로 변경
         print("토글 index: \(row), isSaved 상태: \(numbers[row].isSaved)")
+
         
         // isSaved의 상태가 true일때 userDefaults에 저장
         if numbers[row].isSaved {
@@ -109,7 +155,7 @@ final class NumberGenManager {
             userSavedSelectRemove(row: row)
         }
         
-        return true
+        return Result.success(()) // void를 전달하는 것
     }
     
     // ✅ numbers 배열에 인덱스값으로 접근해서 isSaved의 상태가 true인지 false인지 확인
