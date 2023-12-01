@@ -96,6 +96,7 @@ class QRcodeReaderViewController: UIViewController {
 
 // 리더뷰 델리게이트 확장
 extension QRcodeReaderViewController: ReaderViewDelegate {
+    
     func rederComplete(status: ReaderStatus) {
         switch status {
         case let .sucess(code):
@@ -118,28 +119,33 @@ extension QRcodeReaderViewController: ReaderViewDelegate {
         switch message[0] {
         case "인식 완료":
             print("\(message[0]): \(message[1])")
-            let success = UIAlertAction(title: "확인", style: .default) { action in
-                // 웹페이지 연결
+            alert.title = "사이트에 연결합니다."
+            alert.message = message[1]
+            let success = UIAlertAction(title: "연결", style: .default) { [weak self] action in
+                if let url = URL(string: message[1]) {
+                    UIApplication.shared.open(url) // 웹사이트 연결
+                } else {
+                    print("QR Code URL 연결에 실패했습니다.")
+                    self?.captureSessionRetry() // 캡처세션 재시작
+                }
             }
             let cancel = UIAlertAction(title: "취소", style: .cancel) { [weak self] cancel in
                 self?.captureSessionRetry() // 캡처세션 재시작
             }
             alert.addAction(success)
             alert.addAction(cancel)
-            break
         case "인식 실패":
             let check = UIAlertAction(title: "확인", style: .default) { [weak self] check in
                 self?.captureSessionRetry() // 캡처세션 재시작
             }
             alert.addAction(check)
-            break
         case "인식 중지":
             let check = UIAlertAction(title: "확인", style: .default) { [weak self] check in
                 self?.captureSessionRetry() // 캡처세션 재시작
             }
             alert.addAction(check)
-            break
         default:
+            dismiss(animated: true) // 아무것도 안될시 이전 화면으로 돌아가게
             break
         }
         present(alert, animated: true)
