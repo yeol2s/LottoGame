@@ -251,8 +251,15 @@ extension NumbersGenerateViewController: UITableViewDataSource {
         //let numStringChanged = numberGenManager[indexPath.row]
         //print("테이블뷰 셀 in :\(numStringChanged)")
         
-        // 매니저의 문자열변환 함수를 호출해서 indexPath를 전달해서 numbers 구조체 배열의
+        // 💡 공모양 만들기 임시코드(삭제 예정)
+        //cell.addSubview(numberGenManager.getNumberBallChange(row: indexPath.row))
+        //cell.configure(with: numberGenManager.numbers[indexPath.row].numbersList)
+        // 여기서 cell.numberLabel에 하위뷰로 번호 공 추가하고 오토레이아웃 해보자.
+
+        
+        // 매니저의 문자열변환 함수를 호출해서 indexPath를 전달해서mbers 구조체 배열의
         // 정수들을 문자열로 변환해서 리턴받음
+        // 💡 임시 주석
         let number = numberGenManager.getNumberStringChange(row: indexPath.row)
         cell.numberLabel.text = number
         cell.selectionStyle = .none // 셀 선택시 회색으로 안변하게 하는 설정

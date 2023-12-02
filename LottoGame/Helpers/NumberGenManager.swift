@@ -5,7 +5,7 @@
 //  Created by 유성열 on 2023/09/22.
 //
 
-import Foundation
+import UIKit
 
 // 중복저장 및 초과저장 에러처리
 enum SaveError: Error {
@@ -27,7 +27,7 @@ final class NumberGenManager {
     private var defaultsTemp: [[Int]] = []
     
     // 번호 배열로 생성되면 저장(배열을 -> 또 배열로 저장)
-    private var numbers: [NumbersGen] = []
+    var numbers: [NumbersGen] = []
     
 
     
@@ -115,6 +115,7 @@ final class NumberGenManager {
         // 공백으로 분리해서 각각 문자열로 반환
         return numStrig.joined(separator: "   ")
     }
+    
     
     // ⭐️ Result 타입으로 구현한거 괜찮은 로직인지?
     // ✅ 테이블뷰에서 번호 저장 클릭시 인덱스를 가지고 numberGen의 isSaved를 토글 시킴

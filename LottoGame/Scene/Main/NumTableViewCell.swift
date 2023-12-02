@@ -23,7 +23,7 @@ class NumTableViewCell: UITableViewCell {
         // 레이블 둥글게
         label.layer.cornerRadius = 5
         label.clipsToBounds = true // 경계를 벗어나는 내용을 잘라내는 것인데(masksToBounds속성으로도 대체 가능)
-
+        
         label.layer.borderWidth = 2.0 // 테두리 두깨
         label.layer.borderColor = #colorLiteral(red: 0.7499064803, green: 0.9831754565, blue: 0.9550266862, alpha: 1)
         //label.layer.borderColor = UIColor.lightGray.cgColor // 테두리 색상(UIColor로 색상을 생성해서 CGcolor로 변환하는 코드)
