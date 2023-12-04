@@ -15,9 +15,9 @@ class NumTableViewCell: UITableViewCell {
     // 숫자 출력할 레이블
     let numberLabel: UILabel = {
         let label = UILabel()
-        label.text = " "
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.textAlignment = .center
+        //label.text = " "
+        //label.font = UIFont.systemFont(ofSize: 18)
+        //label.textAlignment = .center
         //label.translatesAutoresizingMaskIntoConstraints = false // 자동잡아주는 기능 끔
         
         // 레이블 둥글게
@@ -93,7 +93,7 @@ class NumTableViewCell: UITableViewCell {
     private func stackViewConstraints() {
         // contentView는 테이블뷰 셀의 내용을 포함하는 뷰(UITableViewCell의 속성)
         NSLayoutConstraint.activate([
-            stackView.heightAnchor.constraint(equalToConstant: 40),
+            stackView.heightAnchor.constraint(equalToConstant: 60),
             stackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
             stackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
             stackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor)
