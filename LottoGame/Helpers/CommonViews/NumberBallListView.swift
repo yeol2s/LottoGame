@@ -7,16 +7,9 @@
 
 import UIKit
 
-// 💡 성준
-// 스택뷰를 만들어서
-// spancing
-// 스택뷰의 길이를 정해주고.
-// 스택뷰 길이가 대략 205
-// 간격 5개에 x6(30) 공30 6개(180) = 205
-// 셀 레이블이랑 간격을 비교해서 수치를 맞춰서 스택뷰를 오토레이아웃
-
 // 공 번호로 표시해주는 클래스
-final class NumberBallListLabel: UILabel {
+// UIStackView로 만듦
+final class NumberBallListView: UIStackView {
     
     func displayNumbers(_ numbers: [Int]) {
         // 기존 하위뷰 제거?
@@ -27,10 +20,10 @@ final class NumberBallListLabel: UILabel {
         // 한마디로 새로운 공 모양의 숫자를 표시하기 전에, 기존의 숫자를 모두 지워 새로운 숫자를 표시
         self.subviews.forEach { $0.removeFromSuperview() }
         
-        let ballDiameter: CGFloat = self.frame.size.width // 공의 지름
+        let ballDiameter: CGFloat = 40 // 공의 지름
         let ballRadius: CGFloat = ballDiameter / 2 // 공의 반지름
         
-        var xPosition: CGFloat = 0 // x좌표 -> 공이 오른쪽으로 나열되면서 간격 띄우기 위함
+        var arrangedSubViews: [UIView] = []
         
         // 파라미터로 받은 숫자 배열을 반복시켜서 각 숫자에 대한 공 모양 UILabel을 생성
         for number in numbers {
@@ -41,26 +34,28 @@ final class NumberBallListLabel: UILabel {
             ball.layer.masksToBounds = true // 경계를 벗어나는 부분 잘라내기
             ball.font = UIFont.boldSystemFont(ofSize: 16)
             ball.textColor = .white
-            ball.frame = CGRect(x: xPosition, y: 0, width: ballDiameter, height: ballDiameter)
+            ball.widthAnchor.constraint(equalToConstant: ballDiameter).isActive = true
+            ball.heightAnchor.constraint(equalToConstant: ballDiameter).isActive = true
             
             // 번호 단위별 공의 색상 설정
             switch number {
             case 1...9:
-                ball.backgroundColor = UIColor.red
+                ball.backgroundColor = UIColor.systemPink
             case 10...19:
-                ball.backgroundColor = UIColor.orange
+                ball.backgroundColor = UIColor.systemOrange
             case 20...29:
-                ball.backgroundColor = UIColor.gray
+                ball.backgroundColor = UIColor.systemBrown
             case 30...39:
-                ball.backgroundColor = UIColor.blue
+                ball.backgroundColor = UIColor.systemIndigo
             case 40...45:
-                ball.backgroundColor = UIColor.purple
+                ball.backgroundColor = UIColor.systemGreen
             default:
                 ball.backgroundColor = UIColor.white
             }
-            
-            self.addSubview(ball) // 하위 뷰로 올림
-            xPosition += ballDiameter + 5 // 각 공 사이의 간격 조절
+            arrangedSubViews.append(ball) // [UIView]에 공 모양 하나씩 추가(반복문으로)
+        }
+        self.spacing = 10 // 각 공 사이 간격 조절
+        arrangedSubViews.forEach { self.addArrangedSubview($0) // 스택뷰에 UIView 하나씩 추가
         }
     }
 }

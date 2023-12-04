@@ -11,9 +11,11 @@ import UIKit
 // ⭐️ 얘의 폴더 SubViews는 왜 뭔가 아이콘이 살짝 다른 이유?
 class NumTableViewCell: UITableViewCell {
     
+    // 번호 공 모양 만드는 객체 생성(UIStackView)
+    private let ballListView = NumberBallListView()
     
     // 숫자 출력할 레이블
-    let numberLabel: UILabel = {
+    private let numberLabel: UILabel = {
         let label = UILabel()
         //label.text = " "
         //label.font = UIFont.systemFont(ofSize: 18)
@@ -45,7 +47,7 @@ class NumTableViewCell: UITableViewCell {
     
     // '숫자 레이블' + '번호 저장 버튼'묶기 위한 스택뷰 생성
     // ⭐️ 번호 선택 박스가 정사각형이였으면 좋겠는데 그게 잘 안되네
-    let stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let view = UIStackView() // frame(크기기준)과, arrangedSubviews(배열)로도 생성가능
         view.spacing = 2 // 스택뷰 내부의 간격
         view.axis = .horizontal // axis: 축 (묶을때 가로, 세로 방향 결정)(vertical(세로-수직), horizontal(가로-수평)
@@ -54,6 +56,7 @@ class NumTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
     
     // ✅ 번호저장 버튼을 위한 클로저 저장
     // 뷰컨에 있는 클로저를 저장할 예정(셀(자신)을 전달)
@@ -79,14 +82,16 @@ class NumTableViewCell: UITableViewCell {
     }
     
     
-    // 스택뷰
+    // 스택뷰 설정
     private func setupStackView() {
         self.contentView.addSubview(stackView) // 스택뷰를 셀에 올림
         
+        ballListView.translatesAutoresizingMaskIntoConstraints = false
         // 셀에서는 self.addSubview보다 self.contentView.addSubview로 잡는게 더 정확함 ⭐️
         // 스택뷰위에 레이블, 버튼을 배열형태로 올린다.
         stackView.addArrangedSubview(numberLabel)
         stackView.addArrangedSubview(saveButton)
+        numberLabel.addSubview(ballListView) // 넘버레이블위에 ballListView 스택뷰 넣어줌
     }
     
     // 스택뷰 오토레이아웃
@@ -98,6 +103,17 @@ class NumTableViewCell: UITableViewCell {
             stackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
             stackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor)
         ])
+        
+        // ballListView 오토레이아웃(레이블 기준으로)
+        NSLayoutConstraint.activate([
+            ballListView.centerXAnchor.constraint(equalTo: self.numberLabel.centerXAnchor),
+            ballListView.centerYAnchor.constraint(equalTo: self.numberLabel.centerYAnchor)
+        ])
+    }
+    
+    // 공 모양으로 바꾸기 위해 번호 넣어줌(UIStackView)
+    func numbersBallListInsert(numbers: [Int]) {
+        ballListView.displayNumbers(numbers)
     }
     
     // ✅

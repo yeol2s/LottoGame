@@ -24,11 +24,6 @@ final class NumbersGenerateViewController: UIViewController {
     // 테이블뷰 생성(번호 10줄 나열)
     private let numTableView = UITableView()
     
-    // 💡 공 모양 테스트 코드
-    // 번호 공모양 생성 객체 배열
-    var lottoBallArray: [NumberBallListLabel] = []
-//    let lottoBall = NumberBallCreateManager(frame: CGRect(x: 50, y: 50, width: 30, height: 30))
-    
     // 번호 생성 인스턴스 생성
     var numberGenManager: NumberGenManager = NumberGenManager()
     
@@ -255,35 +250,10 @@ extension NumbersGenerateViewController: UITableViewDataSource {
         //let numStringChanged = numberGenManager[indexPath.row]
         //print("테이블뷰 셀 in :\(numStringChanged)")
         
-        // 💡 공모양 만들기 임시코드(삭제 예정)
-        //cell.addSubview(numberGenManager.getNumberBallChange(row: indexPath.row))
-        //cell.configure(with: numberGenManager.numbers[indexPath.row].numbersList)
-        // 여기서 cell.numberLabel에 하위뷰로 번호 공 추가하고 오토레이아웃 해보자.
-        
-        // 💡성준
-        // NumberBallListLabel을 테이블뷰 셀 하위로 넣어서
-        // 테이블뷰 셀에 번호를 넘겨주고 테이블뷰 셀에서 처리할 수 있도록 하자?
-        // 테이블뷰 셀에서 레이블에 객체만들고 접근해서 numberGenManager.numbers[indexPath.row].numbersList를 넘겨서
-        // 셀에서 addSubview()
-        
-        if lottoBallArray.count == indexPath.row {
-            let lottoBall = NumberBallListLabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            lottoBall.displayNumbers(numberGenManager.numbers[indexPath.row].numbersList)
-            lottoBallArray.append(lottoBall)
-        }
-        
-        //lottoBallArray[indexPath.row].translatesAutoresizingMaskIntoConstraints = false
-        
-        lottoBallArray[indexPath.row].center = CGPoint(x: cell.numberLabel.bounds.midX, y: cell.numberLabel.bounds.midY)
-        
-        cell.numberLabel.addSubview(lottoBallArray[indexPath.row])
-
-//        NSLayoutConstraint.activate([
-////            lottoBallArray[indexPath.row].heightAnchor.constraint(equalToConstant: 30),
-////            lottoBallArray[indexPath.row].widthAnchor.constraint(equalToConstant: 30),
-//            lottoBallArray[indexPath.row].centerXAnchor.constraint(equalTo: cell.numberLabel.centerXAnchor),
-//            lottoBallArray[indexPath.row].centerYAnchor.constraint(equalTo: cell.numberLabel.centerYAnchor)
-//        ])
+        // 번호 공 모양으로 그려서 셀에 표시(셀이 공모양 객체 생성하고 번호데이터 받고 addSubView까지 하도록)
+        // 셀 내부에서 (공 그리는)UIStackView 객체 만들고, 번호 데이터를 메서드로 받아서
+        // 레이블에 addSubView
+        cell.numbersBallListInsert(numbers: numberGenManager.numbers[indexPath.row].numbersList)
         
         
         // 매니저의 문자열변환 함수를 호출해서 indexPath를 전달해서mbers 구조체 배열의
