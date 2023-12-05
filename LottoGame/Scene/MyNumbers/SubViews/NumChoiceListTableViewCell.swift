@@ -10,12 +10,15 @@ import UIKit
 // 번호 저장 셀
 class NumChoiceListTableViewCell: UITableViewCell {
     
+    // 번호 공 모양 만드는 객체 생성(UIStackView)
+    private let ballListView = NumberBallListView()
+    
     // 숫자 출력 레이블
     let numberLabel: UILabel = {
         let label = UILabel()
-        label.text = " "
+        //label.text = " "
         label.font = UIFont.systemFont(ofSize: 18)
-        label.textAlignment = .center
+        //label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.layer.cornerRadius = 5
         label.clipsToBounds = true
@@ -70,21 +73,29 @@ class NumChoiceListTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // 스택뷰 함수
+    // 스택뷰 설정
     private func setupStackView() {
         self.contentView.addSubview(stackView)
         
+        ballListView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(numberLabel)
         stackView.addArrangedSubview(saveButton)
+        numberLabel.addSubview(ballListView) // 공 모양 addSubView
     }
     
     // 스택뷰 오토레이아웃
     private func stackViewConstraints() {
         NSLayoutConstraint.activate([
-            stackView.heightAnchor.constraint(equalToConstant: 40),
+            stackView.heightAnchor.constraint(equalToConstant: 50),
             stackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
             stackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
             stackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor)
+        ])
+        
+        // ballListView 오토레이아웃(레이블 기준으로)
+        NSLayoutConstraint.activate([
+            ballListView.centerXAnchor.constraint(equalTo: self.numberLabel.centerXAnchor),
+            ballListView.centerYAnchor.constraint(equalTo: self.numberLabel.centerYAnchor)
         ])
     }
     
@@ -96,6 +107,11 @@ class NumChoiceListTableViewCell: UITableViewCell {
         
         // 클로저를 통해 뷰컨에 셀 자신 전달
         saveUnCheckButton(self)
+    }
+    
+    // 번호 받아서 공 모양으로 바꾸기 위한 메서드(UIStackView)
+    func numbersBallListInsert(numbers: [Int]) {
+        ballListView.displayNumbers(numbers)
     }
     
 }

@@ -13,7 +13,6 @@ final class MyNumbersViewController: UIViewController {
     // 번호저장 매니저 인스턴스 생성
     var saveManager: NumberSaveManager = NumberSaveManager()
     
-    
     // 내 번호 테이블뷰 생성
     // ⭐️ 그냥 백그라운드컬러 하나 하려고 이렇게 클로저 실행문으로 해도 괜찮은가?
     // ⭐️ 레이블 10개만 표시하면되는데 테이블뷰보다 나은 대안이 있나? 그냥 이대로 써도 무방할까?
@@ -158,7 +157,11 @@ extension MyNumbersViewController: UITableViewDataSource {
         // 일단 만들어놓은 테이블뷰셀 리턴
         // dequeueReusableCell 테이블뷰 셀을을 재사용하기 위해 사용되는 메서드
         let cell = numChoiceTableView.dequeueReusableCell(withIdentifier: "NumChoiceCell", for: indexPath) as! NumChoiceListTableViewCell
-        cell.numberLabel.text = saveManager.getSaveData(row: indexPath.row)
+        
+        //⚠️(old) 번호를 정수 -> 문자열로 변경했을때 사용
+        //cell.numberLabel.text = saveManager.getSaveData(row: indexPath.row)
+        // 매니저한테 유저디폴츠 데이터를 뽑아와서 셀의 공 모양으로 변환하는 메서드에 전달해서 셀에서 addSubView함
+        cell.numbersBallListInsert(numbers: saveManager.defaultsTemp[indexPath.row])
         
         // 셀과 연결된 클로저 호출(어떤 번호를 선택해제 할껀지)
         // ⭐️와일드카드를 쓰고 sender를 뺐는데 이렇게 하는게 맞을까?(굳이 콜백함수가 필요없는 경우?)

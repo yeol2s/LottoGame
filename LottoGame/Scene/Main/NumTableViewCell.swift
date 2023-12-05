@@ -111,7 +111,7 @@ class NumTableViewCell: UITableViewCell {
         ])
     }
     
-    // 공 모양으로 바꾸기 위해 번호 넣어줌(UIStackView)
+    // 번호 받아서 공 모양으로 바꾸기 위한 메서드(UIStackView)
     func numbersBallListInsert(numbers: [Int]) {
         ballListView.displayNumbers(numbers)
     }

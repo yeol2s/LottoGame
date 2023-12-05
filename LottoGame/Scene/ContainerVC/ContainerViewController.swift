@@ -112,8 +112,8 @@ extension ContainerViewController: MenuViewControllerDelegate {
             qrVC.modalPresentationStyle = .fullScreen
             present(qrVC, animated: true)
             break
-        case .map:
-            break
+//        case .map: // 보류
+//            break
         }
     }
     

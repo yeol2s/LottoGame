@@ -25,7 +25,7 @@ final class MenuViewController: UIViewController, UITableViewDelegate, UITableVi
         case home = "메인 화면"
         case info = "회차별 당첨 정보"
         case qrCode = "QR Code"
-        case map = "판매점 찾기"
+//        case map = "판매점 찾기" // 보류
         
     // 열거형 내부에 get 계산속성 구현(해당하는 case에 이미지 이름을 리턴해서 SF 기호 이름을 리턴시킴)
     // 계산속성은 실질적으로 메서드이다! 잊지말자
@@ -37,8 +37,8 @@ final class MenuViewController: UIViewController, UITableViewDelegate, UITableVi
                 return "info.bubble"
             case .qrCode:
                 return "qrcode"
-            case .map:
-                return "map"
+//            case .map:
+//                return "map" // 보류
             }
         }
     }

@@ -250,19 +250,19 @@ extension NumbersGenerateViewController: UITableViewDataSource {
         //let numStringChanged = numberGenManager[indexPath.row]
         //print("테이블뷰 셀 in :\(numStringChanged)")
         
+        // indexPath.row를 가지고 현재 번호를 가져옴
+        let numbers = numberGenManager.numbers[indexPath.row].numbersList
+        
         // 번호 공 모양으로 그려서 셀에 표시(셀이 공모양 객체 생성하고 번호데이터 받고 addSubView까지 하도록)
         // 셀 내부에서 (공 그리는)UIStackView 객체 만들고, 번호 데이터를 메서드로 받아서
         // 레이블에 addSubView
-        cell.numbersBallListInsert(numbers: numberGenManager.numbers[indexPath.row].numbersList)
+        cell.numbersBallListInsert(numbers: numbers)
         
-        
-        // 매니저의 문자열변환 함수를 호출해서 indexPath를 전달해서mbers 구조체 배열의
-        // 정수들을 문자열로 변환해서 리턴받음
-        // 💡 임시 주석
-        let number = numberGenManager.getNumberStringChange(row: indexPath.row)
-        //cell.numberLabel.text = number
         cell.selectionStyle = .none // 셀 선택시 회색으로 안변하게 하는 설정
-        //print("셀 재구성:\(indexPath.row)")
+        
+        // ⚠️(old) 번호를 정수에서 문자열로 변경
+        //let number = numberGenManager.getNumberStringChange(row: indexPath.row)
+        //cell.numberLabel.text = number
         
         // ✅ 번호 저장 버튼 구현을 정리하자면
         // 셀에서 일단 뷰컨과 연결되는 클로저를 정의하고 셀 자신을 전달하고 뷰컨에서 senderCell로
@@ -322,11 +322,15 @@ extension NumbersGenerateViewController: UITableViewDataSource {
         // *(업그레이드된, 번호 저장화면에서 하트 해제하면 메인 화면에서도 하트가 같이 해제되게 구현)
         // (new)number(번호 문자열)를 매니저의 isBookmarkNumbers에 파라미터로 넣어주고 반환값으로 Bool 타입을 받아온 후 Bool 반환값을 셀의 setButtonStatus에 보내준다.(setButtonStatus는 Bool값을 가지고 하트를 표시할건지, 안할건지를 결정)
         // number에는 현재 해당 인덱스를 기준으로 번호가 들어가있다.
-        cell.setButtonStatus(isSaved: numberGenManager.isBookmarkNumbers(numbers: number))
+        // ⚠️(old) 번호를 정수에서 문자열로 변경해서 사용했을때 코드
+//        cell.setButtonStatus(isSaved: numberGenManager.isBookmarkNumbers(numbers: number))
+        // (new) 번호를 정수 그대로 사용했을때 코드
+        cell.setButtonStatus(isSaved: numberGenManager.isBookmarkNumbers(numbers: numbers))
+        
         
         // (내 번호)저장된 번호에서 하트 해제시 토글 상태(isSaved)도 false로 바꿔주기 위함.
         // ⭐️이 부분은 위에 하트 해제와 같이 조금 묶어서 간결하게 구현할 수 있을 것 같은데 생각해보자.
-        if !numberGenManager.isBookmarkNumbers(numbers: number) {
+        if !numberGenManager.isBookmarkNumbers(numbers: numbers) {
             numberGenManager.isBookmarkUnsavedToggle(row: indexPath.row)
         }
 

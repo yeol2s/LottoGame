@@ -103,18 +103,19 @@ final class NumberGenManager {
         numbers.removeAll() // 초기화
         defaultsTemp.removeAll() // 임시배열 초기화
     }
-    
+  
+    // ⚠️(old) 번호 정수로 받아서 문자열로 반환
     // 전체 번호(정수) 배열을 문자열로 변환해서 얻기
-    func getNumberStringChange(row: Int) -> String {
-        print("번호가 생성되었습니다.")
-        // numbers 구조체 배열의 row로 인덱스 접근해서 가져옴
-        let numStringChange = numbers[row]
-        // 가져온 numbers 구조체 배열을 map함수를 통해 문자열 변환
-        // 문자열로 받아올 것이고 파라미터 생략이니까 String 타입 명시
-        let numStrig = numStringChange.numbersList.map { String ($0) }
-        // 공백으로 분리해서 각각 문자열로 반환
-        return numStrig.joined(separator: "   ")
-    }
+//    func getNumberStringChange(row: Int) -> String {
+//        print("번호가 생성되었습니다.")
+//        // numbers 구조체 배열의 row로 인덱스 접근해서 가져옴
+//        let numStringChange = numbers[row]
+//        // 가져온 numbers 구조체 배열을 map함수를 통해 문자열 변환
+//        // 문자열로 받아올 것이고 파라미터 생략이니까 String 타입 명시
+//        let numStrig = numStringChange.numbersList.map { String ($0) }
+//        // 공백으로 분리해서 각각 문자열로 반환
+//        return numStrig.joined(separator: "   ")
+//    }
     
     
     // ⭐️ Result 타입으로 구현한거 괜찮은 로직인지?
@@ -222,21 +223,35 @@ final class NumberGenManager {
             }
         }
     }
-    
+
+    // ⚠️(old) 번호를 정수에서 문자열로 변경해서 사용했을때 코드
     // 메인화면의 번호를 유저디폴츠와 현재 데이터와 비교해서 있는지 없는지 확인
     // 메인화면에 하트표시후 번호저장 화면에서 하트를 제거했을때 메인화면에서도 해당 번호의 하트가 지워지도록.
     // 파라미터로 현재 셀의 번호를 받는다.(인덱스 기준 받는 번호가 달라짐)
-    func isBookmarkNumbers(numbers: String) -> Bool {
-        print("isBook 실행")
+//    func isBookmarkNumbers(numbers: String) -> Bool {
+//        print("isBook 실행")
+//        if let allData = userDefaults.array(forKey: saveKey) as? [[Int]] {
+//            for value in allData {
+//                // mpa은 배열을 새롭게 매핑해서 새로운 배열로 리턴
+//                //print("벨류:\(value)")
+//                let changeData = value.map{ String($0) }
+//                // joined는 배열을 -> 하나의 문자열로 반환
+//                if numbers == changeData.joined(separator: "   ") {
+//                    return true
+//                }
+//            }
+//        }
+//        return false
+//    }
+    
+    // (new) 번호를 정수 그대로 사용했을때 코드
+    // 메인화면의 번호를 유저디폴츠와 현재 데이터와 비교해서 있는지 없는지 확인
+    // 메인화면에 하트표시후 번호저장 화면에서 하트를 제거했을때 메인화면에서도 해당 번호의 하트가 지워지도록.
+    // 파라미터로 현재 셀의 번호를 받는다.(인덱스 기준 받는 번호가 달라짐)
+    func isBookmarkNumbers(numbers: [Int]) -> Bool {
         if let allData = userDefaults.array(forKey: saveKey) as? [[Int]] {
-            for value in allData {
-                // mpa은 배열을 새롭게 매핑해서 새로운 배열로 리턴
-                //print("벨류:\(value)")
-                let changeData = value.map{ String($0) }
-                // joined는 배열을 -> 하나의 문자열로 반환
-                if numbers == changeData.joined(separator: "   ") {
-                    return true
-                }
+            if allData.contains(numbers) {
+                return true
             }
         }
         return false

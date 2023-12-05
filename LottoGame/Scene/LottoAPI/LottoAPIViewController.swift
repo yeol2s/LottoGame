@@ -171,9 +171,6 @@ class LottoAPIViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
-    
-    
 
     // 레이블 배열
     private lazy var setLabels = [drawDateLabel, drawDate, drawRound, numbersStackView, ticketStackView, winMoneyStackView]
@@ -183,12 +180,21 @@ class LottoAPIViewController: UIViewController {
         view.backgroundColor = mintGreenColor
         setupAPI() // 네트워크 요청 작업 메서드
         setupStackView() // 스택뷰 설정 및 오토레이아웃 메서드 호출
+        naviBackButtonTitle() // 네비게이션바 타이틀 변경("뒤로 가기")
     }
     
     // 스크린에서 뷰가 사라진 후 호출(뷰컨 생명주기)
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         navigationController?.popViewController(animated: true) // 이전 메인화면으로 되돌림
+    }
+    
+    // 네비게이션바 타이틀 변경
+    private func naviBackButtonTitle() {
+        let newBackButtonTitle = "뒤로 가기"
+        let backButton = UIBarButtonItem()
+        backButton.title = newBackButtonTitle
+        navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
     }
     
     // 스택뷰 설정
@@ -262,6 +268,11 @@ class LottoAPIViewController: UIViewController {
         ])
     }
     
+    // 번호 받아서 공 모양으로 바꾸기 위한 메서드(UIStackView)
+    private func numbersBallListInsert() {
+        // 일단 이따가 하자.
+    }
+    
     // 🔶Date를 가지고 날짜별 회차로 조회가 자동으로 되게끔 설정하는 함수 구현하자.
     // 날짜 + 시간 9시를 기준으로 회차를 바꾸고 리턴하면 될 것이다?
     // 로또 1회차는 2002-12-07
@@ -323,6 +334,10 @@ class LottoAPIViewController: UIViewController {
                 print("로또 API 데이터를 불러오지 못했습니다.")
             }
         }
+    }
+    
+    deinit {
+        print("api뷰컨 메모리 해제")
     }
     
 }
