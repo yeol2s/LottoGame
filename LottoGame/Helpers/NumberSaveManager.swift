@@ -29,7 +29,7 @@ final class NumberSaveManager {
         print("userDefaults 데이터가 없습니다.")
         // ⚠️(old) 유저디폴츠 데이터 정수 -> 문자열 변환해서 저장
         // 일단 유저디폴츠에 데이터를 키를 가지고 가져와서 임시 배열에 문자열로 변경 (문자열 배열 형태로)
-        // 그리고 compactMap, map 고차함수를 같이 사용했는데 이유는 [[Int]] 타입이므로 중첩된 배열을 풀어서 작업하기 위함(map함수로 각 내부 배열을 String으로 변환하고 새배열로 결과를 매핑해서 compactMap함수로 중첩 배열을 풀고 각 내부 배열을 nil이 아닌 새로운 배열로 반환)
+        // 그리고 compactMap, map 고차함수를 같이 사용했는데 이유는 [[Int]] 타입이므로 중첩된 배열을 풀어서 작업하기 위함(map함수로 각 내부 배열을 String으로 변환하고 새배열로 결과를 매핑해서 compactMap함수로 중첩 배열을 풀고 각 내부 배열을 nil은 버리고 새로운 배열로 반환)
 //        if let saveData = userDefaults.array(forKey: saveKey) as? [[Int]] {
 //            defaultsTemp = saveData.compactMap{ dataArray in
 //                return dataArray.map { intValue in

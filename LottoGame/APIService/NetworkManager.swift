@@ -28,19 +28,21 @@ struct LottoInfo {
     let firstWinMoney: String // 1등 1개당 당첨금
     let firstTicketsCount: String // 1등 당첨 복권수
     //let num1, num2, num3, num4, num5, num6: Int // 1~6 번호
-    let numbers: String // 1 ~ 6 번호
-    let bnusNum: String // 보너스 번호
+    //let numbers: String // 1 ~ 6 번호 ⚠️(old) 문자열이였을때 사용
+    let numbers: [Int] // 배열로 받아옴
+    let bnusNum: Int // 보너스 번호
     
     
     // 생성자로 넣어줌? (당첨날짜, 1등당첨금액, 1등당첨복권수)
     // 원래 굳이 생성자 안해도 멤버와이즈 이니셜라이저로 생성자가 자동 구현되는데 일단 생성
-    init(drawData: String, drwNo: Int, firstWinMoney: String, firstTicketsCount: Int, numbers: String, bnusNum: Int) {
+    init(drawData: String, drwNo: Int, firstWinMoney: String, firstTicketsCount: Int, numbers: [Int], bnusNum: Int) {
         self.drawDate = drawData
         self.drwNo = String(drwNo) // (당첨회차) 정수->문자열 변환
         self.firstWinMoney = firstWinMoney
         self.firstTicketsCount = String(firstTicketsCount) // (당첨복권수)정수->문자열 변환
-        self.numbers = numbers // 배열로 받아올 것
-        self.bnusNum = String(bnusNum) // (보너스번호)정수->문자열 변환
+        //self.numbers = numbers // ⚠️(old) 배열로 받아올 것(문자열이였을때 사용)
+        self.numbers = numbers // 배열로 생성
+        self.bnusNum = bnusNum
     }
     
 }
@@ -108,10 +110,13 @@ struct NetworkManager {
         do {
             let decodeData = try decoder.decode(Welcome.self, from: lottoData) // lottoData(JSON?)를 하나하나 Welcome(받아온 데이터형태)로 바꾼 다음 decodeData에 할당?
             
-            // 일단 번호는 배열로 만들고
+            // 일단 번호는 배열로 만들고 // ⚠️(old) 번호를 문자열로 사용했을때
             //let numbers = [decodeData.drwtNo1, decodeData.drwtNo2, decodeData.drwtNo3, decodeData.drwtNo4, decodeData.drwtNo5, decodeData.drwtNo6]
             // 번호 배열로 받아서 문자열 변환해서 리턴받음
-            let numbers = numbersStringChange([decodeData.drwtNo1, decodeData.drwtNo2, decodeData.drwtNo3, decodeData.drwtNo4, decodeData.drwtNo5, decodeData.drwtNo6])
+            //let numbers = numbersStringChange([decodeData.drwtNo1, decodeData.drwtNo2, decodeData.drwtNo3, decodeData.drwtNo4, decodeData.drwtNo5, decodeData.drwtNo6])
+            
+            // 1~6 번호 정수들을 배열로 만들어줌
+            let numbers: [Int] = [decodeData.drwtNo1, decodeData.drwtNo2, decodeData.drwtNo3, decodeData.drwtNo4, decodeData.drwtNo5, decodeData.drwtNo6]
             
             // (사용자 정의 구조체)로또 구조체에 디코딩된 데이터를 넣어준다.
             let lottoData = LottoInfo(drawData: decodeData.drwNoDate, drwNo: decodeData.drwNo, firstWinMoney: addCommas(number: decodeData.firstWinamnt), firstTicketsCount: decodeData.firstPrzwnerCo, numbers: numbers, bnusNum: decodeData.bnusNo)
@@ -125,13 +130,14 @@ struct NetworkManager {
         }
     }
     
+    // ⚠️(old) 번호를 문자열로 사용했을때
     // 번호 정수 배열로 받아서 문자열로 리턴
     // 근데 보너스 번호는 어떻게하지?
-    private func numbersStringChange(_ numbers: [Int]) -> String{
-        // 번호를 배열로 만들지말고 문자열로 만들어볼까?
-        let numbersString = numbers.map { String($0) } // 일단 문자열로 변환하고
-        return numbersString.joined(separator: "   ")
-    }
+//    private func numbersStringChange(_ numbers: [Int]) -> String{
+//        // 번호를 배열로 만들지말고 문자열로 만들어볼까?
+//        let numbersString = numbers.map { String($0) } // 일단 문자열로 변환하고
+//        return numbersString.joined(separator: "   ")
+//    }
     
     // 숫자 포맷터 함수(천단위로 쉼표를 추가하고 문자열로 반환)
     private func addCommas(number: Int) -> String {

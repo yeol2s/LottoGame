@@ -17,6 +17,9 @@ class LottoAPIViewController: UIViewController {
     // 🔶 옵셔널로 선언하는게 좋지?
     private var lottoInfo: LottoInfo?
     
+    // 번호 공 모양 만드는 객체 생성(UIStackView)
+    private let ballListView = NumberBallListView()
+    
     // 컬러 설정
     // 🔶 컬러 같은 것들 한곳에 모아서 설정한다고 했었지.. 어떻게 하는게 좋음?
     // 그리고 /255.0 쓰는것과, 아래처럼 일일이 속성마다 넣는 것은 안좋지?
@@ -72,9 +75,9 @@ class LottoAPIViewController: UIViewController {
     // 1~6(보너스)숫자 출력할 레이블
     private let numbersLabel: UILabel = {
         let label = UILabel()
-        label.text = " "
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.textAlignment = .center
+        //label.text = " "
+        //label.font = UIFont.systemFont(ofSize: 18)
+        //label.textAlignment = .center
         label.backgroundColor = .white
         label.layer.borderWidth = 2.0
         label.layer.borderColor = UIColor.black.cgColor
@@ -171,7 +174,7 @@ class LottoAPIViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
+    
     // 레이블 배열
     private lazy var setLabels = [drawDateLabel, drawDate, drawRound, numbersStackView, ticketStackView, winMoneyStackView]
     
@@ -201,6 +204,8 @@ class LottoAPIViewController: UIViewController {
     private func setupStackView() {
         numbersStackView.addArrangedSubview(numbersLabelTitle)
         numbersStackView.addArrangedSubview(numbersLabel)
+        ballListView.translatesAutoresizingMaskIntoConstraints = false
+        numbersLabel.addSubview(ballListView) // 넘버레이블위에 공변환 뷰 올려줌
         ticketStackView.addArrangedSubview(firstTicketCountTitle)
         ticketStackView.addArrangedSubview(firstTicketCount)
         winMoneyStackView.addArrangedSubview(firstWinMoneyTitle)
@@ -241,6 +246,11 @@ class LottoAPIViewController: UIViewController {
             numbersLabelTitle.heightAnchor.constraint(equalToConstant: 40),
             numbersLabel.heightAnchor.constraint(equalToConstant: 50),
         ])
+        // ballListView 오토레이아웃(레이블 기준으로)
+        NSLayoutConstraint.activate([
+            ballListView.centerXAnchor.constraint(equalTo: numbersLabel.centerXAnchor),
+            ballListView.centerYAnchor.constraint(equalTo: numbersLabel.centerYAnchor)
+        ])
     }
     
     private func setFirstTicketCountConstraints() { // '당첨 복권수' 레이블 오토레이아웃
@@ -269,8 +279,10 @@ class LottoAPIViewController: UIViewController {
     }
     
     // 번호 받아서 공 모양으로 바꾸기 위한 메서드(UIStackView)
-    private func numbersBallListInsert() {
-        // 일단 이따가 하자.
+    private func numbersBallListInsert(arrayNumbers numbers: [Int], bonusNumber bnsNumber: Int) {
+        
+        ballListView.displayNumbers(numbers, bns: bnsNumber) // API로 번호를 전달받아 UIStackView객체로 전달하고 addSubView진행(표시는 numbersLabel에 addSubView)
+        // API뷰컨내에서 numbersLabel에 ballListView(UIStackView)를 addSubView 하고 오토레이아웃
     }
     
     // 🔶Date를 가지고 날짜별 회차로 조회가 자동으로 되게끔 설정하는 함수 구현하자.
@@ -326,7 +338,9 @@ class LottoAPIViewController: UIViewController {
                 DispatchQueue.main.async { // UI를 다시그리는 작업은 메인큐에서!
                     self.drawDate.text = result.drawDate
                     self.drawRound.text = result.drwNo + "회차"
-                    self.numbersLabel.text = result.numbers + "   +   \(result.bnusNum)"
+                    // ⚠️(old) 번호를 문자열로 사용했을때
+                    //self.numbersLabel.text = result.numbers + "   +   \(result.bnusNum)"
+                    self.numbersBallListInsert(arrayNumbers: result.numbers, bonusNumber: result.bnusNum) // API뷰컨 내부 메서드에 API 전달받은 번호를 전달해줌
                     self.firstTicketCount.text = result.firstTicketsCount + "장"
                     self.firstWinMoney.text = result.firstWinMoney + "원"
                 }
