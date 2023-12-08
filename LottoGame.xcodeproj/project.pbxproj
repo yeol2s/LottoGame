@@ -11,9 +11,11 @@
 		963B6DBA2ABD652500F6B926 /* NumberGenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963B6DB92ABD652500F6B926 /* NumberGenManager.swift */; };
 		964AC65F2AD90BB800813C4F /* NumberSaveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964AC65E2AD90BB800813C4F /* NumberSaveManager.swift */; };
 		964FC2D62AF162C300EE08AD /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964FC2D52AF162C300EE08AD /* NetworkManager.swift */; };
+		966638512B22B13C00860E9C /* NumberBallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966638502B22B13C00860E9C /* NumberBallView.swift */; };
 		9689F3C72B103ECF0042D14F /* ReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9689F3C62B103ECF0042D14F /* ReaderView.swift */; };
 		969DFB072AFEC49900D739AC /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969DFB062AFEC49900D739AC /* MenuViewController.swift */; };
 		96B9D6442B16FEFB00943488 /* QRcodeReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9D6432B16FEFB00943488 /* QRcodeReaderViewController.swift */; };
+		96C94B3D2B2167E900E78F16 /* AddNumbersCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C94B3C2B2167E900E78F16 /* AddNumbersCollectionViewCell.swift */; };
 		96CCE4602AF16CE300858F90 /* LottoAPIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CCE45F2AF16CE300858F90 /* LottoAPIViewController.swift */; };
 		96D3CC832AB659E3007FE78B /* NumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D3CC822AB659E3007FE78B /* NumTableViewCell.swift */; };
 		96D973F92ACD286C00577B22 /* NumChoiceListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D973F82ACD286C00577B22 /* NumChoiceListTableViewCell.swift */; };
@@ -34,9 +36,11 @@
 		963B6DB92ABD652500F6B926 /* NumberGenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberGenManager.swift; sourceTree = "<group>"; };
 		964AC65E2AD90BB800813C4F /* NumberSaveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberSaveManager.swift; sourceTree = "<group>"; };
 		964FC2D52AF162C300EE08AD /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		966638502B22B13C00860E9C /* NumberBallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberBallView.swift; sourceTree = "<group>"; };
 		9689F3C62B103ECF0042D14F /* ReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderView.swift; sourceTree = "<group>"; };
 		969DFB062AFEC49900D739AC /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		96B9D6432B16FEFB00943488 /* QRcodeReaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRcodeReaderViewController.swift; sourceTree = "<group>"; };
+		96C94B3C2B2167E900E78F16 /* AddNumbersCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNumbersCollectionViewCell.swift; sourceTree = "<group>"; };
 		96CCE45F2AF16CE300858F90 /* LottoAPIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottoAPIViewController.swift; sourceTree = "<group>"; };
 		96D3CC822AB659E3007FE78B /* NumTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumTableViewCell.swift; sourceTree = "<group>"; };
 		96D973F82ACD286C00577B22 /* NumChoiceListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumChoiceListTableViewCell.swift; sourceTree = "<group>"; };
@@ -182,6 +186,8 @@
 		96D973F72ACD280000577B22 /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
+				966638502B22B13C00860E9C /* NumberBallView.swift */,
+				96C94B3C2B2167E900E78F16 /* AddNumbersCollectionViewCell.swift */,
 				96D973F82ACD286C00577B22 /* NumChoiceListTableViewCell.swift */,
 			);
 			path = SubViews;
@@ -301,8 +307,10 @@
 				96B9D6442B16FEFB00943488 /* QRcodeReaderViewController.swift in Sources */,
 				96FFB90D2AB4BFF600FAD765 /* NumbersGenerateViewController.swift in Sources */,
 				96FFB9092AB4BFF600FAD765 /* AppDelegate.swift in Sources */,
+				966638512B22B13C00860E9C /* NumberBallView.swift in Sources */,
 				964FC2D62AF162C300EE08AD /* NetworkManager.swift in Sources */,
 				96FFB9132AB4BFF600FAD765 /* LottoGame.xcdatamodeld in Sources */,
+				96C94B3D2B2167E900E78F16 /* AddNumbersCollectionViewCell.swift in Sources */,
 				96D973F92ACD286C00577B22 /* NumChoiceListTableViewCell.swift in Sources */,
 				96FFB9222AB4C4B800FAD765 /* NumbersGen.swift in Sources */,
 				96FFB9202AB4C47E00FAD765 /* MyNumbersViewController.swift in Sources */,

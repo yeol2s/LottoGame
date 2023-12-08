@@ -20,7 +20,7 @@ class NumTableViewCell: UITableViewCell {
         //label.text = " "
         //label.font = UIFont.systemFont(ofSize: 18)
         //label.textAlignment = .center
-        //label.translatesAutoresizingMaskIntoConstraints = false // 자동잡아주는 기능 끔
+        label.translatesAutoresizingMaskIntoConstraints = false // 자동잡아주는 기능 끔
         
         // 레이블 둥글게
         label.layer.cornerRadius = 5

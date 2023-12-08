@@ -181,6 +181,9 @@ final class NumbersGenerateViewController: UIViewController {
     // 번호 리셋버튼 셀렉터
     @objc private func resetButtonTapped() {
         
+        // 번호가 생성되어 있을때만 실행되도록 가드문
+        guard !numberGenManager.numbers.isEmpty else { return }
+        
         // Alert 설정(UIAlertController부터 인스턴스 생성)
         let alert = UIAlertController(title: "번호 초기화", message: "번호를 초기화 하시겠습니까?", preferredStyle: .alert)
         

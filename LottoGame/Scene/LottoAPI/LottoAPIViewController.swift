@@ -175,7 +175,7 @@ class LottoAPIViewController: UIViewController {
         return view
     }()
     
-    // 레이블 배열
+    // 레이블 배열(레이블, 스택뷰등)
     private lazy var setLabels = [drawDateLabel, drawDate, drawRound, numbersStackView, ticketStackView, winMoneyStackView]
     
     override func viewDidLoad() {

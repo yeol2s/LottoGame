@@ -19,6 +19,7 @@ final class NumberBallListView: UIStackView {
         // 메모리에서 제거되는 작업은 아님(다른 객체가 뷰에 대한 강한 참조를 가지고 있지 않다면 해당 뷰는 메모리에서 해제되긴 함 - 한마디로 nil)
         // forEach 고차함수 -> 각각을 가지고 일을하고 끝냄(배열리턴 x - 리턴타입 없음)
         // 한마디로 새로운 공 모양의 숫자를 표시하기 전에, 기존의 숫자를 모두 지워 새로운 숫자를 표시
+        // 이걸 안하면 테이블뷰 셀이 추가로 생성될 때 번호가 겹침
         self.subviews.forEach { $0.removeFromSuperview() }
         
         let ballDiameter: CGFloat = 40 // 공의 지름

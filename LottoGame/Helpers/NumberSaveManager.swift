@@ -19,7 +19,7 @@ final class NumberSaveManager {
     //var defaultsTemp: [[String]] = []
     var defaultsTemp: [[Int]] = [] // (new)유저디폴츠 데이터 임시 저장 공간 배열
     
-    // 유저디폴츠에 저장된 번호를 가져와서 타입 변환([[Int]] -> [[String]]) 및 데이터 갱신
+    // 유저디폴츠에 저장된 번호를 가져와서 데이터 갱신
     func setSaveData() {
         
         if let saveDate = userDefaults.array(forKey: saveKey) as? [[Int]] {
