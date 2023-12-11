@@ -89,8 +89,8 @@ final class MyNumbersViewController: UIViewController {
     // 선택된 번호 출력할 레이블
     private lazy var numberLabel: UILabel = {
         let label = UILabel()
-        label.text = "여기에 번호가 입력된다."
-        label.font = UIFont.systemFont(ofSize: 18)
+//        label.text = "여기에 번호가 입력된다."
+//        label.font = UIFont.systemFont(ofSize: 18)
         label.layer.cornerRadius = 5
         label.clipsToBounds = true
         label.layer.borderWidth = 2.0
@@ -143,9 +143,15 @@ final class MyNumbersViewController: UIViewController {
     // 뷰가 나타나기 전
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        saveManager.setSaveData() // UserDefaults 데이터 갱신(set)
+        saveManager.LoadSaveData() // UserDefaults 데이터 갱신(set)
         numChoiceTableView.reloadData() // 테이블뷰 리로드(⭐️이렇게 리로드 계속 되는것이 비효율적인가?)
         print("저장 번호 화면이 다시 나타났습니다.")
+    }
+    
+    // 뷰가 사라지고난 후
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        resetAddNumberView() // (직접)저장중인 번호 초기화
     }
     
     
@@ -211,13 +217,13 @@ final class MyNumbersViewController: UIViewController {
     private func setupAddStackViewConstraints() {
         addNumbersCollectionView.backgroundColor = .clear
         setupButtonConstraints()
+        setupBallListViewConstraints() // 넘버레이블 Ball 오토레이아웃
         
         for views in setViews {
             addNumbersStackView.addArrangedSubview(views)
         }
 
         view.addSubview(addNumbersStackView) // 하위뷰로 스택뷰 추가
-        numberLabel.addSubview(ballListView) // ❗️ (테스트)넘버레이블에 번호 공바꾸기 뷰 추가
         
         addNumbersCollectionView.translatesAutoresizingMaskIntoConstraints = false
         ballListView.translatesAutoresizingMaskIntoConstraints = false // 테스트
@@ -225,13 +231,9 @@ final class MyNumbersViewController: UIViewController {
             addNumbersStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             addNumbersStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             addNumbersStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            addNumbersStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
-        ])
-        
-        // ❗️ (테스트)공바꾸기 뷰 오토레이아웃
-        NSLayoutConstraint.activate([
-            ballListView.centerXAnchor.constraint(equalTo: self.numberLabel.centerXAnchor),
-            ballListView.centerYAnchor.constraint(equalTo: self.numberLabel.centerYAnchor)
+            addNumbersStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80),
+            
+            numberLabel.heightAnchor.constraint(equalToConstant: 50) // 넘버레이블 직접 오토레이아웃(번호 공 표시 위해)
         ])
         
     }
@@ -243,7 +245,12 @@ final class MyNumbersViewController: UIViewController {
     }
     
     private func setupBallListViewConstraints() {
-        
+        numberLabel.addSubview(ballListView)
+        //공바꾸기 뷰 오토레이아웃
+        NSLayoutConstraint.activate([
+            ballListView.centerXAnchor.constraint(equalTo: self.numberLabel.centerXAnchor),
+            ballListView.centerYAnchor.constraint(equalTo: self.numberLabel.centerYAnchor)
+        ])
     }
     
 
@@ -251,8 +258,8 @@ final class MyNumbersViewController: UIViewController {
     // 저장된 번호 리셋
     @objc func resetSavedDataTapped() {
         
-        // 저장된 번호가 있을때만 실행되도록 가드문
-        guard !saveManager.defaultsTemp.isEmpty else { return }
+        // 저장된 번호가 있을때만 실행되도록 가드문(저장된 번호가 1개 이상일때만)
+        guard saveManager.getSaveDataCount() >= 1 else { return }
         
         let alert = UIAlertController(title: "번호 초기화", message: "현재 저장된 번호가 초기화됩니다. 계속하시겠습니까?", preferredStyle: .alert)
         
@@ -280,15 +287,29 @@ final class MyNumbersViewController: UIViewController {
     
     // (직접)번호 추가 컬렉션뷰 '닫는' 버튼 셀렉터 메서드
     @objc func addNumberViewCloseTapped() {
-        addNumbersStackView.removeFromSuperview() // 부모뷰로부터 뷰 삭제(화면 닫음)
+        resetAddNumberView() // (직접)번호 추가화면 리셋
         resetButton.isEnabled = true // 리셋 버튼 활성화
     }
     
     // (직접)번호 추가 컬렉션뷰 '추가' 버튼 셀렉터 메서드
     @objc func addNumberViewTapped() {
-        
+        saveManager.setSaveData(selectedNumbers.sorted()) // 번호 메서드를 통해 유저디폴츠로 넣어주고
+        resetAddNumberView() // (직접)번호 추가화면 리셋
         resetButton.isEnabled = true // 리셋 버튼 활성화
+        numChoiceTableView.reloadData() // 테이블뷰 리로드
     }
+    
+    
+    // (직접)번호 추가화면 리셋(저장중인 번호 및 뷰 종료)
+    private func resetAddNumberView() {
+        if !selectedNumbers.isEmpty { // 현재 (직접)저장하고 있는 번호가 있다면
+            print("isEmpty 실행")
+            selectedNumbers = [] // 현재 (직접)저장중인 번호 초기화
+            ballListView.displayNumbers(selectedNumbers) // ballView 번호 초기화
+        }
+        addNumbersStackView.removeFromSuperview() // (직접)번호추가 화면 부모뷰로부터 뷰 삭제(화면 닫음)
+    }
+    
 }
 
 // 테이블뷰 델리게이트 (테이블뷰 일어나는 일 관련(동작))
@@ -301,7 +322,7 @@ extension MyNumbersViewController: UITableViewDelegate {
 extension MyNumbersViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return saveManager.defaultsTemp.count // 저장매니저 임시 저장 배열개수로 셀 표시
+        return saveManager.getSaveDataCount() // 저장매니저 임시 저장 배열개수로 셀 표시
 
     }
 
@@ -312,8 +333,8 @@ extension MyNumbersViewController: UITableViewDataSource {
         
         //⚠️(old) 번호를 정수 -> 문자열로 변경했을때 사용
         //cell.numberLabel.text = saveManager.getSaveData(row: indexPath.row)
-        // 매니저한테 유저디폴츠 데이터를 뽑아와서 셀의 공 모양으로 변환하는 메서드에 전달해서 셀에서 addSubView함
-        cell.numbersBallListInsert(numbers: saveManager.defaultsTemp[indexPath.row])
+        // (new)매니저한테 유저디폴츠 데이터를 뽑아와서 셀의 공 모양으로 변환하는 메서드에 전달해서 셀에서 addSubView함
+        cell.numbersBallListInsert(numbers: saveManager.getSaveData(row: indexPath.row))
         
         // 셀과 연결된 클로저 호출(어떤 번호를 선택해제 할껀지)
         // ⭐️와일드카드를 쓰고 sender를 뺐는데 이렇게 하는게 맞을까?(굳이 콜백함수가 필요없는 경우?)
@@ -352,13 +373,7 @@ extension MyNumbersViewController: UICollectionViewDelegate {
                 selectedNumbers.remove(at: index) // 포함되어있다면 저장 배열에서 삭제
             }
         }
-        // 임시 테스트용(문자열로 넣음 -> 공 모양으로 변환 예정)
-        let numberString = selectedNumbers.map { String($0) }
-        numberLabel.text = numberString.joined(separator: "  ")
-        
-        // ❗️ 테스트 // 🤔 아마 스택뷰로 추가해야되지 않을까?
-//        ballListView.displayNumbers(selectedNumbers)
-    
+        ballListView.displayNumbers(selectedNumbers.sorted()) // 배열에 추가된 번호 받아서 공 변환(오름차순 정렬로)
     }
 }
 
