@@ -59,12 +59,12 @@ final class MyNumbersViewController: UIViewController {
     // 번호 직접 추가 컬렉션뷰 '추가' 버튼
     private lazy var addNumberButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = #colorLiteral(red: 0, green: 0.9895486236, blue: 0.7555574179, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)
         button.layer.borderWidth = 3
-        button.layer.borderColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+        button.layer.borderColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
         button.layer.cornerRadius = 5
         button.setTitle("추가", for: .normal)
-        button.setTitleColor(.gray, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(addNumberViewTapped), for: .touchUpInside)
@@ -74,12 +74,12 @@ final class MyNumbersViewController: UIViewController {
     // 번호 직접 추가 컬렉션뷰 '종료' 버튼
     private lazy var addNumberCloseButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = #colorLiteral(red: 0, green: 0.9895486236, blue: 0.7555574179, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
         button.layer.borderWidth = 3
-        button.layer.borderColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+        button.layer.borderColor = #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1)
         button.layer.cornerRadius = 5
         button.setTitle("취소", for: .normal)
-        button.setTitleColor(.gray, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(addNumberViewCloseTapped), for: .touchUpInside)
@@ -293,6 +293,7 @@ final class MyNumbersViewController: UIViewController {
     
     // (직접)번호 추가 컬렉션뷰 '추가' 버튼 셀렉터 메서드
     @objc func addNumberViewTapped() {
+        guard !selectedNumbers.isEmpty else { return } // 추가된 번호가 있을때만 실행
         saveManager.setSaveData(selectedNumbers.sorted()) // 번호 메서드를 통해 유저디폴츠로 넣어주고
         resetAddNumberView() // (직접)번호 추가화면 리셋
         resetButton.isEnabled = true // 리셋 버튼 활성화
