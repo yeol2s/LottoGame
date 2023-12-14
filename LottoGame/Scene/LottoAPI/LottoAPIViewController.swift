@@ -275,6 +275,7 @@ class LottoAPIViewController: UIViewController {
             //stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            
         ])
     }
     

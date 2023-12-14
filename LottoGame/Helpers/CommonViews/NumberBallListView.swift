@@ -68,7 +68,7 @@ final class NumberBallListView: UIStackView {
     func displayNumbers(_ numbers: [Int], bns bnsNumber: Int) {
         self.subviews.forEach { $0.removeFromSuperview() }
         
-        let ballDiameter: CGFloat = 40 // 공의 지름
+        let ballDiameter: CGFloat = 30 // 공의 지름 (스택뷰를 오버할 수 있어서 작게함)
         let ballRadius: CGFloat = ballDiameter / 2 // 공의 반지름
         
         func createBallNumbers(number: Int) -> UILabel {

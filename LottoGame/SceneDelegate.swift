@@ -37,7 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         containerVC.tabBarItem = UITabBarItem(title: "메인 화면", image: UIImage(systemName: "house.fill"), selectedImage: nil)
         secondVC.tabBarItem = UITabBarItem(title: "내 번호", image: UIImage(systemName: "heart.fill"), selectedImage: nil)
-        
+         
         // 임시 테스트용
         //let tempVC = LottoAPIViewController()
 
