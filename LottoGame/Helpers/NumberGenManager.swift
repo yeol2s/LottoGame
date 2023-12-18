@@ -129,7 +129,7 @@ final class NumberGenManager {
         if let dataCount = userDefaults.array(forKey: saveKey) as? [[Int]] {
             if dataCount.count >= 10 {
                 print("저장 번호가 10개 이상")
-                return Result.failure(SaveError.overError)
+                return Result.failure(SaveError.overError) // 연관값으로 에러를 넣어주는 것
             }
             if dataCount.contains(numbers[row].numbersList) {
                 if numbers[row].isSaved { // 체크했다가 체크해제시

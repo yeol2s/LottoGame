@@ -21,7 +21,7 @@ final class MyNumbersViewController: UIViewController {
     // ⭐️ 레이블 10개만 표시하면되는데 테이블뷰보다 나은 대안이 있나? 그냥 이대로 써도 무방할까?
     private let numChoiceTableView: UITableView = {
         let tableView = UITableView()
-        tableView.isScrollEnabled = false // 테이블뷰 스크롤 비활성화
+        //tableView.isScrollEnabled = false // 테이블뷰 스크롤 비활성화(viewWillAppear 에서)
         tableView.backgroundColor = .clear // 테이블뷰 백그라운드 투명
         return tableView
     }()
@@ -146,6 +146,11 @@ final class MyNumbersViewController: UIViewController {
         saveManager.LoadSaveData() // UserDefaults 데이터 갱신(set)
         numChoiceTableView.reloadData() // 테이블뷰 리로드(⭐️이렇게 리로드 계속 되는것이 비효율적인가?)
         print("저장 번호 화면이 다시 나타났습니다.")
+        if saveManager.getSaveDataCount() >= 9 { // 번호가 9개이상일때 테이블뷰 스크롤 활성화
+            numChoiceTableView.isScrollEnabled = true // 테이블뷰 스크롤 활성화
+        } else {
+            numChoiceTableView.isScrollEnabled = false // 비활성화
+        }
     }
     
     // 뷰가 사라지고난 후
@@ -310,6 +315,7 @@ final class MyNumbersViewController: UIViewController {
         }
         addNumbersStackView.removeFromSuperview() // (직접)번호추가 화면 부모뷰로부터 뷰 삭제(화면 닫음)
     }
+    
     
 }
 

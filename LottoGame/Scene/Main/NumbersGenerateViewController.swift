@@ -240,6 +240,7 @@ extension NumbersGenerateViewController: UITableViewDataSource {
     // 테이블뷰 reloadData()가 호출될때마다 호출됨
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return numberGenManager.getNumbersList().count // 매니저한테 생성된 번호 배열 리스트를 받아서 카운트해서 테이블뷰셀 생성
+        //return numberGenManager.numbers.count // 이것도 괜찮
     }
     
     // indexPath가 결국에는 numberOfRowsInSection을 통해 "아 셀을 몇개를 그려야 하는 구나" 하고

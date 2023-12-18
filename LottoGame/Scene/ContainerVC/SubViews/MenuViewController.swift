@@ -23,7 +23,7 @@ final class MenuViewController: UIViewController, UITableViewDelegate, UITableVi
     // 메뉴에 표시할 열거형(CaseIterable 채택 -> allCases 사용 가능해짐(모든 케이스를 나열한 배열을 리턴))
     enum MenuOptions: String, CaseIterable {
         case home = "메인 화면"
-        case info = "회차별 당첨 정보"
+        case info = "최근 회차 당첨정보"
         case qrCode = "QR Code"
 //        case map = "판매점 찾기" // 보류
         
