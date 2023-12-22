@@ -53,7 +53,6 @@ final class MenuViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // 뷰와 테이블뷰셀 색상을 동일하게 변수로 색상 설정
     //let grayColor = UIColor(red: 33/255.0, green: 33/255.0, blue: 33/255.0, alpha: 1)
-    // 🔶컬러 꼭 /255.0 을 해주는게 맞는건가?
     let cerBlueColor = UIColor(red: 0.25, green: 0.47, blue: 0.60, alpha: 1.00)
     
 

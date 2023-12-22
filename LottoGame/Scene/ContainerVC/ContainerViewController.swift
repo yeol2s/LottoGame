@@ -7,7 +7,7 @@
 
 import UIKit
 
-// 🔶사이드바 메뉴를 위한 컨테이너 뷰컨트롤러
+// 사이드바 메뉴를 위한 컨테이너 뷰컨트롤러
 final class ContainerViewController: UIViewController {
     
     // 메뉴를 보여주기 위해 열거형 선언(열려있는지 닫혀있는지)
@@ -20,7 +20,7 @@ final class ContainerViewController: UIViewController {
     
     let menuVC = MenuViewController() // 메뉴 뷰컨트롤러
     let mainVC = NumbersGenerateViewController() // 메인 뷰컨트롤러(번호 생성)
-    var navVC: UINavigationController? // 네비게이션컨트롤러 인스턴스 생성 🔶 메인뷰컨은 컨테이너뷰컨에서 네비게이션컨트롤러로 root 시킴(이래야 사이드메뉴시 프레임이 같이 밀리는 듯 - 탭바 제외)
+    var navVC: UINavigationController? // 네비게이션컨트롤러 인스턴스 생성 (메인뷰컨은 컨테이너뷰컨에서 네비게이션컨트롤러로 root 시킴(이래야 사이드메뉴시 프레임이 같이 밀리는 듯 - 탭바 제외))
     
     lazy var apiVC = LottoAPIViewController()
     lazy var qrVC = QRcodeReaderViewController()
@@ -41,7 +41,7 @@ final class ContainerViewController: UIViewController {
         
         
         // MainViewController
-        // 메인 뷰컨을 깔아놓고 🔶 여기서 네비게이션컨트롤러 root(관련 설정은 main뷰컨에서
+        // 메인 뷰컨을 깔아놓고(여기서 네비게이션컨트롤러 root(관련 설정은 main뷰컨에서)
         mainVC.delegate = self // 메인뷰컨 대리자 지정
         let navVC = UINavigationController(rootViewController: mainVC)
         addChild(navVC) // 자식뷰컨으로 navVC를 추가(첫번째 단계로 계층구조에 포함시키는 것-화면나타나진않음)
@@ -58,9 +58,8 @@ extension ContainerViewController: NumbersGenViewControllerDelegate {
         toggleMenu(completion: nil)
     }
     
-    // 컴플리션 핸들러(선택사항으로 만들기 위해 옵셔널 선언)(🔶옵셔널이므로 자동 @escaping?)
-    // 🔶지금 이 컴플리션핸들러랑 animate의 컴플리션은 다르잖아? 애니메이트는 애니메이션의 결과를 가지고 하는거고
-    // 🔶이 컴플리션핸들러가 의미가 있어? (나중을 위한 컴플리션핸들러를 쓴 것인가??)
+    // 컴플리션 핸들러(선택사항으로 만들기 위해 옵셔널 선언)(옵셔널이므로 자동 @escaping?)
+    // 이 컴플리션핸들러가 의미가 있어? (나중을 위한 컴플리션핸들러를 쓴 것인가??)
     // 애니메이션 처리(스프링 애니메이션: 스프링의 동작을 모방하여 애니메이션 효과를 만들어내는 기술)(빠르게 싲가하여 완만하게 멈추는 애니메이션 효과)
     // withDuration : 애니메이션의 지속 시간을 초단위로 나타내며 애니메이션의 시작부터 끝까지 얼마동안 진행될지를 결정
     // delay: 애니메이션의 시작을 지연시킬 시간을 초 단위로 나타냄(1초 설정하면 애니메이션이 1초 후 시작)
@@ -84,7 +83,7 @@ extension ContainerViewController: NumbersGenViewControllerDelegate {
             } completion: { [weak self] done in
                 if done {
                     self?.menuState = .closed // 닫았으니까 상태를 클로즈로 변경
-                    DispatchQueue.main.async { // 메인큐로 다시보냄(🔶UIView.animate는 비동기적으로 처리가 되고, UI관련된 작업은 메인으로 다시보내야됨(메인스레드만 화면을 다시그리는일을 하기떄문))
+                    DispatchQueue.main.async { // 메인큐로 다시보냄(UIView.animate는 비동기적으로 처리가 되고, UI관련된 작업은 메인으로 다시보내야됨(메인스레드만 화면을 다시그리는일을 하기떄문))
                         completion?() // 옵셔널체이닝에서 ?() - ()? 의 차이는 (앞 물음표는 함수가 있을수도 없을수도있다. - 뒤 물음표는 함수의 결과값이 있을수도 없을수도 있다. 의 차이이다.)(고로 이거는 클로저가 있을수도 없을수도)
                     }
                 }
@@ -98,7 +97,7 @@ extension ContainerViewController: NumbersGenViewControllerDelegate {
 extension ContainerViewController: MenuViewControllerDelegate {
     //프로토콜 메서드(셀 선택시 해당 열을 가지고 메뉴를 열기)
     func didSelect(menuItem: MenuViewController.MenuOptions) {
-        toggleMenu(completion: nil) // 🔶우선 메뉴 상태를 .opend or .closed 바꾸기 위해 토글
+        toggleMenu(completion: nil) // 우선 메뉴 상태를 .opend or .closed 바꾸기 위해 토글
         
         // 들어온 menuItem을 가지고 스위칭(MenuOptions.케이스를 가지고 들어올 것)
         switch menuItem {

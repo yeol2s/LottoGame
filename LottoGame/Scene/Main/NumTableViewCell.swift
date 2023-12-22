@@ -8,7 +8,6 @@
 import UIKit
 
 // 테이블뷰 셀
-// ⭐️ 얘의 폴더 SubViews는 왜 뭔가 아이콘이 살짝 다른 이유?
 class NumTableViewCell: UITableViewCell {
     
     // 번호 공 모양 만드는 객체 생성(UIStackView)
@@ -46,7 +45,6 @@ class NumTableViewCell: UITableViewCell {
     }()
     
     // '숫자 레이블' + '번호 저장 버튼'묶기 위한 스택뷰 생성
-    // ⭐️ 번호 선택 박스가 정사각형이였으면 좋겠는데 그게 잘 안되네
     private let stackView: UIStackView = {
         let view = UIStackView() // frame(크기기준)과, arrangedSubviews(배열)로도 생성가능
         view.spacing = 2 // 스택뷰 내부의 간격
@@ -58,10 +56,9 @@ class NumTableViewCell: UITableViewCell {
     }()
     
     
-    // ✅ 번호저장 버튼을 위한 클로저 저장
+    // 번호저장 버튼을 위한 클로저 저장
     // 뷰컨에 있는 클로저를 저장할 예정(셀(자신)을 전달)
     // 이 클로저는 뷰컨에서 동작
-    // ⭐️ 클로저니까 함수 타입을 튜플로 감쌈(감싸는게 좋은 이유??)
     var saveButtonPressed: ((NumTableViewCell) -> ()) = { sender in }
     
     // 오토레이아웃을 생성자로 설정(스토리보드인 경우 awakeFromNib 함수에서 해주면 되는데 여기선 코드로 구현하는 것이기 때문에 생성자를 사용)
@@ -116,14 +113,12 @@ class NumTableViewCell: UITableViewCell {
         ballListView.displayNumbers(numbers)
     }
     
-    // ✅
     // 번호저장 버튼 눌렸을때 셀렉터
     @objc private func saveButtonTapped() {
         print("번호저장 버튼이 셀에서 눌렸습니다.")
         saveButtonPressed(self)
     }
     
-    // ✅
     // 번호저장 버튼 설정
     func setButtonStatus(isSaved: Bool) {
         if isSaved {

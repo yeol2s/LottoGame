@@ -26,7 +26,7 @@ final class NumberBallView: UILabel {
         //self.layer.borderColor = UIColor.black.cgColor
         //self.layer.borderWidth = 1
         
-        // Set color based on the range of numbers
+        // 번호 단위별 컬러설정
         switch number {
         case 1...9:
             self.backgroundColor = UIColor.systemPink

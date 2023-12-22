@@ -33,7 +33,7 @@ struct LottoInfo {
     let bnusNum: Int // 보너스 번호
     
     
-    // 생성자로 넣어줌? (당첨날짜, 1등당첨금액, 1등당첨복권수)
+    // 생성자로 넣어줌 (당첨날짜, 1등당첨금액, 1등당첨복권수)
     // 원래 굳이 생성자 안해도 멤버와이즈 이니셜라이저로 생성자가 자동 구현되는데 일단 생성
     init(drawData: String, drwNo: Int, firstWinMoney: String, firstTicketsCount: Int, numbers: [Int], bnusNum: Int) {
         self.drawDate = drawData
@@ -88,7 +88,8 @@ struct NetworkManager {
             }
             
             // 데이터 분석하기
-            if let lottoInfo = self.parseJSON(safeData) {                completion(lottoInfo) // 파싱에 성공하면 컴플리션핸들러로 로또 구조체를 던져줌
+            if let lottoInfo = self.parseJSON(safeData) {
+                completion(lottoInfo) // 파싱에 성공하면 컴플리션핸들러로 로또 구조체를 던져줌
             } else {
                 completion(nil)
             }

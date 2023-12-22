@@ -55,7 +55,6 @@ final class NumberGenManager {
             }
         }
         
-        // ⭐️ 이렇게 하는거 괜찮은 코드?
         // 혹시나 중복된 값이 나오면 처리
         // 테스트 코드
         print(numbers.isEmpty)
@@ -118,9 +117,7 @@ final class NumberGenManager {
 //    }
     
     
-    // ⭐️ Result 타입으로 구현한거 괜찮은 로직인지?
-    // ✅ 테이블뷰에서 번호 저장 클릭시 인덱스를 가지고 numberGen의 isSaved를 토글 시킴
-    // ⭐️ rowValue같이 상수로 선언해도 누를때마다 값이 변경이 가능한 것은 함수는 스택에서 실행되고 사라지고 버튼을 다시 눌렀을때 다시 생겨나기 때문이지?
+    // 테이블뷰에서 번호 저장 클릭시 인덱스를 가지고 numberGen의 isSaved를 토글 시킴
     // 연관값 미사용으로 성공인 경우 true가 굳이 필요없어서 Success는 Void 타입을 사용
     func setNumbersSave(row: Int) -> Result<Void, SaveError> {
         
@@ -152,7 +149,7 @@ final class NumberGenManager {
         // isSaved의 상태가 true일때 userDefaults에 저장
         if numbers[row].isSaved {
             userSaveSelectDataAdd(row: row)
-        } else {
+        } else { // 이 부분은 굳이 필요없긴 하다. 어차피 위에서 처리가 되니까. 그래도 그냥 한번 더 확인하는 차원에서 그대로 둠
             // isSaved의 상태가 false일때는 유저디폴츠에서 삭제(하트 해제)
             userSavedSelectRemove(row: row)
         }
@@ -160,18 +157,16 @@ final class NumberGenManager {
         return Result.success(()) // void를 전달하는 것
     }
     
-    // ✅ numbers 배열에 인덱스값으로 접근해서 isSaved의 상태가 true인지 false인지 확인
+    // numbers 배열에 인덱스값으로 접근해서 isSaved의 상태가 true인지 false인지 확인
     func getNumbersSaved(row: Int) -> Bool {
         let isSaved = numbers[row].isSaved
         return isSaved
     }
     
     // 여기서 유저디폴츠 번호 저장 / 삭제 함수를 구현해서 setNumberSaved와 연결하자.
-    // ⭐️⭐️⭐️ 값 중복으로 저장되는 것도 막아야 한다. ⭐️⭐️⭐️
     // (번호 저장)저장 함수(하트 선택)
     private func userSaveSelectDataAdd(row: Int) {
         
-        // 📌 테스트 코드
         defaultsTemp.removeAll() // 임시배열 초기화
         
         // 키를 통해 디폴츠 값을 한번 불러와서 임시배열에 넣고(저장된 번호가 없을 수 있으니 if 바인딩)

@@ -59,7 +59,7 @@ final class AddNumbersCollectionViewCell: UICollectionViewCell {
 //    }
     
     
-    // 일단 번호를 받아서 레이블에 표시하는 것인데.. 수정필요.
+    // 번호를 받아서 레이블에 표시하는 것
     func configure(_ number: Int) {
         numberBallView.displayNumber(number)
         //numberLabel.text = number

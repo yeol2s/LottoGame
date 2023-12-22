@@ -24,7 +24,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarVC = UITabBarController()
         
         // 네비게이션 컨트롤러 생성
-        // ⭐️ 네비게이션 컨트롤러 두개다 사용할꺼니까 이렇게 두개 만드는게 맞나?
         //let naviVC = UINavigationController(rootViewController: NumbersGenerateViewController()) // 뷰컨에다가 생성 🔶메인 뷰컨을 네비게이션 컨트롤러 없애고 컨테이너뷰컨에 만들었다.
         //let containerVC = UINavigationController(rootViewController: ContainerViewController()) // 컨테이너뷰컨에 네비게이션컨트롤러 생성 🔶이것도 탭바때문에 없애고
         let containerVC = ContainerViewController() // 🔶 컨테이너뷰컨을 인스턴스 생성해서 탭바에 넣음(메인 뷰컨은 네비컨트롤러를 컨테이너뷰컨에서 생성)

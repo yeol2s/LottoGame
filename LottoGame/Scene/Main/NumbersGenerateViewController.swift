@@ -7,7 +7,7 @@
 
 import UIKit
 
-// 🔶컨테이너뷰와 통신을 위해 델리게이트 패턴 사용
+// 컨테이너뷰와 통신을 위해 델리게이트 패턴 사용
 // 탭을 눌렀을때 전달을 위한 프로토콜 - 델리게이트
 protocol NumbersGenViewControllerDelegate: AnyObject {
     func didTapMenuButton() // 아래 구현(메뉴 버튼 누를시)
@@ -16,8 +16,6 @@ protocol NumbersGenViewControllerDelegate: AnyObject {
 // 메인 뷰컨
 final class NumbersGenerateViewController: UIViewController {
     
-    // 🔶 성준이 물어볼 것
-    // 강한 참조가 발생하는 경우가 내가 생각하는 그게 맞나?(순환참조가 발생하나?)
     // 컨테이너뷰컨에서 delegate = self를 함으로써 이 메인뷰컨의 인스턴스의 델리게이트 속성이 컨테이너뷰컨을 가리키고, 컨테이너뷰컨에서 메인뷰컨 인스턴스 생성을 했으니 가리키고 있고 서로 가리키게 되는것?(순환참조?)
     weak var delegate: NumbersGenViewControllerDelegate?
     
@@ -27,7 +25,8 @@ final class NumbersGenerateViewController: UIViewController {
     // 번호 생성 인스턴스 생성
     var numberGenManager: NumberGenManager = NumberGenManager()
     
-    // ⭐️ 아래 UI속성들을 lazy var로 선언하는 이유가 지연 저장 속성으로 뷰가 먼저 올라간다음 나오게 하려고 하는건가?(어쨌든 뷰와 연관되어있으니까? -> 셀에서는 속성들에 lazy var를 사용하지 않아도 됐는데)
+    // ⭐️ 아래 UI속성들을 lazy var로 선언하는 이유는 -> 뷰 계층이 로드된 시점 이후에 버튼을 초기화 해야 하므로?
+    // 뷰가 로드되고 난 후 오토레이아웃을 설정하는 경우에 해당
     // 번호 생성 버튼
     private lazy var generateButton: UIButton = {
         let button = UIButton(type: .system)
@@ -43,7 +42,6 @@ final class NumbersGenerateViewController: UIViewController {
     }()
     
     // 리셋 버튼
-    // ⭐️나중에 아이콘 넣을 것(기능 구현부터)
     private lazy var resetButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = #colorLiteral(red: 0, green: 0.9895486236, blue: 0.7555574179, alpha: 1)
@@ -72,7 +70,7 @@ final class NumbersGenerateViewController: UIViewController {
         
         view.backgroundColor = .white
     
-        setupNaviBar() // 네비게이션바 메서드 호출 🔶 컨테이너뷰컨에 네비게이션 설정하므로 호출하지 않음
+        setupNaviBar() // 네비게이션바 설정 메서드
         setupTableView() // 테이블뷰 대리자 지정 설정 및 셀등록 함수 호출
         setupTableViewConstraints() // 테이블뷰 오토레이아웃
         setupGenButtonConstraints() // 생성 버튼 오토레이아웃
@@ -89,7 +87,6 @@ final class NumbersGenerateViewController: UIViewController {
     }
     
     // 네비게이션바 설정 메서드
-    // ⭐️나중에 스크롤 내릴때 네비게이션바 나오게끔 하자?
     private func setupNaviBar() {
         title = "Lotto Pick"
         
@@ -132,7 +129,6 @@ final class NumbersGenerateViewController: UIViewController {
         ])
     }
     
-    // ⭐️ 나중에 테이블뷰와 같이 스택뷰로 묶자
     // 생성 버튼 오토레이아웃
     private func setupGenButtonConstraints() {
         view.addSubview(generateButton)
@@ -148,7 +144,6 @@ final class NumbersGenerateViewController: UIViewController {
         ])
     }
     
-    // ⭐️ 나중에 번호가 있을때만 리셋버튼이 눌리게 설정하자.
     // 리셋 버튼 오토레이아웃
     private func resetButtonConstraints() {
         view.addSubview(resetButton)
@@ -177,7 +172,6 @@ final class NumbersGenerateViewController: UIViewController {
         }
     }
     
-    // ⭐️ 리셋 이렇게 구현하는거 괜찮음?(매니저로 옮겨야 하나?)
     // 번호 리셋버튼 셀렉터
     @objc private func resetButtonTapped() {
         
@@ -218,7 +212,7 @@ final class NumbersGenerateViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    // 🔶메뉴 버튼 눌렀을때 함수
+    // 메뉴 버튼 눌렀을때 함수
     @objc private func didTapMenuButton() {
         delegate?.didTapMenuButton() // 이 델리게이트 프로토콜을 준수하는 객체의 메서드(해당 델리게이트 프로토콜을 채택하지 않으면 nil이 반환된다.)
     }
@@ -243,10 +237,9 @@ extension NumbersGenerateViewController: UITableViewDataSource {
         //return numberGenManager.numbers.count // 이것도 괜찮
     }
     
-    // indexPath가 결국에는 numberOfRowsInSection을 통해 "아 셀을 몇개를 그려야 하는 구나" 하고
-    // 내용을 전달을 주고받고(???) indexPath를 통해 셀을 그려내는 것?
+    // indexPath가 결국에는 numberOfRowsInSection을 통해 "아 셀을 몇개를 그려야 하는 구나" 하고 내용을 전달을 주고받고 indexPath를 통해 셀을 그려내는 것
     // 스크롤할때 얘는 재구성이 됨
-    // ⭐️리로드 될때마다 indexPath의 개수에따라 이 메서드가 반복해서 실행하는 듯?
+    // ⭐️리로드 될때마다 indexPath의 개수에따라 이 메서드가 반복해서 실행
     // row는 행 section은 섹션(그룹같은 개념)
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = numTableView.dequeueReusableCell(withIdentifier: "NumCell", for: indexPath) as! NumTableViewCell
@@ -274,15 +267,12 @@ extension NumbersGenerateViewController: UITableViewDataSource {
         // 그리고 번호 생성 매니저에 접근해서 인덱스 값을 가지고 numbers의 isSaved를 토글 함으로써
         // 셀을 다시 그리는 경우에 numbers의 isSaved를 인덱스 값으로 접근해서 정확한 자리에 다시
         // 위치하게끔 구현함.
-        // ⭐️셀에 연결된 클로저(이게 셀에 있는 클로저 변수에 전달되서 담긴다고 봐야하나?)
         cell.saveButtonPressed = { [weak self] senderCell in
             // ⭐️ self를 약한 참조로 캡쳐(캡처리스트)하고 guard let 바인딩을 통해 self(뷰컨객체)가 존재하는지 확인하고 존재하지 않는다면 클로저를 빠져나감. 고로 self를 언래핑해서 아래 구문에서 옵셔널 바인딩없이 안전하게 사용할 수 있는 것([weak self]의 기본값은 옵셔널)
             guard let self = self else { return }
             print("뷰컨 클로저 실행")
 
             
-            // ⭐️ 이렇게 구현하는거 괜찮은 코드인가?(열거형 선언은 매니저에서 Error로 하는게 맞고?)
-            // 이건 성준이한테 물어봐야지 -> "setNumbersSave가   번호저장을 시도하는거지?   시도한 결과로 Bool을 받을 필요는 없고 Void면 될거같고"
             // 1️⃣ - Result로 처리하는 코드(new)
             let saveResult = self.numberGenManager.setNumbersSave(row: indexPath.row)
             
@@ -300,8 +290,7 @@ extension NumbersGenerateViewController: UITableViewDataSource {
                 }
             }
             //2️⃣ -  그냥 if문으로 처리했던 코드(old)
-            // 인덱스를 인자(인수값이라고 하는게 맞나?)로 전달해서 토글 시켜서 save 체크
-            // ⭐️(함수 호출시 전달값이 인수이고 함수에서 받는값이 인자로 알고 있는데 보통 인자라고하는듯?)
+            // 인덱스를 인자로 전달해서 토글 시켜서 save 체크
 //            if self.numberGenManager.setNumbersSave(row: indexPath.row) {
 //                // 선택시 하트 fill 설정을 위해 isSaved Bool 값 꺼내서 전달
 //                senderCell.setButtonStatus(isSaved: self.numberGenManager.getNumbersSaved(row: indexPath.row))

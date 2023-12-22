@@ -13,12 +13,10 @@ final class MyNumbersViewController: UIViewController {
     // 번호저장 매니저 인스턴스 생성
     var saveManager: NumberSaveManager = NumberSaveManager()
     
-    // ❗️ (테스트) 번호 공으로 만드는 UIStackView(지연저장속성으로)
+    // 번호 공으로 만드는 UIStackView(지연저장속성으로)
     lazy var ballListView: NumberBallListView = NumberBallListView()
     
     // 내 번호 테이블뷰 생성
-    // ⭐️ 그냥 백그라운드컬러 하나 하려고 이렇게 클로저 실행문으로 해도 괜찮은가?
-    // ⭐️ 레이블 10개만 표시하면되는데 테이블뷰보다 나은 대안이 있나? 그냥 이대로 써도 무방할까?
     private let numChoiceTableView: UITableView = {
         let tableView = UITableView()
         //tableView.isScrollEnabled = false // 테이블뷰 스크롤 비활성화(viewWillAppear 에서)
@@ -143,7 +141,7 @@ final class MyNumbersViewController: UIViewController {
     // 뷰가 나타나기 전
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        saveManager.LoadSaveData() // UserDefaults 데이터 갱신(set)
+        saveManager.loadSaveData() // UserDefaults 데이터 갱신(set)
         numChoiceTableView.reloadData() // 테이블뷰 리로드(⭐️이렇게 리로드 계속 되는것이 비효율적인가?)
         print("저장 번호 화면이 다시 나타났습니다.")
         if saveManager.getSaveDataCount() >= 9 { // 번호가 9개이상일때 테이블뷰 스크롤 활성화
@@ -163,7 +161,7 @@ final class MyNumbersViewController: UIViewController {
     // 네비게이션바 설정 메서드
     private func setupNaviBar() {
         title = "내 번호"
-        
+
         let appearance = UINavigationBarAppearance() // 네비게이션바 겉모습을 담당
         appearance.configureWithOpaqueBackground() // 불투명으로
         appearance.backgroundColor = .white
@@ -248,7 +246,7 @@ final class MyNumbersViewController: UIViewController {
         addNumberButtonStackView.addArrangedSubview(addNumberButton)
         addNumberButtonStackView.addArrangedSubview(addNumberCloseButton)
     }
-    
+    // (번호 추가 화면 레이블) 레이블에 ballListView 올려서 선택마다 번호 공 모양으로 출력될 수 있게 하위뷰 추가
     private func setupBallListViewConstraints() {
         numberLabel.addSubview(ballListView)
         //공바꾸기 뷰 오토레이아웃
@@ -344,7 +342,7 @@ extension MyNumbersViewController: UITableViewDataSource {
         cell.numbersBallListInsert(numbers: saveManager.getSaveData(row: indexPath.row))
         
         // 셀과 연결된 클로저 호출(어떤 번호를 선택해제 할껀지)
-        // ⭐️와일드카드를 쓰고 sender를 뺐는데 이렇게 하는게 맞을까?(굳이 콜백함수가 필요없는 경우?)
+        // 와일드카드를 쓰고 파라미터를 뺌
         cell.saveUnCheckButton = { [weak self] _ in
             guard let self = self else { return }
             print("선택된 인덱스:\(indexPath.row)")
@@ -393,7 +391,7 @@ extension MyNumbersViewController: UICollectionViewDataSource {
     
     // 셀을 어떻게 그려낼건지
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddNumbersCell", for: indexPath) as! AddNumbersCollectionViewCell
+        let cell = addNumbersCollectionView.dequeueReusableCell(withReuseIdentifier: "AddNumbersCell", for: indexPath) as! AddNumbersCollectionViewCell
         let number = numbers[indexPath.item] // 아이템 인덱스번호를 뽑아서
         cell.configure(number) // 1~45까지의 번호를 한번씩 셀의 configure 메서드에 보내서 레이블에 표시
         return cell

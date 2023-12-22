@@ -12,7 +12,7 @@ final class NumberSaveManager {
     
     // 유저디폴츠 객체 변수에 담음
     private let userDefaults = UserDefaults.standard
-    // ⭐️⭐️⭐️키값으로 데이터를 모으자(이런 키 관련 코드는 나중에 어디 파일 하나에 모아놔야겠지?)
+    // ⭐️키값으로 데이터를 모으자(이런 키 관련 코드는 나중에 어디 파일 하나에 모아놔야겠지?)
     private let saveKey: String = "MyNumbers"
     
     // ⚠️(old) 유저디폴츠 데이터 임시공간 배열(Int -> String 변경 위함)
@@ -20,7 +20,7 @@ final class NumberSaveManager {
     private var defaultsTemp: [[Int]] = [] // (new)유저디폴츠 데이터 임시 저장 공간 배열
     
     // 유저디폴츠에 저장된 번호를 가져와서 데이터 갱신
-    func LoadSaveData() {
+    func loadSaveData() {
         
         if let saveDate = userDefaults.array(forKey: saveKey) as? [[Int]] {
             defaultsTemp = saveDate // 유저디폴츠 데이터를 임시배열에 넣어줌
@@ -74,7 +74,7 @@ final class NumberSaveManager {
             print("세이브데이터: \(saveData)")
             
             userDefaults.set(saveData, forKey: saveKey) // 지우고난 배열을 유저디폴츠에 다시 넣어줌
-            LoadSaveData() // 데이터를 다시 넣었으니 [[Int]] -> [[String]]으로 변환위해 setSaveData 함수 호출
+            loadSaveData() // 데이터를 다시 넣었으니 임시배열에 다시 넣어주는 메서드 호출
         }
         
         // print 확인용

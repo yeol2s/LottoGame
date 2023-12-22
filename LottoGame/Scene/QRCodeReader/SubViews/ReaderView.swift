@@ -35,10 +35,10 @@ final class ReaderView: UIView {
     var previewLayer: AVCaptureVideoPreviewLayer?
     var captureSession: AVCaptureSession?
     
-    // 🔶카메라 앵글 테두리 레이어를 설정하는 것인가??????
+    // 카메라 앵글 테두리 레이어를 설정하는 것
     private var cornerLength: CGFloat = 20 // 모서리 (CGFloat은 CG프레임워크 데이터타입으로 소수점값 표현을 위해 사용 - 그래픽 관련(화면의 크기, 위치, 길이 등 표현) 작업을 수행할때 사용)
     private var cornerLineWidth: CGFloat = 6 // 선의 굵기
-    private var rectOfInterest: CGRect { // 🔶계산 속성(리턴 생략)(CGRect는 사각형)
+    private var rectOfInterest: CGRect { // 계산 속성(리턴 생략)(CGRect는 사각형)
         // CGRect는 사각형의 위치와 크기를 정의하는데 x, y는 시작점 width, heigh으로 너비, 높이를 지정
         // bonds는 뷰(화면) 'bounds.width / 2'는 뷰(화면)의 가로 길이의 중간 지점을 의미
         // 그리고 200 / 2는 사각형의 크기로 설정한 200에서의 반을 의미하므로 '(bounds.width / 2) - (200 / 2)'는 화면 가로 중앙에서 너비(200)의 절반만큼 왼쪽으로 이동한 위치를 나타냄(고로 x와 y의 위치를 이렇게 설정함으로써 화면의 중앙에 위치한 200 x 200 크기의 정사각형 영역을 정의하게 됨
@@ -150,7 +150,7 @@ final class ReaderView: UIView {
         previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill // 비디오 비율 조정(resizeAspectFill은 레이어의 사각형에 맞게 비디오를 확대 또는 축소해서 레이어를 가득채움)
         previewLayer.frame = self.layer.bounds // previewLayer의 프레임을 ReaderView의 크기와 같도록 설정(bounds는 뷰의 내부 좌표 공간에서의 크기로서 해당 뷰 내에서의 상대적인 위치와 크기를 정의 원점에서 해당 뷰의 크기를 정의)
         
-        // ⭐️ 스캔 포커스
+        // 스캔 포커스
         // 스캔할 사각형(포커스존)을 구성, 해당 자리만 흐리지 않도록
         // CAShapeLayer에서 도형 모양을 그리고자 할때 CGPath를 사용(즉 previewLayer에다가 ShapeLayer를 그리는데 ShapeLayer의 모양이 [1.bounds 크기의 사각형, 2.readingRect 크기의 사각형] 두 개가 그려져 있는 것이다??)
         let path = CGMutablePath()
