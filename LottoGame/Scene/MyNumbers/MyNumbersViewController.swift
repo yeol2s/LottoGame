@@ -57,10 +57,10 @@ final class MyNumbersViewController: UIViewController {
     // 번호 직접 추가 컬렉션뷰 '추가' 버튼
     private lazy var addNumberButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)
-        button.layer.borderWidth = 3
-        button.layer.borderColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
-        button.layer.cornerRadius = 5
+        button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+//        button.layer.borderWidth = 1
+//        button.layer.borderColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
+//        button.layer.cornerRadius = 5
         button.setTitle("추가", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
@@ -72,10 +72,10 @@ final class MyNumbersViewController: UIViewController {
     // 번호 직접 추가 컬렉션뷰 '종료' 버튼
     private lazy var addNumberCloseButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
-        button.layer.borderWidth = 3
-        button.layer.borderColor = #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1)
-        button.layer.cornerRadius = 5
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+//        button.layer.borderWidth = 1
+//        button.layer.borderColor = #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1)
+//        button.layer.cornerRadius = 5
         button.setTitle("취소", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
@@ -100,10 +100,10 @@ final class MyNumbersViewController: UIViewController {
     // 번호 선택 스택뷰에 사용될 '추가', '취소' 버튼 스택뷰
     private lazy var addNumberButtonStackView: UIStackView = {
         let view = UIStackView()
-        view.spacing = 1
+        view.spacing = 0
         view.axis = .horizontal
         view.distribution = .fillEqually
-        view.alignment = .fill
+        view.alignment = .center
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -111,7 +111,7 @@ final class MyNumbersViewController: UIViewController {
     // 번호 선택 추가 스택뷰
     private lazy var addNumbersStackView: UIStackView = {
         let view = UIStackView()
-        view.spacing = 3 // 스택뷰 내부의 간격
+        view.spacing = 0 // 스택뷰 내부의 간격
         view.axis = .vertical
         view.backgroundColor = .white
         view.layer.borderWidth = 3

@@ -20,7 +20,7 @@ final class ContainerViewController: UIViewController {
     
     let menuVC = MenuViewController() // 메뉴 뷰컨트롤러
     let mainVC = NumbersGenerateViewController() // 메인 뷰컨트롤러(번호 생성)
-    var navVC: UINavigationController? // 네비게이션컨트롤러 인스턴스 생성 (메인뷰컨은 컨테이너뷰컨에서 네비게이션컨트롤러로 root 시킴(이래야 사이드메뉴시 프레임이 같이 밀리는 듯 - 탭바 제외))
+    var navVC: UINavigationController? // 네비게이션컨트롤러 선언 (메인뷰컨은 컨테이너뷰컨에서 네비게이션컨트롤러로 root 시킴(이래야 사이드메뉴시 프레임이 같이 밀리는 듯 - 탭바 제외))
     
     lazy var apiVC = LottoAPIViewController()
     lazy var qrVC = QRcodeReaderViewController()
@@ -60,7 +60,7 @@ extension ContainerViewController: NumbersGenViewControllerDelegate {
     
     // 컴플리션 핸들러(선택사항으로 만들기 위해 옵셔널 선언)(옵셔널이므로 자동 @escaping?)
     // 이 컴플리션핸들러가 의미가 있어? (나중을 위한 컴플리션핸들러를 쓴 것인가??)
-    // 애니메이션 처리(스프링 애니메이션: 스프링의 동작을 모방하여 애니메이션 효과를 만들어내는 기술)(빠르게 싲가하여 완만하게 멈추는 애니메이션 효과)
+    // 애니메이션 처리(스프링 애니메이션: 스프링의 동작을 모방하여 애니메이션 효과를 만들어내는 기술)(빠르게 시작하여 완만하게 멈추는 애니메이션 효과)
     // withDuration : 애니메이션의 지속 시간을 초단위로 나타내며 애니메이션의 시작부터 끝까지 얼마동안 진행될지를 결정
     // delay: 애니메이션의 시작을 지연시킬 시간을 초 단위로 나타냄(1초 설정하면 애니메이션이 1초 후 시작)
     // usingSpringWithDamping: 스프링 애니메이션을 적용할때 사용하는 매개변수(스프링의 감쇠 정도를 나타냄 값이 작을 수록 스프링 애니메이션이 더 많은 효과, 값이 클수록 스프링 효과가 덜 나타남)

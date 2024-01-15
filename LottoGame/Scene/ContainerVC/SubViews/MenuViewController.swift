@@ -9,7 +9,7 @@ import UIKit
 
 // 프로토콜 구현(통신을 위한 델리게이트)
 // 메뉴안에 정렬된 메뉴들을 눌렀을때 전달을 위한 프로토콜
-// 메인뷰컨트롤러와 연결
+// 컨테이너뷰컨트롤러와 연결
 protocol MenuViewControllerDelegate: AnyObject { // AnyObject는 모든 클래스타입
     func didSelect(menuItem: MenuViewController.MenuOptions)
 }
@@ -30,7 +30,7 @@ final class MenuViewController: UIViewController, UITableViewDelegate, UITableVi
     // 열거형 내부에 get 계산속성 구현(해당하는 case에 이미지 이름을 리턴해서 SF 기호 이름을 리턴시킴)
     // 계산속성은 실질적으로 메서드이다! 잊지말자
         var imageName: String {
-            switch self { // 여기서 self는 열거형?
+            switch self { // 여기서 self는 열거형 case
             case .home:
                 return "house"
             case .info:
